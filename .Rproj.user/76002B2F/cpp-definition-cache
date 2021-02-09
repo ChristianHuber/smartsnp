@@ -1,0 +1,32 @@
+[
+    {
+        "file": "/Users/christianhuber/Dropbox/Salva_PCA/Rcpp_problem_solving/smartsnp/src/cpp_read_packedancestrymap.cpp",
+        "file_last_write": 1611659151.0,
+        "definitions": [
+            {
+                "usr": "c:@F@cpp_read_packedancestrymap#$@N@Rcpp@S@String#I#I#I#I#I#b#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_read_packedancestrymap(Rcpp::String, int, int, Rcpp::IntegerVector, int, int, bool, bool)",
+                "file": "/Users/christianhuber/Dropbox/Salva_PCA/Rcpp_problem_solving/smartsnp/src/cpp_read_packedancestrymap.cpp",
+                "line": 21,
+                "column": 15
+            }
+        ]
+    },
+    {
+        "file": "/Users/christianhuber/repos/smartsnp/src/cpp_read_packedancestrymap.cpp",
+        "file_last_write": 1611659150.0,
+        "definitions": [
+            {
+                "usr": "c:@F@cpp_read_packedancestrymap#$@N@Rcpp@S@String#I#I#I#I#I#b#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cpp_read_packedancestrymap(Rcpp::String, int, int, Rcpp::IntegerVector, int, int, bool, bool)",
+                "file": "/Users/christianhuber/repos/smartsnp/src/cpp_read_packedancestrymap.cpp",
+                "line": 21,
+                "column": 15
+            }
+        ]
+    }
+]

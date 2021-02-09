@@ -1,0 +1,7 @@
+#' SNP dataset without missing values.
+#'
+#' 100000 simulated SNPs across 100 samples belonging to
+#' two groups with 50 samples each.
+#'
+#' @format A text file with 100000 rows and 100 columns.
+"dataSNP"

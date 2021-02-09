@@ -1,0 +1,24 @@
+{
+    "id": "8BF89C0E",
+    "path": "~/repos/smartsnp/R/read_packedancestrymap.R",
+    "project_path": "R/read_packedancestrymap.R",
+    "type": "r_source",
+    "hash": "2350942006",
+    "contents": "",
+    "dirty": false,
+    "created": 1611620333498.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "cursorPosition": "31,9",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611660596,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611660596911,
+    "read_only": false,
+    "read_only_alternatives": []
+}

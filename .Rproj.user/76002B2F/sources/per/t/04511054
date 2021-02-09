@@ -1,0 +1,24 @@
+{
+    "id": "04511054",
+    "path": "~/repos/smartsnp/src/cpp_read_packedancestrymap.cpp",
+    "project_path": "src/cpp_read_packedancestrymap.cpp",
+    "type": "cpp",
+    "hash": "2769140013",
+    "contents": "",
+    "dirty": false,
+    "created": 1611621590259.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "cursorPosition": "21,108",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611659151,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611659151860,
+    "read_only": false,
+    "read_only_alternatives": []
+}

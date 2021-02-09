@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1607304635431.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4082718795",
+    "id" : "29832AF3",
+    "lastKnownWriteTime" : 1607304652,
+    "last_content_update" : 1607304652547,
+    "path" : "~/Desktop/smartsnp/R/smart_permdisp.R",
+    "project_path" : "R/smart_permdisp.R",
+    "properties" : {
+        "cursorPosition" : "115,46",
+        "scrollLine" : "107"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

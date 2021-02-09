@@ -1,0 +1,24 @@
+{
+    "id": "85FF6BB3",
+    "path": "~/repos/smartsnp/R/smart_permdisp.R",
+    "project_path": "R/smart_permdisp.R",
+    "type": "r_source",
+    "hash": "467727746",
+    "contents": "",
+    "dirty": false,
+    "created": 1611660750283.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "cursorPosition": "111,10",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611663133,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611663133449,
+    "read_only": false,
+    "read_only_alternatives": []
+}

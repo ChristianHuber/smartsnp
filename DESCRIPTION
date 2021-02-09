@@ -1,0 +1,31 @@
+Package: smartsnp
+Type: Package
+Title: Fast computation of (smart)pca, permanova and permdisp
+Version: 1.1.0
+Date: 2020-11-27
+Authors@R: c(
+    person("Salvador", family = "Herrando-Pérez", email = "salherra@gmail.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6052-6854")),
+    person("Ray", family = "Tobler", email = "tingalingx@gmail.com",
+           role = c("ctb"), comment = c(ORCID = "0000-0002-4603-1473")))
+Maintainer: Salvador Herrando-Perez <salherra@gmail.com>
+Description: Fast computation of multivariate analyses of small (10s to 100s markers) to big (1000s to 100000s) genotype data. Runs Principal Component Analysis (PCA) allowing for centering, z-score and SMARTPCA scaling of variables, projection of ancient samples to modern genetic space and multivariate tests for differences in group location (PERMANOVA) and dispersion (PERMDISP).
+Language: en-GB
+License: MIT + file LICENSE
+Depends: R (>= 3.6.0)
+Imports: 
+    bootSVD,
+    data.table,
+    foreach,
+    ggrepel,
+    Rfast,
+    RSpectra,
+    vegan,
+    vroom,
+    Rcpp
+RoxygenNote: 7.1.1
+Encoding: UTF-8
+LazyData: true
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo

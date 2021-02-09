@@ -1,0 +1,24 @@
+{
+    "id": "1403C191",
+    "path": "~/repos/smartsnp/R/RcppExports.R",
+    "project_path": "R/RcppExports.R",
+    "type": "r_source",
+    "hash": "2825662796",
+    "contents": "",
+    "dirty": false,
+    "created": 1611660790488.0,
+    "source_on_save": false,
+    "relative_order": 12,
+    "properties": {
+        "cursorPosition": "0,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611663168,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611663168,
+    "read_only": true,
+    "read_only_alternatives": []
+}
