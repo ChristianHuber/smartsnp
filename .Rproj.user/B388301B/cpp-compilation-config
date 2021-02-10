@@ -1,9 +1,0 @@
-{
-    "args": [
-        "-IC:/Program Files/RStudio/resources/libclang/builtin-headers/5.0.2",
-        "-IC:/Program Files/RStudio/resources/libclang/builtin-headers/libc++/5.0.2"
-    ],
-    "pch": "RcppArmadillo",
-    "is_cpp": true,
-    "hash": "1611693982"
-}
