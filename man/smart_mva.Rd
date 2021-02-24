@@ -148,7 +148,7 @@ In contrast, \code{smart_mva} accepts any number of autosomes with or without th
 # Write example data into file "dataSNP"
 write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
 
-# Assign 50 samples to each of two groups and colours
+# Assign 50 samples to each of two groups and colors
 my_groups <- as.factor(c(rep("A", 50), rep("B", 50))); cols = c("red", "blue")
 
 # Run PCA, PERMANOVA and PERMDISP

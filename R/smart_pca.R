@@ -99,7 +99,7 @@
 #' write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
 #'
 #' # Example 1: modern samples
-#' #assign 50 samples to each of two groups and colours
+#' #assign 50 samples to each of two groups and colors
 #' my_groups <- c(rep("A", 50), rep("B", 50)); cols = c("red", "blue")
 #' #run PCA with truncated SVD (PCA 1 x PCA 2)
 #' pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
@@ -113,14 +113,14 @@
 #'      pch = 19, col = cols, text.col = cols)
 #'
 #' # Example 2: modern and ancient samples (ancient samples projected onto modern PCA space)
-#' #assign samples 1st to 10th per group assigned to ancient
+#' #assign samples 1st to 10th per group to ancient
 #' my_ancient <- c(1:10, 51:60)
 #' #run PCA with truncated SVD (PCA 1 x PCA 2)
 #' pcaR2 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups, sample_project = my_ancient)
 #' pcaR2$pca.eigenvalues # extract eigenvalues
 #' pcaR2$pca.snp_loadings # extract principal coefficients (SNP loading)
 #' pcaR2$pca.sample_coordinates # extract principal components (sample position in PCA space)
-#' #assign samples to groups (A, ancient, B) and colours
+#' #assign samples to groups (A, ancient, B) and colors
 #' my_groups[my_ancient] <- "ancient"; cols = c("red", "black", "blue")
 #' #plot PCA
 #' plot(pcaR2$pca.sample_coordinates[,c("PC1","PC2")],
