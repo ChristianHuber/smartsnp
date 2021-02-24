@@ -43,6 +43,8 @@ This is an example of how to run PCA, PERMANOVA and PERMDISP controlling for gen
 ```{r example, results="hide"}
 #1/ Load package and label samples
 library(smartsnp)
+# Write example data into file "dataSNP"
+write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
 #assign 50 samples to each of two groups
 my_groups <- c(rep("A", 50), rep("B", 50))
 #assign samples 1st to 10th per group to ancient
