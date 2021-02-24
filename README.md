@@ -4,6 +4,7 @@
 # smartsnp
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Overview
@@ -20,8 +21,11 @@ genetic diversity (both location and dispersion).
 ## Installation
 
 <!-- You can install the released version of smartsnp from [CRAN](https://CRAN.R-project.org) with: -->
+
 <!-- ``` r -->
+
 <!-- install.packages("smartsnp") -->
+
 <!-- ``` -->
 
 You can install the latest version of *smartsnp* from
@@ -41,6 +45,8 @@ simulated SNPs in 100 samples (80 = modern, 20 = ancient).
 ``` r
 #1/ Load package and label samples
 library(smartsnp)
+# Write example data into file "dataSNP"
+write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
 #assign 50 samples to each of two groups
 my_groups <- c(rep("A", 50), rep("B", 50))
 #assign samples 1st to 10th per group to ancient
