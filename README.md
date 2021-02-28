@@ -9,7 +9,18 @@
 
 ## Overview
 
-<!-- The package *smartsnp* runs fast and user-friendly computation of Principal Component Analysis (PCA) on single-nucleotide-polymorphism (SNP) data suitable for ancient, low-coverage and modern DNA. The package combines SNP scaling for genetic drift and projection of ancient samples onto a modern genetic PCA space (currently available only in Unix environment in the field-standard software EIGENSOFT) with permutation-based multivariate tests for population differences in genetic diversity (both location and dispersion). The package comprises three functions that run each analysis individually (*smart_pca*, *smart_permanova*, *smart_permdisp*), and a wrapper function (*smart_mva*) that runs any combination of the three standalone functions. -->
+The package *smartsnp* runs fast and user-friendly computation of
+Principal Component Analysis (PCA) on single-nucleotide-polymorphism
+(SNP) data suitable for ancient, low-coverage and modern DNA. The
+package combines SNP scaling for genetic drift and projection of ancient
+samples onto a modern genetic PCA space (currently available only in
+Unix environment in the field-standard software EIGENSOFT) with
+permutation-based multivariate tests for population differences in
+genetic diversity (both location and dispersion). The package comprises
+three functions that run each analysis individually (*smart\_pca*,
+*smart\_permanova*, *smart\_permdisp*), and a wrapper function
+(*smart\_mva*) that runs any combination of the three standalone
+functions.
 
 ## Installation
 
