@@ -26,19 +26,19 @@ read_packedancestrymap = function (pref)
   close(conn)
   nindall = as.numeric(hd[2])
   nsnpall = as.numeric(hd[3])
-  cat(paste0(basename(pref), ".geno has ", nindall,
-             " samples and ", nsnpall, " SNPs.\n"))
-  cat(paste0("Reading data for ", nindall, " samples and ",
-             nsnpall, " SNPs\n"))
-  cat(paste0("Expected size of genotype data: ",
-             round((nsnpall * nindall * 8 + nsnpall * 112)/1e+06), " MB\n"))
+  message(basename(pref), ".geno has ", nindall,
+             " samples and ", nsnpall, " SNPs.")
+  message("Reading data for ", nindall, " samples and ",
+             nsnpall, " SNPs")
+  message("Expected size of genotype data: ",
+             round((nsnpall * nindall * 8 + nsnpall * 112)/1e+06), " MB")
   indvec = rep(1, nindall)
   geno = cpp_read_packedancestrymap(fl, nsnpall, nindall, indvec,
                                     first = 0, last = nsnpall, transpose = FALSE,
-                                    verbose = TRUE)
+                                    verbose = FALSE)
   outlist = list(geno = geno)
   outlist
 }
 ##### smartsnp v.1
 ##### Coding end date = 08/02/2021
-##### smartsnp::read_packedancestrymap spelling checked by Salvador Herrando-Pérez (salherra@gmail.com)
+##### smartsnp::read_packedancestrymap spelling checked by Salvador Herrando-Perez (salherra@gmail.com)

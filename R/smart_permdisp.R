@@ -1,6 +1,6 @@
 # smartsnp v.1
 # Coding start date = 07/07/2020
-# smartsnp::smart_permdisp by Salvador Herrando-Pérez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
+# smartsnp::smart_permdisp by Salvador Herrando-Perez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
 #
 # Permutational Multivariate Analysis of dispersion (PERMDISP) of genotype data
 # Computes global and pairwise MANOVA tests for differences in GROUP DISPERSION for multiple types of proximity measures between samples
@@ -19,9 +19,9 @@
 #' @details PERMDISP is a form of \code{homoscedasticity} test analogous to univariate Levene's (1960) and, more closely, Brown & Forsythe's (1974) tests. Applies PERMANOVA test (Anderson 2001) for differences in Euclidean dispersion among groups (Anderson 2006).
 #' Proximity between samples can be any type of distance, similarity or dissimilarity.
 #' Group dispersion estimated relative to group centroids (central point) or to spatial (geometric) medians (point minimizing distance to group samples) in Principal Coordinate Analysis (\code{PCoA}, Gower 1966) space.
-#' Acronym PERMDISP originates from Marti Anderson’s FORTRAN program (Anderson 2004).
+#' Acronym PERMDISP originates from Marti Anderson's FORTRAN program (Anderson 2004).
 #'
-#' Control for unequal number of samples among groups optionally done by weighting sample distance to group spatial \emph{median} or  \emph{centroid} by \emph{sqrt(n/(n-1))} (O'Neill & Mathews 2000), and the null hypothesis then being tested changes from \emph{∂_1 = ∂_2  = ⋯ = ∂_t} (balanced design) to  \emph{((n_1-1)/n_1) x ∂_1 = ((n_2-1)/n_2) x ∂_2  = ⋯ =  ((n_t-1)/n_t) x ∂_t} (unbalanced design) where \emph{∂} represents dispersion of groups \emph{1} to \emph{t}, and \emph{n} represents number of samples per group.
+#' Control for unequal number of samples among groups optionally done by weighting sample distance to group spatial \emph{median} or  \emph{centroid} by \emph{sqrt(n/(n-1))} (O'Neill & Mathews 2000), and the null hypothesis then being tested changes from \emph{d_1 = d_2  = ... = d_t} (balanced design) to  \emph{((n_1-1)/n_1) x d_1 = ((n_2-1)/n_2) x d_2  = ... =  ((n_t-1)/n_t) x d_t} (unbalanced design) where \emph{d} represents dispersion of groups \emph{1} to \emph{t}, and \emph{n} represents number of samples per group.
 #' To attribute group differences to location (position of sample groups) and/or dispersion (spread of sample groups), PERMDISP must be combined with PERMANOVA as implemented through \code{smart_permanova}.\cr
 #'
 #' \code{smart_permdisp} uses \code{\link[vegan]{betadisper}} to estimate an ANOVA \emph{F} statistic and group dispersions using formula \code{snp_eucli ~ sample_group}, where \code{snp_eucli} is the sample-by-sample triangular matrix in \code{PCoA} space.
@@ -109,14 +109,14 @@
 #' }
 #'
 #' @examples
-#' # Write example data into file "dataSNP"
-#' write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+#' # Path to example genotype matrix "dataSNP"
+#' pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 #'
 #' # Assign 50 samples to each of two groups and colours
 #' my_groups <- as.factor(c(rep("A", 50), rep("B", 50))); cols = c("red", "blue")
 #'
 #' # Run PERMDISP
-#' permdispR <- smart_permdisp(snp_data = "dataSNP", sample_group = my_groups)
+#' permdispR <- smart_permdisp(snp_data = pathToGenoFile, sample_group = my_groups)
 #'
 #' # Extract summary table assigning samples to groups and dispersion of individual samples
 #' permdispR$permdisp.samples
@@ -126,15 +126,16 @@
 #'
 #' # Plot sample distances to group central medians
 #' #run pca with truncated SVD (PCA 1 x PCA 2)
-#' pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
+#' pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #' #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 #' snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
 #' #calculate spatial medians
 #' disMed <- vegan::betadisper(d = snp_eucli, group = my_groups); disMed
 #' #plot
-#' par(mar = c(4, 4, 5, 0.1), lwd = 2)
+#' oldpar <- par(mar = c(4, 4, 5, 0.1), lwd = 2)
 #' boxplot(disMed, las =2, cex.axis = 2, cex.main = 1.5, horizontal = TRUE, varwidth = TRUE,
 #'    col = cols, xlab = "", ylab = "", main = "Sample distance to group spatial medians")
+#' par(oldpar)
 #'
 #' @references
 #' Anderson, M. J. (2001) A new method for non-parametric multivariate analysis of variance. Austral Ecology, 26, 32-46.\cr
@@ -197,28 +198,28 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   # 2. Load data and filter samples and SNPs
   ##--------------------------------------------------------------##
 
-  cat("Checking argument options selected...\n")
+  message("Checking argument options selected...")
   # Check options: convert to logical if needed
   if (!is.numeric(sample_remove)) sample_remove <- as.logical(sample_remove)
   # Print error and abort analysis
   if (missing_impute != "remove" & missing_impute != "mean") { # if users misspel missing_impute
-    stop("Check spelling: missing_impute must be 'remove' or 'mean'\n")
+    stop("Check spelling: missing_impute must be 'remove' or 'mean'")
   }
   if (missing_value != 9 & !is.na(missing_value)) { # if users assign missing values not equal to 9 or NA
-    stop("Missing values must be coded as 9 or NA\n")
+    stop("Missing values must be coded as 9 or NA")
   }
   if (scaling != "none" & scaling != "center" & scaling != "sd" & scaling != "drift") { # # if users misspel scaling
-    stop("Check spelling: scaling must be 'none', 'center', 'sd' or 'drift'\n")
+    stop("Check spelling: scaling must be 'none', 'center', 'sd' or 'drift'")
   }
   if (program_distance != "Rfast" & program_distance != "vegan") { # if users misspel program_distance
-    stop("Check spelling: program_distance must be 'Rfast' or 'vegan'\n")
+    stop("Check spelling: program_distance must be 'Rfast' or 'vegan'")
   }
   if (target_space != "multidimensional" & target_space != "pca") { # if users misspel target_space
-    stop("Check spelling: target_space must be 'multidimensional' or 'pca'\n")
+    stop("Check spelling: target_space must be 'multidimensional' or 'pca'")
   }
-  cat("Argument options are correct...\n")
+  message("Argument options are correct...")
 
-  cat("Loading data...\n")
+  message("Loading data...")
 
   # Label samples
   samp_dat <- data.table::data.table(sample_group) # tabulate group labels
@@ -243,7 +244,7 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   }
   if (is.binary(snp_data) == TRUE) {
     packed_data = TRUE
-    cat("Data is binary (packedancestrymap)...\n")
+    message("Data is binary (packedancestrymap)...")
   } else {
     packed_data = FALSE
   }
@@ -255,9 +256,9 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
                                   col_positions = vroom::fwf_widths(rep(1, sampN.full), col_names = NULL),
                                   col_types = paste(rep("i", sampN.full), collapse=""))
       snpN.full <- nrow(snp_dat) # number of SNP
-      cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample eigenstrat genotype matrix (decompressed or unpacked format)\n"))
-      cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-      cat("Filtering data...\n")
+      message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample eigenstrat genotype matrix (decompressed or unpacked format)"))
+      message(paste0("Time elapsed: ", get.time(startT)))
+      message("Filtering data...")
       #convert to matrix
       snp_dat1 <- do.call(cbind, snp_dat[, sample_PCA])
     } else { # compressed binary format
@@ -266,24 +267,24 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
       snp_dat <- read_packedancestrymap(pref = snp_data)$geno
       attr(snp_dat, "dimnames") <- NULL # remove row and column name attributes
       snpN.full <- nrow(snp_dat) # number of SNP
-      cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample packed eigenstrat genotype matrix (compressed or packed format)\n"))
-      cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-      cat("Filtering data...\n")
+      message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample packed eigenstrat genotype matrix (compressed or packed format)"))
+      message(paste0("Time elapsed: ", get.time(startT)))
+      message("Filtering data...")
       snp_dat1 <- snp_dat[, sample_PCA]
       missing_value <- NA # reset missing value
     }
   } else { # generic input type (columns = samples, rows = SNPs)
     snp_dat <- data.table::fread(file = snp_data, header = FALSE)
     snpN.full <- nrow(snp_dat) # number of SNP
-    cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample genotype matrix\n"))
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-    cat("Filtering data...\n")
+    message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample genotype matrix"))
+    message(paste0("Time elapsed: ", get.time(startT)))
+    message("Filtering data...")
     snp_dat1 <- do.call(cbind, snp_dat[, sample_PCA, with = FALSE])
   }
 
   # Print error if users enter number of sample labels (sample_group) larger or smaller than number of samples in dataset (snp_dat)
   if (length(sample_group) != ncol(snp_dat)) {
-    stop("length(sample_group) should be equal to number of samples in dataset: computation aborted\n")
+    stop("length(sample_group) should be equal to number of samples in dataset: computation aborted")
   }
 
   # Remove original dataset from memory
@@ -297,25 +298,25 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   }
 
   if (snpN.full < 3) {
-    stop("Less than 3 SNPs remaining: computation aborted\n")
+    stop("Less than 3 SNPs remaining: computation aborted")
   }
 
-  cat(paste(snpN.full, "SNPs included in PERMDISP computation\n"))
-  cat(paste(length(snp_remove), "SNPs omitted from PCA computation\n"))
+  message(paste(snpN.full, "SNPs included in PERMDISP computation"))
+  message(paste(length(snp_remove), "SNPs omitted from PCA computation"))
 
   # Print number of samples used in PERMDISP
-  cat(paste(length(sample_PCA), "samples included in PERMDISP computation\n"))
+  message(paste(length(sample_PCA), "samples included in PERMDISP computation"))
   if (!isFALSE(sample_remove)) {
-    cat(paste(length(sample_remove), "samples ommitted from PERMDISP computation\n"))
+    message(paste(length(sample_remove), "samples ommitted from PERMDISP computation"))
   }
-  cat("Completed data filtering\n")
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message("Completed data filtering")
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 3. Remove invariant SNPs
   ##--------------------------------------------------------------##
 
-  cat("Scanning for invariant SNPs...\n")
+  message("Scanning for invariant SNPs...")
 
   # Identify invariant SNPs allowing for missing data
   if (is.na(missing_value)) { # missing values are NAs
@@ -351,17 +352,17 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   snpN <- nrow(snp_dat1) # number of SNPs with > 0 variance
 
   if (snpN == snpN.full) {
-    cat("Scan complete: no invariant SNPs found\n")
+    message("Scan complete: no invariant SNPs found")
   } else {
-    cat(paste("Scan complete: removed", snpN.full - snpN, "invariant SNPs\n"))
+    message(paste("Scan complete: removed", snpN.full - snpN, "invariant SNPs"))
   }
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 4. Deal with missing values (SNP removal or imputation)
   ##--------------------------------------------------------------##
 
-  cat("Checking for missing values...\n")
+  message("Checking for missing values...")
 
   # Index cells with missing value (counting sequence = top to bottom then left to right sequence)
   if (is.na(missing_value)) { # missing_value = NA
@@ -377,45 +378,45 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
     Z[Z == 0] <- snpN
     snpMissI <- sort(unique(Z)) # row index for SNPs with missing values
     snpMissN <- length(snpMissI) # total SNPs with missing values
-    cat(paste(snpMissN, "SNPs contain missing values\n"))
+    message(paste(snpMissN, "SNPs contain missing values"))
     # Mean imputation
     if (missing_impute == "mean") {
-      cat("Imputing mean for SNPs with missing values...\n")
+      message("Imputing mean for SNPs with missing values...")
       snp_dat1[missI] <- genoMean[Z]
-      cat(paste("Imputation completed:", length(missI), "missing values imputed\n"))
+      message(paste("Imputation completed:", length(missI), "missing values imputed"))
     }
     # Removal of SNPs with missing data
     if (missing_impute == "remove") {
-      cat("Removing SNPs with missing data...\n")
+      message("Removing SNPs with missing data...")
       snp_dat1 <- snp_dat1[-snpMissI, ] #SNP
       genoMean <- genoMean[-snpMissI] # update genotype means
       genoVar <- genoVar[-snpMissI] # update genotype variance
       snpN <- nrow(snp_dat1)
-      cat(paste("Removal completed:", snpMissN, "SNPs removed\n"))
-      cat(paste(snpN, "SNPs remaining\n"))
+      message(paste("Removal completed:", snpMissN, "SNPs removed"))
+      message(paste(snpN, "SNPs remaining"))
     }
     rm(missI, Z)
   } else {
-    cat("Scan completed: no missing values found\n")
+    message("Scan completed: no missing values found")
     rm(missI) # remove vector with cell number when missing value present
   }
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 5. Scale values by SNP
   ##--------------------------------------------------------------##
 
   if(scaling != "none") { # only run if standardization is requested
-    cat("Scaling values by SNP...\n")
+    message("Scaling values by SNP...")
 
     if (scaling == "drift") { # standardization controlling for genetic drift following Formula (3) by Patterson et al. 2006 (doi: 10.1371/journal.pgen.0020190)
-      cat("Centering and scaling by drift dispersion...\n")
+      message("Centering and scaling by drift dispersion...")
       snp_drift <- sqrt((genoMean / 2) * (1 - genoMean/2))
       snp_dat1 <- (snp_dat1 - genoMean) / snp_drift
     }
 
     if (scaling == "sd") { # z-score standardization whereby all SNPs have mean = 0 and variance = 1
-      cat("Centering and standardizing (z-scores)...\n")
+      message("Centering and standardizing (z-scores)...")
       if (missing_impute == "mean") {
         snp_sd <- Rfast::rowVars(snp_dat1, std = TRUE) # update variances to account for imputation
       } else { # calculate sd on precomputed variance after removing invariant snps
@@ -425,13 +426,13 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
     }
 
     if (scaling == "center") { # no standardization: this option runs a conventional PCA on raw (centered) data
-      cat("Centering...\n")
+      message("Centering...")
       snp_dat1 <- snp_dat1 - genoMean
     }
-    cat("Completed scaling\n")
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+    message("Completed scaling")
+    message(paste0("Time elapsed: ", get.time(startT)))
   } else {
-    cat("Note: SNP-based scaling not used\n")
+    message("Note: SNP-based scaling not used")
   }
 
   ##--------------------------------------------------------------##
@@ -440,7 +441,7 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
 
   # Compute sample by sample matrix of proximities using Rfast::Dist (fast) or vegan::vgdist (slow)
   if (target_space == "multidimensional") { # proximity matrix computed from raw data (SNP x sample)
-    cat("Construct triangular matrix of sample by sample proximities in multidimensional space...\n")
+    message("Construct triangular matrix of sample by sample proximities in multidimensional space...")
     if (program_distance == "Rfast") { # Rfast
       snp_eucli <- Rfast::Dist(t(snp_dat1), method = sample_distance) # default: method = "euclidean" (= Euclidean distance)
     }
@@ -449,7 +450,7 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
     }
   }
   if (target_space == "pca") { # proximity matrix computed from PCA (principal components x sample)
-    cat("Construct triangular matrix of sample by sample proximities in PCA space...\n")
+    message("Construct triangular matrix of sample by sample proximities in PCA space...")
     snp_pca <- RSpectra::svds(t(snp_dat1), k = pc_axes) # single value decomposition for k axes
     snp_pc <- data.frame(snp_pca$u %*% diag(snp_pca$d)) # one column per PCA axis, one row per sample
     colnames(snp_pc) <- paste0("PC", c(1:ncol(snp_pc))) # rename columns with PC + number
@@ -461,13 +462,13 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
     }
   }
 
-  cat("Completed construction of triangular matrix of sample by sample proximities...\n")
+  message("Completed construction of triangular matrix of sample by sample proximities...")
 
   ##--------------------------------------------------------------##
   # 7. Compute inter- and intra-group dispersion by PERMDISP
   ##--------------------------------------------------------------##
 
-  cat(paste0("Compute inter- and intra-group dispersion by PERMDISP: global test...\n"))
+  message(paste0("Compute inter- and intra-group dispersion by PERMDISP: global test..."))
 
   # Create group variable
   group <- factor(as.matrix(sample_group[sample_PCA]))
@@ -486,21 +487,21 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   dispSample <- dispCent$distances
 
   if (dispersion_type == "median") {
-    cat("Completed PERMDISP: global test based on group spatial medians\n")
+    message("Completed PERMDISP: global test based on group spatial medians")
   } else {
-    cat("Completed PERMDISP: global test based on group centroids\n")
+    message("Completed PERMDISP: global test based on group centroids")
   }
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   # Compute PERMDISP (pairwise tests) / if data contains two groups, pairwise test should mirror global test
   if (pairwise == TRUE & length(levels(group)) > 2) {
-    cat("Compute inter- and intra-group dispersion by PERMDISP: pairwise testswith/without", pairwise_method, "correction...\n")
+    message("Compute inter- and intra-group dispersion by PERMDISP: pairwise testswith/without", pairwise_method, "correction...")
     test.pair <- function(snp_eucli, group, nper = permutation_n, corr.method = pairwise_method) {
       comb.fact <- utils::combn(levels(group), 2)
       F.Model <- NULL
       pv.disp <- NULL
       for (i in 1:dim(comb.fact)[2]) { # iterate over group pair-wise comparisons
-        cat(paste0("Computing pairs ", paste(comb.fact[, i], collapse = " & "), "...\n"))
+        message(paste0("Computing pairs ", paste(comb.fact[, i], collapse = " & "), "..."))
         GN <- group %in% comb.fact[, i]
         if (program_distance == "vegan") {
           dispCent_pair <- vegan::betadisper(d = stats::as.dist(as.matrix(snp_eucli, ncol = sampN)[GN, GN]), group[GN], type = dispersion_type, bias.adjust = samplesize_bias)
@@ -516,14 +517,14 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
     }
     pairwiseTable <- test.pair(snp_eucli, group, nper = permutation_n) # run pairwise tests
     if (dispersion_type == "median") {
-      cat("Completed PERMDISP: pairwise tests based on group spatial medians\n")
+      message("Completed PERMDISP: pairwise tests based on group spatial medians")
     } else {
-      cat("Completed PERMDISP: pairwise tests based on group centroids\n")
+      message("Completed PERMDISP: pairwise tests based on group centroids")
     }
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+    message(paste0("Time elapsed: ", get.time(startT)))
   }
   if (pairwise == TRUE & length(levels(group)) == 2) {
-    cat(paste0("Pairwise tests not computed because number of groups is 2\n"))
+    message(paste0("Pairwise tests not computed because number of groups is 2"))
   }
 
   if (samplesize_bias == TRUE) {
@@ -536,7 +537,7 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
   # 8. Tabulate analytical summary
   ##--------------------------------------------------------------##
 
-  cat("Tabulating PERMDISP outputs...\n")
+  message("Tabulating PERMDISP outputs...")
 
   # Compile PERMDISP results in a list
   sample.out <- merge(samp_dat, data.table::data.table(I = sample_PCA, Class = "PERMDISP", Sample_dispersion = dispSample), by = "I") # summary of samples whether included in PCA, projected and/or removed
@@ -554,9 +555,9 @@ smart_permdisp <- function(snp_data, packed_data = FALSE,
                 permdisp.group_location = dispGroup, permdisp.global_test = globalTable.disp, permdisp.pairwise_test = "No pairwise testing implemented",
                 permdisp.permutation_number = permutation_n, permdisp.permutation_seed = permutation_seed) # create list
   }
-  cat("Completed tabulations of PERMDISP outputs\n")
+  message("Completed tabulations of PERMDISP outputs")
   return(OUT)
 }
 # smartsnp v.1
 # Coding end date = 08/09/2020
-# smartsnp::smart_permdisp by Salvador Herrando-Pérez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
+# smartsnp::smart_permdisp by Salvador Herrando-Perez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)

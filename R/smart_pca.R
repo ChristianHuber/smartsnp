@@ -1,6 +1,6 @@
 # smartsnp v.1
 # Coding start date = 13/07/2020
-# smartsnp::smart_pca by Salvador Herrando-Pérez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
+# smartsnp::smart_pca by Salvador Herrando-Perez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
 
 # Principal Component Analysis of genotype data
 # Implements scaling by centering, z-scored and SMARTPCA controlling for genetic drift
@@ -95,14 +95,14 @@
 #' }
 #'
 #' @examples
-#' # Write example data into file "dataSNP"
-#' write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+#' # Path to example genotype matrix "dataSNP"
+#' pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 #'
 #' # Example 1: modern samples
 #' #assign 50 samples to each of two groups and colors
 #' my_groups <- c(rep("A", 50), rep("B", 50)); cols = c("red", "blue")
 #' #run PCA with truncated SVD (PCA 1 x PCA 2)
-#' pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
+#' pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #' pcaR1$pca.eigenvalues # extract eigenvalues
 #' pcaR1$pca.snp_loadings # extract principal coefficients (SNP loadings)
 #' pcaR1$pca.sample_coordinates # extract principal components (sample position in PCA space)
@@ -116,7 +116,7 @@
 #' #assign samples 1st to 10th per group to ancient
 #' my_ancient <- c(1:10, 51:60)
 #' #run PCA with truncated SVD (PCA 1 x PCA 2)
-#' pcaR2 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups, sample_project = my_ancient)
+#' pcaR2 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups, sample_project = my_ancient)
 #' pcaR2$pca.eigenvalues # extract eigenvalues
 #' pcaR2$pca.snp_loadings # extract principal coefficients (SNP loading)
 #' pcaR2$pca.sample_coordinates # extract principal components (sample position in PCA space)
@@ -195,7 +195,7 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   # 2. Load data and filter samples and SNPs
   ##--------------------------------------------------------------##
 
-  cat("Checking argument options selected...\n")
+  message("Checking argument options selected...")
   # Check options: convert to logical if needed
   if(!is.numeric(sample_remove)) sample_remove <- as.logical(sample_remove)
   if(!is.numeric(sample_project)) sample_project <- as.logical(sample_project)
@@ -203,27 +203,27 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   # Print error and abort analysis if users enter number of sample labels (sample_group) larger or smaller than number of samples in dataset (snp_dat)
   if(isFALSE(sample_project)) pc_project <- 0 # force pc_project to 0 if no sample projection
   if (program_svd == "RSpectra" & max(pc_project) > pc_axes) {
-    stop("Dimensionality of projected space (pc_project) must be equal to or smaller than dimensionality of PCA (pc_axes)\nComputation aborted\n")
+    stop("Dimensionality of projected space (pc_project) must be equal to or smaller than dimensionality of PCA (pc_axes)\nComputation aborted")
   }
   if (missing_impute != "remove" & missing_impute != "mean") { # if users misspel missing_impute
-    stop("Check spelling: missing_impute must be 'remove' or 'mean'\n")
+    stop("Check spelling: missing_impute must be 'remove' or 'mean'")
   }
   if (missing_value != 9 & !is.na(missing_value)) { # if users assign missing values not equal to 9 or NA
-    stop("Missing values must be coded as 9 or NA\n")
+    stop("Missing values must be coded as 9 or NA")
   }
   if (scaling != "none" & scaling != "center" & scaling != "sd" & scaling != "drift") { # # if users misspel scaling
-    stop("Check spelling: scaling must be 'none', 'center', 'sd' or 'drift'\n")
+    stop("Check spelling: scaling must be 'none', 'center', 'sd' or 'drift'")
   }
   if (program_svd != "RSpectra" & program_svd != "bootSVD") { # if users misspel missing_impute
-    stop("Check spelling: program_svd must be 'RSpectra' or 'bootSVD'\n")
+    stop("Check spelling: program_svd must be 'RSpectra' or 'bootSVD'")
   }
   # Print error and abort analysis if users misspel missing_impute
   if (missing_impute != "remove" & missing_impute != "mean") {
-    stop("Check spelling: missing_impute must equal 'remove' or 'mean'\n")
+    stop("Check spelling: missing_impute must equal 'remove' or 'mean'")
   }
-  cat("Argument options are correct...\n")
+  message("Argument options are correct...")
 
-  cat("Loading data...\n")
+  message("Loading data...")
 
   # Label samples
   samp_dat <- data.table::data.table(sample_group) # tabulate group labels
@@ -252,7 +252,7 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   }
   if (is.binary(snp_data) == TRUE) {
     packed_data = TRUE
-    cat("Data is binary (packedancestrymap)...\n")
+    message("Data is binary (packedancestrymap)...")
   } else {
     packed_data = FALSE
   }
@@ -264,9 +264,9 @@ smart_pca <- function(snp_data, packed_data = FALSE,
                                   col_positions = vroom::fwf_widths(rep(1, sampN.full), col_names = NULL),
                                   col_types = paste(rep("i", sampN.full), collapse=""))
       snpN.full <- nrow(snp_dat) # number of SNP
-      cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample eigenstrat genotype matrix (decompressed or unpacked format)\n"))
-      cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-      cat("Filtering data...\n")
+      message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample eigenstrat genotype matrix (decompressed or unpacked format)"))
+      message(paste0("Time elapsed: ", get.time(startT)))
+      message("Filtering data...")
       #convert to matrix
       snp_dat1 <- do.call(cbind, snp_dat[, sample_PCA])
       if (!isFALSE(sample_project)) {
@@ -278,9 +278,9 @@ smart_pca <- function(snp_data, packed_data = FALSE,
       snp_dat <- read_packedancestrymap(pref = snp_data)$geno
       attr(snp_dat, "dimnames") <- NULL # remove row and column name attributes
       snpN.full <- nrow(snp_dat) # number of SNP
-      cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample packed eigenstrat genotype matrix (compressed or packed format)\n"))
-      cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-      cat("Filtering data...\n")
+      message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample packed eigenstrat genotype matrix (compressed or packed format)"))
+      message(paste0("Time elapsed: ", get.time(startT)))
+      message("Filtering data...")
       snp_dat1 <- snp_dat[, sample_PCA]
       if (!isFALSE(sample_project)) {
         snp_dat2 <- snp_dat[, sample_project]
@@ -290,20 +290,20 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   } else { # generic input type (columns = samples, rows = SNPs)
     snp_dat <- data.table::fread(file = snp_data, header = FALSE)
     snpN.full <- nrow(snp_dat) # number of SNP
-    cat(paste("Imported", snpN.full, "SNP by", sampN.full, "sample genotype matrix\n"))
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
-    cat("Filtering data...\n")
+    message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample genotype matrix"))
+    message(paste0("Time elapsed: ", get.time(startT)))
+    message("Filtering data...")
     snp_dat1 <- do.call(cbind, snp_dat[, sample_PCA, with = FALSE])
     if (!isFALSE(sample_project)) {
       snp_dat2 <- do.call(cbind, snp_dat[, sample_project, with=FALSE])
     } else {
-      cat(paste("No samples projected after PCA computation\n"))
+      message(paste("No samples projected after PCA computation"))
     }
   }
 
   # Print error if users enter number of sample labels (sample_group) larger or smaller than number of samples in dataset (snp_dat)
   if (length(sample_group) != ncol(snp_dat)) {
-    stop("length(sample_group) should be equal to number of samples in dataset: computation aborted\n")
+    stop("length(sample_group) should be equal to number of samples in dataset: computation aborted")
   }
 
   # Remove original dataset from memory
@@ -320,29 +320,29 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   }
 
   if (snpN.full < 3) {
-    stop("Less than 3 SNPs remaining: computation aborted\n")
+    stop("Less than 3 SNPs remaining: computation aborted")
   }
 
-  cat(paste(snpN.full, "SNPs included in PCA", "computation\n"))
-  cat(paste(length(snp_remove), "SNPs omitted from PCA computation\n"))
+  message(paste(snpN.full, "SNPs included in PCA", "computation"))
+  message(paste(length(snp_remove), "SNPs omitted from PCA computation"))
 
 
   # Print number of samples used in, and projected onto, PCA
-  cat(paste(length(sample_PCA), "samples included in PCA computation\n"))
+  message(paste(length(sample_PCA), "samples included in PCA computation"))
   if (!isFALSE(sample_remove)) {
-    cat(paste(length(sample_remove), "samples omitted from PCA computation\n"))
+    message(paste(length(sample_remove), "samples omitted from PCA computation"))
   }
   if (!isFALSE(sample_project)) {
-    cat(paste(length(sample_project), "samples projected after PCA computation\n"))
+    message(paste(length(sample_project), "samples projected after PCA computation"))
   }
-  cat("Completed data filtering\n")
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message("Completed data filtering")
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 3. Remove invariant SNPs
   ##--------------------------------------------------------------##
 
-  cat("Scanning for invariant SNPs...\n")
+  message("Scanning for invariant SNPs...")
 
   # Identify invariant SNPs allowing for missing data
   if (is.na(missing_value)) { # missing values are NAs
@@ -378,17 +378,17 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   snpN <- nrow(snp_dat1) # number of SNPs with > 0 variance
 
   if (snpN == snpN.full) {
-    cat("Scan complete: no invariant SNPs found\n")
+    message("Scan complete: no invariant SNPs found")
   } else {
-    cat(paste("Scan complete: removed", snpN.full - snpN, "invariant SNPs\n"))
+    message(paste("Scan complete: removed", snpN.full - snpN, "invariant SNPs"))
   }
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 4. Deal with missing values (SNP removal or imputation)
   ##--------------------------------------------------------------##
 
-  cat("Checking for missing values...\n")
+  message("Checking for missing values...")
 
   # Index cells with missing value (counting sequence = top to bottom then left to right sequence)
   if (is.na(missing_value)) { # missing_value = NA
@@ -404,16 +404,16 @@ smart_pca <- function(snp_data, packed_data = FALSE,
     Z[Z == 0] <- snpN
     snpMissI <- sort(unique(Z)) # row index for SNPs with missing values
     snpMissN <- length(snpMissI) # total SNPs with missing values
-    cat(paste(snpMissN, "SNPs contain missing values\n"))
+    message(paste(snpMissN, "SNPs contain missing values"))
     # Mean imputation
     if (missing_impute == "mean") {
-      cat("Imputing SNPs with missing values...\n")
+      message("Imputing SNPs with missing values...")
       snp_dat1[missI] <- genoMean[Z]
-      cat(paste("Imputation with means completed:", length(missI), "missing values imputed\n"))
+      message(paste("Imputation with means completed:", length(missI), "missing values imputed"))
     }
     # Removal of SNPs with missing data
     if (missing_impute == "remove") {
-      cat("Removing SNPs with missing values...\n")
+      message("Removing SNPs with missing values...")
       snp_dat1 <- snp_dat1[-snpMissI, ] #SNP
       if (!isFALSE(sample_project)) {
         snp_dat2 <- snp_dat2[-snpMissI, ] # ensure snp_dat1 and snp_dat2 have same SNPs in projection
@@ -421,31 +421,31 @@ smart_pca <- function(snp_data, packed_data = FALSE,
       genoMean <- genoMean[-snpMissI] # update genotype means
       genoVar <- genoVar[-snpMissI] # update genotype variance
       snpN <- nrow(snp_dat1)
-      cat(paste("Removal completed:", snpMissN, "SNPs removed\n"))
-      cat(paste(snpN, "SNPs remaining\n"))
+      message(paste("Removal completed:", snpMissN, "SNPs removed"))
+      message(paste(snpN, "SNPs remaining"))
     }
     rm(missI, Z)
   } else {
-    cat("Scan completed: no missing values found\n")
+    message("Scan completed: no missing values found")
     rm(missI) # remove vector with cell number when missing value present
   }
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 5. Scale values by SNP
   ##--------------------------------------------------------------##
 
   if(scaling != "none") { # only run if standardization is requested
-    cat("Scaling values by SNP...\n")
+    message("Scaling values by SNP...")
 
     if (scaling == "drift") { # standardization controlling for genetic drift following Formula (3) by Patterson et al. 2006 (doi: 10.1371/journal.pgen.0020190)
-      cat("Centering and scaling by drift dispersion...\n")
+      message("Centering and scaling by drift dispersion...")
       snp_drift <- sqrt((genoMean / 2) * (1 - genoMean/2))
       snp_dat1 <- (snp_dat1 - genoMean) / snp_drift
     }
 
     if (scaling == "sd") { # z-score standardization whereby all SNPs have mean = 0 and variance = 1
-      cat("Centering and standardizing (z-scores)...\n")
+      message("Centering and standardizing (z-scores)...")
       if (missing_impute == "mean") {
         snp_sd <- Rfast::rowVars(snp_dat1, std = TRUE) # update variances to account for imputation
       } else { # calculate sd on precomputed variance after removing invariant snps
@@ -455,20 +455,20 @@ smart_pca <- function(snp_data, packed_data = FALSE,
     }
 
     if (scaling == "center") { # no standardization: this option runs a conventional PCA on raw (centered) data
-      cat("Centering data...\n")
+      message("Centering data...")
       snp_dat1 <- snp_dat1 - genoMean
     }
-    cat(paste0("Completed scaling using ", scaling, "\n"))
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+    message(paste0("Completed scaling using ", scaling))
+    message(paste0("Time elapsed: ", get.time(startT)))
   } else {
-    cat("Note: SNP-based scaling not used\n")
+    message("Note: SNP-based scaling not used")
   }
 
   ##--------------------------------------------------------------##
   # 6. Compute singular value decomposition
   ##--------------------------------------------------------------##
 
-  cat(paste0("Computing singular value decomposition using ", program_svd, "...\n"))
+  message(paste0("Computing singular value decomposition using ", program_svd, "..."))
 
   # SVD computation
   if (program_svd == "RSpectra") {
@@ -491,14 +491,14 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   # Remove PCA data matrix
   rm(snp_dat1); gc()
 
-  cat(paste0("Completed singular value decomposition using ", program_svd, "\n"))
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message(paste0("Completed singular value decomposition using ", program_svd))
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 7. Extract eigenvalues and eigenvectors
   ##--------------------------------------------------------------##
 
-  cat(paste0("Extracting eigenvalues and eigenvectors...\n"))
+  message(paste0("Extracting eigenvalues and eigenvectors..."))
 
   # Extract principal components (sample coordinates in ordination) / computation based on https://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca
   snp_pc <- data.frame(snp_pca$u %*% diag(snp_pca$d)) # one column per PCA axis, one row per sample
@@ -522,8 +522,8 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   colnames(snp_eig) <- paste("PC", c(1:snp_peigN), sep= "")
 
   rm(snp_pca)
-  cat("Eigenvalues and eigenvectors extracted\n")
-  cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+  message("Eigenvalues and eigenvectors extracted")
+  message(paste0("Time elapsed: ", get.time(startT)))
 
   ##--------------------------------------------------------------##
   # 8. Project ancient samples onto modern PCA space
@@ -531,8 +531,8 @@ smart_pca <- function(snp_data, packed_data = FALSE,
 
   if (!isFALSE(sample_project)) {
 
-    cat("Projecting ancient samples onto PCA space\n")
-    cat("PCA space =", paste("PC", c(pc_project), sep = ""), "\n")
+    message("Projecting ancient samples onto PCA space")
+    message("PCA space = ", paste("PC", c(pc_project), sep = ""))
     sampN.anc <- ncol(snp_dat2)
 
     # Scale SNPS in ancient samples (snp_dat2) to SNP scale of variation in modern samples (snp_dat1)
@@ -572,16 +572,16 @@ smart_pca <- function(snp_data, packed_data = FALSE,
     }
     rm(snp_dat2, proj_sp); gc()
 
-    cat("Completed ancient sample projection\n")
-    cat(paste(sampN.anc, "ancient samples projected\n"))
-    cat(paste0("Time elapsed: ", get.time(startT), "\n"))
+    message("Completed ancient sample projection")
+    message(paste(sampN.anc, "ancient samples projected"))
+    message(paste0("Time elapsed: ", get.time(startT)))
   }
 
   ##--------------------------------------------------------------##
   # 9. Tabulate analytical summary
   ##--------------------------------------------------------------##
 
-  cat("Tabulating PCA outputs...\n")
+  message("Tabulating PCA outputs...")
 
   sample.out <- merge(samp_dat, data.table::data.table(I = sample_PCA, Class = "PCA", snp_pc), by = "I") # summary of samples whether included in PCA, projected and/or removed
   if (!isFALSE(sample_project)) {
@@ -601,9 +601,9 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   sample.out <- sample.out[order(I)] # retain original sample order
   sample.out[, I:=NULL] #remove index column
   OUT <- list(pca.snp_loadings = snp_pcoef, pca.eigenvalues = snp_eig, pca.sample_coordinates = as.data.frame(sample.out)) # output SNPS loadings, eigenvalues and sample coordinates in PCA space
-  cat("Completed tabulations of PCA outputs...\n")
+  message("Completed tabulations of PCA outputs...")
   return(OUT)
 }
 ##### smartsnp v.1
 ##### Coding end date = 08/09/2020
-##### smartsnp::smart_pca by Salvador Herrando-Pérez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)
+##### smartsnp::smart_pca by Salvador Herrando-Perez (salherra@gmail.com) and Ray Tobler (tingalingx@gmail.com)

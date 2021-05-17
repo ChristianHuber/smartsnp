@@ -19,7 +19,7 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 NumericMatrix cpp_read_packedancestrymap(String genofile, int nsnp, int nind, IntegerVector indvec,
-                                         int first, int last, bool transpose = false, bool verbose = true) {
+                                         int first, int last, bool transpose = false, bool verbose = false) {
   int val;
   long len, bytespersnp;
   int readsnps = last - first;
@@ -27,7 +27,7 @@ NumericMatrix cpp_read_packedancestrymap(String genofile, int nsnp, int nind, In
   std::ifstream in(genofile.get_cstring(), std::ios::in | std::ios::binary);
 
   if(!in) {
-    Rcout << "Error reading file " << genofile.get_cstring() << std::endl;
+    Rcerr << "Error reading file " << genofile.get_cstring() << std::endl;
     throw std::runtime_error("io error");
   }
   in.seekg(0, std::ifstream::end);
