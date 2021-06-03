@@ -165,7 +165,7 @@
 utils::globalVariables(c("i"))
 smart_permanova <- function(snp_data, packed_data = FALSE,
                             sample_group, sample_remove = FALSE, snp_remove = FALSE,
-                            missing_value = 9, missing_impute = "remove",
+                            missing_value = 9, missing_impute = "mean",
                             scaling = "drift",
                             sample_distance = "euclidean", program_distance = "Rfast",
                             target_space = "multidimensional", pc_axes = 2,
