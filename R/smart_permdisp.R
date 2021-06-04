@@ -89,7 +89,7 @@
 #' Default \code{"median"}. See details.
 #' @param samplesize_bias Logical.
 #' \code{samplesize_bias = TRUE} for dispersion weighted by number of samples per group.
-#' Default \code{pairwise = FALSE} for no weighting.
+#' Default \code{samplesize_bias = FALSE} for no weighting.
 #' See details.
 #'
 #' @return Returns a list containing the following elements:
