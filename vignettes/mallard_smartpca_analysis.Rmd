@@ -1,6 +1,9 @@
 ---
 title: "Example PCA, PERMANOVA and PERMDISP analysis"
-output: rmarkdown::html_vignette
+output: 
+    rmarkdown::html_vignette:
+      toc: true
+      toc_depth: 2
 description: >
   This Vignette provides an example analysis of genetic data using 
   the smartsnp package.
