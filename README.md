@@ -24,20 +24,11 @@ functions.
 
 ## Installation
 
-<!-- You can install the released version of smartsnp from [CRAN](https://CRAN.R-project.org) with: -->
-
-<!-- ``` r -->
-
-<!-- install.packages("smartsnp") -->
-
-<!-- ``` -->
-
-You can install the latest version of *smartsnp* from
-[GitHub](https://github.com/ChristianHuber/smartsnp) with:
+You can install the released version of smartsnp from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("ChristianHuber/smartsnp")
+install.packages("smartsnp")
 ```
 
 ## Example
@@ -49,44 +40,61 @@ simulated SNPs in 100 samples (80 = modern, 20 = ancient).
 ``` r
 #1/ Load package and label samples
 library(smartsnp)
-# Write example data into file "dataSNP"
-write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+# Path to example genotype matrix "dataSNP"
+pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 #assign 50 samples to each of two groups
 my_groups <- c(rep("A", 50), rep("B", 50))
 #assign samples 1st to 10th per group to ancient
 my_ancient <- c(1:10, 51:60)
 
 #2/ Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR
-pcaR <- smart_pca(snp_data = "dataSNP", sample_group = my_groups, sample_project = my_ancient)
+pcaR <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups, sample_project = my_ancient)
 #assign statistical results to objects pcaR_eigen, pcaR_load and pcaR_coord
 pcaR_eigen <- pcaR$pca.eigenvalues; dim(pcaR_eigen) # extract eigenvalues
+#> [1] 3 2
 pcaR_load <- pcaR$pca.snp_loadings; dim(pcaR_load) # extract principal coefficients (SNP loadings)
+#> [1] 4532    2
 pcaR_coord <- pcaR$pca.sample_coordinates; dim(pcaR_coord) # extract principal components (sample position in PCA space)
+#> [1] 100   4
 
 #3/ Run PERMANOVA test (group location in PCA1 x PCA2 space after excluding ancient samples) and assign results to object permanovaR
-permanovaR <- smart_permanova(snp_data = "dataSNP", sample_group = my_groups, target_space = "pca", sample_remove = my_ancient)
+permanovaR <- smart_permanova(snp_data = pathToGenoFile, sample_group = my_groups, target_space = "pca", sample_remove = my_ancient)
 #assign sample summary to object permP
 permP <- permanovaR$permanova.samples
 #show PERMANOVA table
 permanovaR$permanova.global_test
+#>           Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)
+#> group      1     175.8  175.82 0.45613 0.00581 0.6459
+#> Residuals 78   30066.3  385.47         0.99419       
+#> Total     79   30242.1                 1.00000
 
 #4/ Run PERMDISP test (group dispersion in PCA1 x PCA2 space after excluding ancient samples) and assign results to object permdispR
-permdispR <- smart_permdisp(snp_data = "dataSNP", sample_group = my_groups, sample_remove = my_ancient)
+permdispR <- smart_permdisp(snp_data = pathToGenoFile, sample_group = my_groups, sample_remove = my_ancient)
 #assign sample summary to object permD
 permD <-permdispR$permdisp.samples
 #show PERMDISP table
 permdispR$permdisp.global_test
+#>           Df      Sum Sq    Mean Sq         F Pr(>F)
+#> Groups     1  0.07254468 0.07254468 0.1911168 0.6693
+#> Residuals 78 29.60747071 0.37958296        NA     NA
 
 #5/ Run PCA, PERMANOVA and PERMDISP in one run and assign results to object mvaR
-mvaR <- smart_mva(snp_data = "dataSNP", sample_group = my_groups, sample_remove = my_ancient)
+mvaR <- smart_mva(snp_data = pathToGenoFile, sample_group = my_groups, sample_remove = my_ancient)
 # assign statistical results to objects mvaR_eigen, mvaR_load and mvaR_coord
 mvaR_eigen <- mvaR$pca$pca.eigenvalues # extract PCA eigenvalues
 mvaR_load <- mvaR$pca$pca.snp_loadings # extract principal coefficients (SNP loadings)
 mvaR_coord <- mvaR$pca$pca.sample_coordinates # extract PCA principal components (sample position in PCA space)
 #show PERMANOVA table
 mvaR$test$permanova.global_test
+#>           Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)
+#> group      1     11849   11849 0.97217 0.01231 0.9092
+#> Residuals 78    950644   12188         0.98769       
+#> Total     79    962493                 1.00000
 #show PERMDISP table
 mvaR$test$permdisp.global_test # extract PERMDISP table
+#>           Df      Sum Sq    Mean Sq         F Pr(>F)
+#> Groups     1  0.07254468 0.07254468 0.1911168 0.6661
+#> Residuals 78 29.60747071 0.37958296        NA     NA
 #assign sample summary to object mvaS
 mvaS <- mvaR$test$test_samples
 

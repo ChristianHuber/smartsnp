@@ -1,0 +1,292 @@
+---
+title: "Example PCA and permutation analysis"
+output: rmarkdown::html_vignette
+description: >
+  This Vignette provides an example analysis of genetic data using 
+  the smartsnp package.
+vignette: >
+  %\VignetteIndexEntry{Example PCA and PERMANOVA analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(collapse = T, comment = "#>")
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+library(smartsnp)
+set.seed(1014)
+```
+
+This Vignette provides an example analysis of genetic data using the smartsnp package.
+  
+## 1) Description of the data
+
+Multivariate analysis of mallard genotypes using the dataset published by Kraus et al. 2013.
+
+Paper = https://onlinelibrary.wiley.com/doi/10.1111/mec.12098 
+
+Dataset = https://datadryad.org/stash/dataset/doi:10.5061/dryad.1bq39
+
+Population SEAP removed from dataset as its geographic background is unclear (Robert Kraus, pers. comm., 02/06/2021)
+
+Populations GBAB, GBFE and GBNM (British Isles) removed from dataset as these individuals might have mixed with captive/feral mallards (Robert Kraus, pers. comm., 03/06/2021)
+
+Three datasets are available (none includes row names or column headings):
+
+* Genotype data (mallard_genotype_Kraus2012.txt) = 364 SNPs (rows) x 695 individuals (columns), individuals comprise 55 populations and 10 flyways. Genotypes are 0, 1, 2 or (for missing values) 9
+* Group names (mallard_samples_Kraus2013.txt) = 695 rows x 3 columns, column 1 = flyway names, column 2 = population name, column 3 = indvidual names comprise 55 populations and 10 flyways
+* SNP names (mallard_snps_Kraus2013.txt) = 695 rows x 1 column
+
+The study supports panmixia in cosmopolitan bird species (see Kraus et al. 2013):
+
+"...Only Greenland is genetically differentiated from the remaining mallard 
+population, and to a lesser extent, slight differentiation is observed between 
+flyways in Europe and North America".
+
+"...There is a lack of clear population structure, suggesting that the world's 
+mallards, perhaps with minor exceptions, form a single large, mainly 
+interbreeding population".
+
+
+## 2) Install package *smartsnp* (use one option)
+
+From GitHub:
+
+```{r, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("ChristianHuber/smartsnp")
+```
+
+From CRAN:
+
+```{r, eval = FALSE}
+install.packages("smartsnp")
+```
+
+## 3) Load package
+
+```{r}
+library(smartsnp)
+```
+
+## 4) Create group factor
+
+Load group file (flyway = categorical predictor in PERMANOVA AND PERMDISP tests):
+
+```{r}
+pathToFile <- system.file("extdata", "mallard_samples_Kraus2013", package = "smartsnp")
+my_groups <- c(data.table::fread(pathToFile, header = FALSE))[[1]]
+length(my_groups) #number of individuals
+length(table(my_groups)) #number of flyways
+table(my_groups) #number of individuals per flyway
+```
+
+Number of populations (not needed for analysis hereafter):
+
+```{r}
+my_pops <- c(data.table::fread(pathToFile, header = FALSE))[[2]]
+length(table(my_pops)) #number of populations
+table(my_pops) #number of individuals per population
+```
+
+Code per individual (not needed for analysis hereafter):
+
+```{r}
+my_indv <- c(data.table::fread(pathToFile, header = FALSE))[[3]]
+```
+
+SNP names (not needed for analysis hereafter):
+
+```{r}
+pathToFile <- system.file("extdata", "mallard_snps_Kraus2013", package = "smartsnp")
+my_snps <- c(data.table::fread(pathToFile, header = FALSE))[[1]]
+length(my_snps) # number of snps
+```
+
+## 5) Run smart_pca (missing values with means, control for genetic drift)
+
+Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR:
+
+```{r, message=FALSE}
+pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
+pcaR <- smart_pca(snp_data = pathToFile, sample_group = my_groups, missing_impute = "mean")
+```
+
+Assign statistical results to objects pcaR_eigen, pcaR_load and pcaR_coord:
+
+```{r}
+pcaR_eigen <- pcaR$pca.eigenvalues # extract eigenvalues (PCA1 and PC2 axes explain 3.5% variation in SNP variation across individuals)
+pcaR_load <- pcaR$pca.snp_loadings # extract principal coefficients (hitg SNP loadings indicate loci with stronger variation across individuals)
+pcaR_coord <- pcaR$pca.sample_coordinates # extract principal components (position of individuals in PCA space used to generate the ordination)
+```
+
+Plot PCA:
+
+```{r, fig.height = 7, fig.width = 7, fig.align = "center"}
+cols <- rainbow(length(table(my_groups)))
+plot(pcaR$pca.sample_coordinates[,c("PC1","PC2")], cex = 1.5, 
+     bg = cols[as.factor(my_groups)], pch = 21, col = "black", main = "mallard genotype smartpca")
+legend("topleft", legend = levels(as.factor(my_groups)), cex = 1, pch = 21, 
+       pt.cex = 1.5, col = "black", pt.bg = cols, text.col = cols)
+```
+
+Greenland individuals cluster in one of the corners of the ordination, supporting a distinct SNP composition relative to the remaining flyways.
+
+
+## 6) Run smart_permanova (missing values with means, control for genetic drift, global and pairwise tests applied)
+
+Run PERMANOVA test (group location in PCA1 x PCA2 space) and assign results to object permanovaR
+Notice that pairwise tests increase computing time considerably as there are 45 pairwise comparisons to make for 10 flyways, each calculating a p value based on 10,000 permutations of the data
+
+```{r, message=FALSE}
+pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
+permanovaR <- smart_permanova(snp_data = pathToFile, sample_group = my_groups, 
+                              target_space = "pca", missing_impute = "mean", pairwise = "TRUE")
+```
+
+Assign sample summary to object permP
+
+```{r}
+permP <- permanovaR$permanova.samples
+```
+
+Show PERMANOVA table (global and pairwise):
+
+```{r}
+permanovaR$permanova.global_test
+```
+
+For the mallard dataset, the p value is 1e-04.
+As with other frequentist tests, p values should be interpreted as the probability of the observed differences if the null hypothesis of no differences between groups is true.
+Low p value implies weak support of the null hypothesis.
+
+```{r}
+head(permanovaR$permanova.pairwise_test)
+```
+
+The lowest p values result from pairwise comparisons consistently occur between the Greenland and the remaining flyways, supporting a unique SNP composition in Greenland mallards
+
+## 7) Run smart_permdisp (missing values with means, control for genetic drift, global and pairwise tests applied, dispersion adjusted to control for sample size per group)
+
+Run PERMDISP test (group dispersion in PCA1 x PCA2 space) and assign results to object permdispR heteroscededasticity tests in combination with ANOVA tests tells whether ANoVA tests are driven by mean and/or varinance differences among groups in a multivariate context, location and dispersion are analogous with mean and variance in a univariate context as number per individuals per flyway differ a lot among flyways, PERMDISP is run to control for sample-size bias (samplesize_bias = TRUE).
+
+```{r, message=FALSE}
+pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
+permdispR <- smart_permdisp(snp_data = pathToFile, sample_group = my_groups, 
+                            target_space = "pca", missing_impute = "mean", pairwise = "TRUE", samplesize_bias = TRUE)
+```
+
+Assign sample summary to object permD, where column Sample_dispersion column show dispersion of individuals relative to their flyway:
+
+```{r}
+permD <- permdispR$permdisp.samples
+```
+
+Show PERMDISP table:
+
+```{r}
+permdispR$permdisp.global_test
+```
+
+For the mallard dataset, the p value is 0.0073:
+
+```{r}
+str(permdispR$permdisp.pairwise_test)
+```
+
+Pairwise tests indicate that PERMANOVA tests mainly captured differences in location the lowest p values occur for comparisons of the Europe North Western (ENW) flyway with the other flyways, supporting that ENW individuals show the greatest dispersion in the PCA1 x PCA2 ordination.
+
+
+## 8) Run smart_mva (missing values with means, control for genetic drift, dispersion adjusted to control for sample size per group)
+
+Run PCA, and PERMANOVA and PERMDISP tests (group location and dispersion in PCA1 x PCA2 space), and assign results to object mvaR. No pairwise comparisons are applied (default: pairwise = "FALSE"), so computation will be relatively fast
+
+```{r, message=FALSE}
+pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
+mvaR <- smart_mva(snp_data = pathToFile, sample_group = my_groups, 
+                            target_space = "pca", missing_impute = "mean", samplesize_bias = TRUE)
+```
+                            
+mvaR has three elements (data, pca, test):
+
+```{r}
+names(mvaR)
+```
+
+Get scaled dataset (none, covariance, correlation, drift):
+
+```{r}
+str(mvaR$data)
+```
+
+Get PCA results:
+
+```{r}
+str(mvaR$pca)
+```
+
+Show PCA results:
+
+```{r}
+head(mvaR$pca$pca.eigenvalues) #extract eigenvalues
+head(mvaR$pca$pca.sample_coordinates) #extract coordinates of individuals in PCA1 x PCA2 space
+head(mvaR$pca$pca.snp_loadings) #extract SNP loadings
+```
+
+Get PERMANOVA and PERMDISP results:
+
+```{r}
+str(mvaR$test)
+```
+
+Multiple-testing correction applied:
+
+```{r}
+mvaR$test$test.pairwise_correction
+```
+
+Number of permutations to estimate p value:
+
+```{r}
+mvaR$test$test.permutation_number
+```
+
+Seed for random generator:
+
+```{r}
+mvaR$test$test.permutation_seed
+```
+
+Summary of samples:
+
+```{r}
+head(mvaR$test$test_samples)
+```
+
+Show PERMANOVA table:
+
+```{r}
+mvaR$test$permanova.global_test #global test
+mvaR$test$permanova.pairwise_test #pairwise tests
+```
+
+Show PERMDISP table:
+
+```{r}
+mvaR$test$permdisp.global_test #global test
+mvaR$test$test$permdisp.pairwise_test #pairwise tests
+```
+
+Sample-size correction applied:
+
+```{r}
+mvaR$test$permdisp.bias
+```
+
+Location of flyways in ordination:
+
+```{r}
+mvaR$test$permdisp.group_location
+```
+
+

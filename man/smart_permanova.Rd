@@ -115,14 +115,14 @@ If >22 chromosomes are provided and the internal parameter \code{numchrom} is no
 In contrast, \code{smart_permanova} accepts any number of autosomes with or without the sex chromosomes from an \code{EIGENSTRAT} file.\cr
 }
 \examples{
-# Write example data into file "dataSNP"
-write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+# Path to example genotype matrix "dataSNP"
+pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 
 # Assign 50 samples to each of two groups
 my_groups <- as.factor(c(rep("A", 50), rep("B", 50)))
 
 # Run PERMANOVA
-permanovaR <- smart_permanova(snp_data = "dataSNP", sample_group = my_groups)
+permanovaR <- smart_permanova(snp_data = pathToGenoFile, sample_group = my_groups)
 
 # Extract summary table assigning samples to groups
 permanovaR$permanova.samples
@@ -132,7 +132,7 @@ permanovaR$permanova.global_test
 
 # Plot means of squares per group
 #run pca with truncated SVD (PCA 1 x PCA 2)
-pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
+pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
 #run PERMANOVA
@@ -141,17 +141,18 @@ permanova <- vegan::adonis(formula = snp_eucli ~ my_groups, permutations = 9999)
 meanSqs <- as.matrix(t(permanova$aov.tab$MeanSqs[1:2]))
 colnames(meanSqs) <- c("Groups", "Residuals")
 #two horizontal plots
-par(mfrow = c(2,1), oma = c(0,5,0.1,0.1), lwd = 2)
+oldpar <- par(mfrow = c(2,1), oma = c(0,5,0.1,0.1), lwd = 2)
 barplot(meanSqs, horiz = TRUE, main = "PERMANOVA mean of squares",
   cex.names = 2, cex.main = 2, col = c("grey40"))
-par(mar = c(5, 0.1, 3.5, 0.1))
 #run ANOSIM
 anosimD <- vegan::anosim(snp_eucli, my_groups, permutations = 999)
 #remove outputs for clean plotting
 #anosimD[2] <- ""; anosimD[5] <- ""
+par(mar = c(5, 0.1, 3.5, 0.1))
 plot(anosimD, xlab = "", ylab = "distance/similarity ranks",
   main = "Inter-sample proximity ranks", cex.main =2, cex.axis = 2,
   col = c("cyan", "red", "blue"))
+par(oldpar)
 
 }
 \references{

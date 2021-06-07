@@ -145,14 +145,14 @@ If >22 chromosomes are provided and the internal parameter \code{numchrom} is no
 In contrast, \code{smart_mva} accepts any number of autosomes with or without the sex chromosomes from an \code{EIGENSTRAT} file.\cr
 }
 \examples{
-# Write example data into file "dataSNP"
-write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+# Path to example genotype matrix "dataSNP"
+pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 
 # Assign 50 samples to each of two groups and colors
 my_groups <- as.factor(c(rep("A", 50), rep("B", 50))); cols = c("red", "blue")
 
 # Run PCA, PERMANOVA and PERMDISP
-mvaR <- smart_mva(snp_data = "dataSNP", sample_group = my_groups)
+mvaR <- smart_mva(snp_data = pathToGenoFile, sample_group = my_groups)
 mvaR$pca$pca.eigenvalues # extract PCA eigenvalues
 mvaR$pca$pca.snp_loadings # extract principal coefficients (SNP loadings)
 mvaR$pca$pca.sample_coordinates # extract PCA principal components (sample position in PCA space)

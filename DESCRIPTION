@@ -1,15 +1,17 @@
 Package: smartsnp
 Type: Package
-Title: Fast computation of (smart)pca, permanova and permdisp
+Title: Fast Multivariate Analyses of Big Genomic Data
 Version: 1.1.0
-Date: 2020-11-27
+Date: 2021-03-01
 Authors@R: c(
-    person("Salvador", family = "Herrando-Pérez", email = "salherra@gmail.com",
-           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6052-6854")),
+    person("Salvador", family = "Herrando-Perez", email = "salherra@gmail.com",
+           role = c("aut"), comment = c(ORCID = "0000-0001-6052-6854")),
     person("Ray", family = "Tobler", email = "tingalingx@gmail.com",
-           role = c("ctb"), comment = c(ORCID = "0000-0002-4603-1473")))
-Maintainer: Salvador Herrando-Perez <salherra@gmail.com>
-Description: Fast computation of multivariate analyses of small (10s to 100s markers) to big (1000s to 100000s) genotype data. Runs Principal Component Analysis (PCA) allowing for centering, z-score and SMARTPCA scaling of variables, projection of ancient samples to modern genetic space and multivariate tests for differences in group location (PERMANOVA) and dispersion (PERMDISP).
+           role = c("ctb"), comment = c(ORCID = "0000-0002-4603-1473")),
+    person("Christian", family = "Huber", email = "christian.domitian.huber@gmail.com",
+           role = c("ctb", "cre"), comment = c(ORCID = "0000-0002-2267-2604")))
+Maintainer: Christian Huber <christian.domitian.huber@gmail.com>
+Description: Fast computation of multivariate analyses of small (10s to 100s markers) to big (1000s to 100000s) genotype data. Runs Principal Component Analysis allowing for centering, z-score standardization and scaling for genetic drift, projection of ancient samples to modern genetic space and multivariate tests for differences in group location (Permutation-Based Multivariate Analysis of Variance) and dispersion (Permutation-Based Multivariate Analysis of Dispersion).
 Language: en-GB
 License: MIT + file LICENSE
 Depends: R (>= 3.6.0)
@@ -17,7 +19,6 @@ Imports:
     bootSVD,
     data.table,
     foreach,
-    ggrepel,
     Rfast,
     RSpectra,
     vegan,

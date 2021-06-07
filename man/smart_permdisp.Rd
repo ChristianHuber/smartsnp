@@ -69,7 +69,7 @@ Default \code{"median"}. See details.}
 
 \item{samplesize_bias}{Logical.
 \code{samplesize_bias = TRUE} for dispersion weighted by number of samples per group.
-Default \code{pairwise = FALSE} for no weighting.
+Default \code{samplesize_bias = FALSE} for no weighting.
 See details.}
 }
 \value{
@@ -99,9 +99,9 @@ Optimized to run fast matrix building and permutations for big datasets in ecolo
 PERMDISP is a form of \code{homoscedasticity} test analogous to univariate Levene's (1960) and, more closely, Brown & Forsythe's (1974) tests. Applies PERMANOVA test (Anderson 2001) for differences in Euclidean dispersion among groups (Anderson 2006).
 Proximity between samples can be any type of distance, similarity or dissimilarity.
 Group dispersion estimated relative to group centroids (central point) or to spatial (geometric) medians (point minimizing distance to group samples) in Principal Coordinate Analysis (\code{PCoA}, Gower 1966) space.
-Acronym PERMDISP originates from Marti Anderson’s FORTRAN program (Anderson 2004).
+Acronym PERMDISP originates from Marti Anderson's FORTRAN program (Anderson 2004).
 
-Control for unequal number of samples among groups optionally done by weighting sample distance to group spatial \emph{median} or  \emph{centroid} by \emph{sqrt(n/(n-1))} (O'Neill & Mathews 2000), and the null hypothesis then being tested changes from \emph{∂_1 = ∂_2  = ⋯ = ∂_t} (balanced design) to  \emph{((n_1-1)/n_1) x ∂_1 = ((n_2-1)/n_2) x ∂_2  = ⋯ =  ((n_t-1)/n_t) x ∂_t} (unbalanced design) where \emph{∂} represents dispersion of groups \emph{1} to \emph{t}, and \emph{n} represents number of samples per group.
+Control for unequal number of samples among groups optionally done by weighting sample distance to group spatial \emph{median} or  \emph{centroid} by \emph{sqrt(n/(n-1))} (O'Neill & Mathews 2000), and the null hypothesis then being tested changes from \emph{d_1 = d_2  = ... = d_t} (balanced design) to  \emph{((n_1-1)/n_1) x d_1 = ((n_2-1)/n_2) x d_2  = ... =  ((n_t-1)/n_t) x d_t} (unbalanced design) where \emph{d} represents dispersion of groups \emph{1} to \emph{t}, and \emph{n} represents number of samples per group.
 To attribute group differences to location (position of sample groups) and/or dispersion (spread of sample groups), PERMDISP must be combined with PERMANOVA as implemented through \code{smart_permanova}.\cr
 
 \code{smart_permdisp} uses \code{\link[vegan]{betadisper}} to estimate an ANOVA \emph{F} statistic and group dispersions using formula \code{snp_eucli ~ sample_group}, where \code{snp_eucli} is the sample-by-sample triangular matrix in \code{PCoA} space.
@@ -122,14 +122,14 @@ If >22 chromosomes are provided and the internal parameter \code{numchrom} is no
 In contrast, \code{smart_permdisp} accepts any number of autosomes with or without the sex chromosomes from an \code{EIGENSTRAT} file.\cr
 }
 \examples{
-# Write example data into file "dataSNP"
-write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+# Path to example genotype matrix "dataSNP"
+pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 
 # Assign 50 samples to each of two groups and colours
 my_groups <- as.factor(c(rep("A", 50), rep("B", 50))); cols = c("red", "blue")
 
 # Run PERMDISP
-permdispR <- smart_permdisp(snp_data = "dataSNP", sample_group = my_groups)
+permdispR <- smart_permdisp(snp_data = pathToGenoFile, sample_group = my_groups)
 
 # Extract summary table assigning samples to groups and dispersion of individual samples
 permdispR$permdisp.samples
@@ -139,15 +139,16 @@ permdispR$permdisp.global_test
 
 # Plot sample distances to group central medians
 #run pca with truncated SVD (PCA 1 x PCA 2)
-pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
+pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
 #calculate spatial medians
 disMed <- vegan::betadisper(d = snp_eucli, group = my_groups); disMed
 #plot
-par(mar = c(4, 4, 5, 0.1), lwd = 2)
+oldpar <- par(mar = c(4, 4, 5, 0.1), lwd = 2)
 boxplot(disMed, las =2, cex.axis = 2, cex.main = 1.5, horizontal = TRUE, varwidth = TRUE,
    col = cols, xlab = "", ylab = "", main = "Sample distance to group spatial medians")
+par(oldpar)
 
 }
 \references{

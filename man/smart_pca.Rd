@@ -100,14 +100,14 @@ If >22 chromosomes are provided and the internal parameter \code{numchrom} is no
 In contrast, \code{smart_pca} accepts any number of autosomes with or without the sex chromosomes from an \code{EIGENSTRAT} file.\cr
 }
 \examples{
-# Write example data into file "dataSNP"
-write.table(file = "dataSNP", dataSNP, col.names = FALSE, row.names = FALSE)
+# Path to example genotype matrix "dataSNP"
+pathToGenoFile = system.file("extdata", "dataSNP", package = "smartsnp")
 
 # Example 1: modern samples
 #assign 50 samples to each of two groups and colors
 my_groups <- c(rep("A", 50), rep("B", 50)); cols = c("red", "blue")
 #run PCA with truncated SVD (PCA 1 x PCA 2)
-pcaR1 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups)
+pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 pcaR1$pca.eigenvalues # extract eigenvalues
 pcaR1$pca.snp_loadings # extract principal coefficients (SNP loadings)
 pcaR1$pca.sample_coordinates # extract principal components (sample position in PCA space)
@@ -121,7 +121,7 @@ legend("topleft", legend = levels(as.factor(my_groups)), cex =1,
 #assign samples 1st to 10th per group to ancient
 my_ancient <- c(1:10, 51:60)
 #run PCA with truncated SVD (PCA 1 x PCA 2)
-pcaR2 <- smart_pca(snp_data = "dataSNP", sample_group = my_groups, sample_project = my_ancient)
+pcaR2 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups, sample_project = my_ancient)
 pcaR2$pca.eigenvalues # extract eigenvalues
 pcaR2$pca.snp_loadings # extract principal coefficients (SNP loading)
 pcaR2$pca.sample_coordinates # extract principal components (sample position in PCA space)

@@ -13,8 +13,8 @@ dataSNP <- matrix(sampleSNP, nrow = snpN, ncol = sampleN)
 dim(dataSNP)
 
 # Save data to working directory
-write.table(dataSNP, file = "data-raw/dataSNP", col.names = FALSE, row.names = FALSE)
+write.table(dataSNP, file = "extdata/dataSNP", col.names = FALSE, row.names = FALSE)
 
 # Make data available to package
-library(usethis)
-usethis::use_data(dataSNP)
+# library(usethis)
+# usethis::use_data(dataSNP)
