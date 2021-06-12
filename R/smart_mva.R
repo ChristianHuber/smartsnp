@@ -310,7 +310,11 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
       missing_value <- NA # reset missing value
     }
   } else { # generic input type (columns = samples, rows = SNPs)
-    snp_dat <- data.table::fread(file = snp_data, header = FALSE)
+    con <- file(snp_data,"r"); first_line <- readLines(con,n=1); close(con) # Read first line
+    plink_traw_format_flag <- FALSE
+    if (substr(first_line, 1, 8) == "CHR\tSNP\t") plink_traw_format_flag <- TRUE # Check for PLINK "traw" header line
+    snp_dat <- data.table::fread(file = snp_data, header = plink_traw_format_flag)
+    if (plink_traw_format_flag) snp_dat[, c("CHR","SNP", "(C)M", "POS", "COUNTED", "ALT"):=NULL] # If PLINK "traw" format, then remove non-genotype columns
     snpN.full <- nrow(snp_dat) # number of SNP
     message(paste("Imported", snpN.full, "SNP by", sampN.full, "sample genotype matrix"))
     message(paste0("Time elapsed: ", get.time(startT)))

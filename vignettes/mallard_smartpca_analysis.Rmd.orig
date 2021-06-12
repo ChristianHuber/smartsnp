@@ -133,7 +133,7 @@ pcaR_coord <- pcaR$pca.sample_coordinates # extract principal components (positi
 
 Plot PCA:
 
-```{r, fig.height = 7, fig.width = 7, fig.align = "center"}
+```{r pca_plot_mallard, fig.height = 7, fig.width = 7, fig.align = "center"}
 cols <- rainbow(length(table(my_groups)))
 plot(pcaR$pca.sample_coordinates[,c("PC1","PC2")], cex = 1.5, 
      bg = cols[as.factor(my_groups)], pch = 21, col = "black", main = "mallard genotype smartpca")

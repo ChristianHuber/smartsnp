@@ -1,0 +1,224 @@
+---
+title: "Projecting ancient samples"
+output: 
+    rmarkdown::html_vignette:
+      toc: true
+      toc_depth: 2
+description: >
+  This Vignette provides an example of how to project ancient DNA onto modern data using 
+  the smartsnp package.
+vignette: >
+  %\VignetteIndexEntry{Projecting ancient samples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+knitr::opts_knit$set(collapse = T, comment = "#>")
+knitr::opts_knit$set(root.dir = normalizePath("~/Dropbox/Salva_PCA/TESTING/Lazaridis_2016"))
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+library(smartsnp)
+set.seed(1014)
+
+```
+
+This Vignette provides an example of projecting ancient DNA onto modern data using the smartsnp package. We will use data from one of the first large-scale ancient DNA studies in Europe:
+
+Lazaridis et al. "Genomic insights into the origin of farming in the ancient Near East", Nature volume 536, pages 419–424 (2016).
+
+The data is available for download but needs to be preprocessed before we can run smartsnp. Particularly, the aDNA data needs to be merged with the modern data using some external command-line software. All steps can be completed in R. However, if you are just interested in how to run smart_pca with ancient samples, feel free to go straight to the chapter "Running smartpca".
+
+## Install package *smartsnp*
+
+Select one option.
+
+From GitHub:
+
+```{r, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("ChristianHuber/smartsnp")
+```
+
+From CRAN:
+
+```{r, eval = FALSE}
+install.packages("smartsnp")
+```
+
+Load the package:
+
+```{r}
+library(smartsnp)
+```
+
+## Downloading the data
+
+First, set the working directory to a location where you want to download the files to. In my case, I'm choosing the Downloads directory.
+
+```{r, eval=FALSE}
+oldwd <- getwd()
+setwd("~/Downloads/")
+```
+
+We will download the data provided here https://reich.hms.harvard.edu/datasets
+Note that this is quite a large data set, >200 Mb!
+For downloading the data you need to have *wget* installed.
+
+```{r, eval=FALSE}
+system("wget https://reich.hms.harvard.edu/sites/reich.hms.harvard.edu/files/inline-files/NearEastPublic.tar.gz")
+```
+
+The downloaded data has to be unzipped. I will unzip it into a new folder called "data".
+
+```{r, eval=FALSE}
+system("mkdir data")
+system("tar -xvf NearEastPublic.tar.gz -C ./data")
+system("rm NearEastPublic.tar.gz")
+```
+
+
+## Select subsets of individuals with convertf
+
+The data is in the PACKEDANCESTRYMAP format, i.e. a binary data format. The ancient and modern data are in two different files, and we are only interested in the Western Eurasian set of modern samples. Thus, in the next two steps, we need to filter out the Western Eurasian samples from all modern samples and then add in the ancient data.
+
+The convertf software and the mergeit software of the Eigensoft package conveniently allows to do these two operations, see here for information about download and installation:
+https://github.com/DReichLab/EIG
+
+To run Eigensoft software within R using the system function you might need to first explicitly tell R where the software can be found:
+
+```{r}
+# Path to Eigensoft binaries (might be different on your computer):
+pathToEIGENSOFT = "~/repos/EIG/bin/"
+Sys.setenv(PATH = paste(Sys.getenv()["PATH"], paste0(":", pathToEIGENSOFT), sep=""))
+```
+
+Next, we need to generate a parameter file for convertf. We also need to generate a list of West Eurasian populations in a text file. Then we can run convertf with the R system command (or, alternatively, in the terminal).
+
+```{r, eval=TRUE}
+# Generating a text file with West Eurasian group names
+westEurasian_pops <- c(
+  "Abkhasian", "Adygei", "Albanian", "Armenian", "Assyrian", "Balkar", "Basque", "BedouinA", "BedouinB", "Belarusian", "Bulgarian", "Canary_Islander", 
+  "Chechen", "Croatian", "Cypriot", "Czech", "Druze", "English", "Estonian", "Finnish", "French", "Georgian", "German", "Greek", "Hungarian", "Icelandic", 
+  "Iranian", "Irish", "Irish_Ulster", "Italian_North", "Italian_South", "Jew_Ashkenazi", "Jew_Georgian", "Jew_Iranian", "Jew_Iraqi", "Jew_Libyan", "Jew_Moroccan", 
+  "Jew_Tunisian", "Jew_Turkish", "Jew_Yemenite", "Jordanian", "Kumyk", "Lebanese_Christian", "Lebanese", "Lebanese_Muslim", "Lezgin", "Lithuanian", "Maltese", 
+  "Mordovian", "North_Ossetian", "Norwegian", "Orcadian", "Palestinian", "Polish", "Romanian", "Russian", "Sardinian", "Saudi", "Scottish", "Shetlandic", "Sicilian", 
+  "Sorb", "Spanish_North", "Spanish", "Syrian", "Turkish", "Ukrainian"
+)
+```
+
+```{r, eval=FALSE}
+
+# Generating the parameter file for convertf:
+par.ANCESTRYMAP.FILTER <- c(
+  "genotypename:    ./data/HumanOriginsPublic2068.geno",
+  "snpname:         ./data/HumanOriginsPublic2068.snp",
+  "indivname:       ./data/HumanOriginsPublic2068.ind",
+  "poplistname: ./WestEurasia.poplist.txt",
+  "genotypeoutname: ./data/HumanOriginsPublic2068.WestEurasia.geno",
+  "snpoutname:      ./data/HumanOriginsPublic2068.WestEurasia.snp",
+  "indivoutname:    ./data/HumanOriginsPublic2068.WestEurasia.ind"
+)
+
+writeLines(par.ANCESTRYMAP.FILTER, con = "par.ANCESTRYMAP.FILTER")
+
+# Now run convertf using the system command in R. This is equivalent to running the command in a terminal:
+
+system("convertf -p par.ANCESTRYMAP.FILTER")
+```
+
+## Merging ancient with modern data using mergeit
+
+Now we combine the ancient samples with the modern data using mergeit.
+Again, we first need a parameter file and then we can run mergeit with the system function in R (or alternatively in the terminal).
+
+```{r, eval = FALSE}
+params <- c(
+  "geno1: ./data/HumanOriginsPublic2068.WestEurasia.geno",
+  "snp1:  ./data/HumanOriginsPublic2068.WestEurasia.snp",
+  "ind1:  ./data/HumanOriginsPublic2068.WestEurasia.ind",
+  "geno2: ./data/AncientLazaridis2016.geno",
+  "snp2:  ./data/AncientLazaridis2016.snp",
+  "ind2:  ./data/AncientLazaridis2016.ind",
+  "genooutfilename: ./data/AncientLazaridis2016_ModernWestEurasia.geno",
+  "snpoutfilename:  ./data/AncientLazaridis2016_ModernWestEurasia.snp",
+  "indoutfilename:  ./data/AncientLazaridis2016_ModernWestEurasia.ind"
+)
+
+writeLines(params, con = "mergeit.params.txt")
+
+system("mergeit -p mergeit.params.txt")
+```
+
+## Running smartpca
+
+Now that we have a combined data set with modern and ancient DNA, we can fially run smartsnp.
+
+First, we need to define what the ancient samples are, which individuals we want to remove before running the PCA.
+
+```{r}
+# Group names of the ancient groups
+aDNA_inds <- c("Anatolia_ChL", "Anatolia_N", "Armenia_ChL", "Armenia_EBA", "Armenia_MLBA", "CHG", "EHG", "Europe_EN", "Europe_LNBA", "Europe_MNChL", "Iberia_BA", "Iran_ChL", "Iran_HotuIIIb", "Iran_LN", "Iran_N", "Levant_BA", "Levant_N", "Natufian", "SHG", "Steppe_EMBA", "Steppe_Eneolithic", "Steppe_IA", "Steppe_MLBA", "Switzerland_HG", "WHG")
+
+# Contains group names of all groups in merged data
+GR <- read.table("./data/AncientLazaridis2016_ModernWestEurasia.ind", header=F)
+
+# Vector defining ancient and modern groups
+SA <- ifelse(GR$V3 %in% westEurasian_pops, "modern", "ancient")
+str(SA)
+
+# Samples to remove:
+sample.rem <- c("Mota", "Denisovan", "Chimp", "Mbuti.DG", "Altai", 
+               "Vi_merge", "Clovis", "Kennewick", "Chuvash", "Ust_Ishim", 
+               "AG2", "MA1", "MezE", "hg19ref", "Kostenki14")
+
+# Simple 0/1 vectors that determines which samples to remove and which to use for PCA ordination or projection:
+SR <- which(GR$V3 %in% sample.rem)  # Samples to remove
+SP <- which(SA == "ancient")        # Samples to project
+```
+
+Now that we have the data in the right format and all the necessary information, it is finally time to run smart_pca.
+
+```{r run__smart_pca, message = FALSE}
+# Running smart_pca:
+sm.pca <- smart_pca(snp_data = "./data/AncientLazaridis2016_ModernWestEurasia.geno",
+                    sample_group = GR$V3, missing_value = 9, missing_impute = "mean",
+                    scaling = "drift", program_svd = "RSpectra", pc_axes = 2, 
+                    sample_remove = SR, sample_project = SP, pc_project = 1:2)
+
+# See information on the different paramter options: 
+?smart_pca
+```
+
+## Plotting the results using ggplot2
+
+We can have a look at the result using ggplot2 and ggrepel for labeling the groups. The data.table package is used to simplify some data operations (see https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html for more info).
+
+```{r lazaridis_plot, fig.height = 7, fig.width = 7, fig.align = "center"}
+# This needs the R libraries ggplot2, ggrepel, and data.table.
+library(ggplot2)
+library(ggrepel)
+library(data.table)
+
+# Plotting with ggplot2 and labelling the groups with ggrepel:
+
+smart_mva.aDNA_WestEurasia.evec = data.table(sm.pca$pca.sample_coordinates)
+smart_mva.aDNA_WestEurasia.evec[, c("PC1mean", "PC2mean") := .(mean(PC1), mean(PC2)), Group]
+smart_mva.aDNA_WestEurasia.evec[, Name := GR$V1]
+
+ggplot() + 
+  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "PCA"], aes(-PC1, PC2), col="grey", alpha=0.5) +
+  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected" ], aes(-PC1, PC2, fill=Group, shape=Group), size=3) +
+  scale_shape_manual(values=rep(21:25, 100)) +
+  geom_label_repel(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected",.SD[1], Group], aes(-PC1mean, PC2mean, label=Group, col=Group), alpha=0.7, segment.color="NA") +
+  theme_bw() + theme(legend.position = "none")
+
+```
+
+
+
+
+
+
+
+
+
