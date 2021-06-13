@@ -195,10 +195,12 @@ We can have a look at the result using *ggplot2* (and *ggrepel* for labeling the
 For more info on these packages, see:
 
 https://ggplot2.tidyverse.org/
+
 https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
+
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
 
-```{r lazaridis_plot, fig.height = 7, fig.width = 7, fig.align = "center"}
+```{r lazaridis_plot, fig.height = 7, fig.width = 7, fig.align = "center", message=FALSE, error=FALSE}
 # This needs the R libraries ggplot2, ggrepel, and data.table.
 library(ggplot2)
 library(ggrepel)

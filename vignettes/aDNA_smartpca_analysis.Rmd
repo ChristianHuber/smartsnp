@@ -199,68 +199,10 @@ We can have a look at the result using *ggplot2* (and *ggrepel* for labeling the
 For more info on these packages, see:
 
 https://ggplot2.tidyverse.org/
+
 https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
+
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
-
-
-```r
-# This needs the R libraries ggplot2, ggrepel, and data.table.
-library(ggplot2)
-```
-
-```
-## Want to understand how all the pieces fit together? Read R for Data Science:
-## https://r4ds.had.co.nz/
-```
-
-```r
-library(ggrepel)
-library(data.table)
-```
-
-```
-## data.table 1.13.1 IN DEVELOPMENT built 2020-10-14 06:52:00 UTC; root using 1 threads (see ?getDTthreads).  Latest news: r-datatable.com
-```
-
-```
-## **********
-## This development version of data.table was built more than 4 weeks ago. Please update: data.table::update.dev.pkg()
-## **********
-```
-
-```
-## **********
-## This installation of data.table has not detected OpenMP support. It should still work but in single-threaded mode.
-## This is a Mac. Please read https://mac.r-project.org/openmp/. Please engage with Apple and ask them for support. Check r-datatable.com for updates, and our Mac instructions here: https://github.com/Rdatatable/data.table/wiki/Installation. After several years of many reports of installation problems on Mac, it's time to gingerly point out that there have been no similar problems on Windows or Linux.
-## **********
-```
-
-```r
-# Plotting with ggplot2 and labeling the groups with ggrepel:
-
-smart_mva.aDNA_WestEurasia.evec = data.table(sm.pca$pca.sample_coordinates)
-smart_mva.aDNA_WestEurasia.evec[, c("PC1mean", "PC2mean") := .(mean(PC1), mean(PC2)), Group]
-smart_mva.aDNA_WestEurasia.evec[, Name := GR$V1]
-
-ggplot() + 
-  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "PCA"], aes(-PC1, PC2), col="grey", alpha=0.5) +
-  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected" ], aes(-PC1, PC2, fill=Group, shape=Group), size=3) +
-  scale_shape_manual(values=rep(21:25, 100)) +
-  geom_label_repel(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected",.SD[1], Group], aes(-PC1mean, PC2mean, label=Group, col=Group), alpha=0.7, segment.color="NA") +
-  theme_bw() + theme(legend.position = "none")
-```
-
-<img src="figure/lazaridis_plot-1.png" title="plot of chunk lazaridis_plot" alt="plot of chunk lazaridis_plot" style="display: block; margin: auto;" />
-
-Voila! 
-Finally, let's move back to the old working directory:
-
-
-```r
-setwd(oldwd)
-```
-
-
 
 
 
