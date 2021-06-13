@@ -13,7 +13,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, echo = FALSE, message = FALSE}
+knitr::opts_knit$set(collapse = T, comment = "#>")
+knitr::opts_knit$set(root.dir = normalizePath("~/Dropbox/Salva_PCA/TESTING/Lazaridis_2016"))
+options(tibble.print_min = 4L, tibble.print_max = 4L)
+library(smartsnp)
+set.seed(1014)
 
+```
 
 This Vignette provides an example of projecting ancient DNA onto modern data in a PCA analysis using the *smartsnp* package. We will use data from one of the first large-scale ancient DNA studies, Lazaridis et al. 2016:
 
@@ -29,23 +36,20 @@ Select one of two options.
 
 Install development version from GitHub:
 
-
-```r
+```{r, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("ChristianHuber/smartsnp")
 ```
 
 Install release version from CRAN:
 
-
-```r
+```{r, eval = FALSE}
 install.packages("smartsnp")
 ```
 
 Load the package:
 
-
-```r
+```{r}
 library(smartsnp)
 ```
 
@@ -53,8 +57,7 @@ library(smartsnp)
 
 First, set the working directory to a location where you want to download and process the files. In my case, I'm choosing the Downloads directory in my home folder.
 
-
-```r
+```{r, eval=FALSE}
 oldwd <- getwd()
 setwd("~/Downloads/")
 ```
@@ -62,15 +65,13 @@ setwd("~/Downloads/")
 We will download the data provided here https://reich.hms.harvard.edu/datasets using a command-line software called *wget*. Alternatively, you can download the file using a browser and the link.
 Note that this is quite a large file, >200 Mb!
 
-
-```r
+```{r, eval=FALSE}
 system("wget https://reich.hms.harvard.edu/sites/reich.hms.harvard.edu/files/inline-files/NearEastPublic.tar.gz")
 ```
 
 The downloaded data has to be unzipped. I will unzip it into a new folder called "data".
 
-
-```r
+```{r, eval=FALSE}
 system("mkdir data")                               # Make a new folder called "data"
 system("tar -xvf NearEastPublic.tar.gz -C ./data") # Unzip data into this folder
 system("rm NearEastPublic.tar.gz")                 # Remove the zip file
@@ -88,8 +89,7 @@ https://github.com/DReichLab/EIG
 
 To run Eigensoft software within R using the *system* function, you might need to first explicitly tell R where the software can be found:
 
-
-```r
+```{r}
 # Path to Eigensoft binaries (might be different on your computer):
 pathToEIGENSOFT = "~/repos/EIG/bin/"
 Sys.setenv(PATH = paste(Sys.getenv()["PATH"], paste0(":", pathToEIGENSOFT), sep=""))
@@ -97,8 +97,7 @@ Sys.setenv(PATH = paste(Sys.getenv()["PATH"], paste0(":", pathToEIGENSOFT), sep=
 
 We need to generate a parameter file for *convertf* that contains all the file names. We also need to generate a list of West Eurasian populations in a text file.
 
-
-```r
+```{r, eval=TRUE}
 # Generating a text file with West Eurasian group names
 westEurasian_pops <- c(
   "Abkhasian", "Adygei", "Albanian", "Armenian", "Assyrian", "Balkar", "Basque", "BedouinA", "BedouinB", "Belarusian", "Bulgarian", "Canary_Islander", 
@@ -110,8 +109,8 @@ westEurasian_pops <- c(
 )
 ```
 
+```{r, eval=FALSE}
 
-```r
 # Generating the parameter file for convertf:
 par.ANCESTRYMAP.FILTER <- c(
   "genotypename:    ./data/HumanOriginsPublic2068.geno",
@@ -135,8 +134,7 @@ system("convertf -p par.ANCESTRYMAP.FILTER")
 Now we combine the ancient samples with the modern data using *mergeit*.
 Again, we first need a parameter file and then we can run *mergeit* with the *system* function in R (or alternatively in the terminal).
 
-
-```r
+```{r, eval = FALSE}
 params <- c(
   "geno1: ./data/HumanOriginsPublic2068.WestEurasia.geno",
   "snp1:  ./data/HumanOriginsPublic2068.WestEurasia.snp",
@@ -158,8 +156,7 @@ system("mergeit -p mergeit.params.txt")
 
 We still need two additional vectors before we can run *smartsnp*: one that defines the ancient samples, and one that defines which samples we want to remove before running the PCA.
 
-
-```r
+```{r}
 # Group names of the ancient groups
 aDNA_inds <- c("Anatolia_ChL", "Anatolia_N", "Armenia_ChL", "Armenia_EBA", "Armenia_MLBA", "CHG", "EHG", "Europe_EN", "Europe_LNBA", "Europe_MNChL", "Iberia_BA", "Iran_ChL", "Iran_HotuIIIb", "Iran_LN", "Iran_N", "Levant_BA", "Levant_N", "Natufian", "SHG", "Steppe_EMBA", "Steppe_Eneolithic", "Steppe_IA", "Steppe_MLBA", "Switzerland_HG", "WHG")
 
@@ -181,8 +178,7 @@ SP <- which(SA == "ancient")        # Samples to project
 
 Now we are finally ready to run smart_pca:
 
-
-```r
+```{r run__smart_pca, message = FALSE}
 # Running smart_pca:
 sm.pca <- smart_pca(snp_data = "./data/AncientLazaridis2016_ModernWestEurasia.geno",
                     sample_group = GR$V3, missing_value = 9, missing_impute = "mean",
@@ -202,40 +198,12 @@ https://ggplot2.tidyverse.org/
 https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
 
-
-```r
+```{r lazaridis_plot, fig.height = 7, fig.width = 7, fig.align = "center"}
 # This needs the R libraries ggplot2, ggrepel, and data.table.
 library(ggplot2)
-```
-
-```
-## Want to understand how all the pieces fit together? Read R for Data Science:
-## https://r4ds.had.co.nz/
-```
-
-```r
 library(ggrepel)
 library(data.table)
-```
 
-```
-## data.table 1.13.1 IN DEVELOPMENT built 2020-10-14 06:52:00 UTC; root using 1 threads (see ?getDTthreads).  Latest news: r-datatable.com
-```
-
-```
-## **********
-## This development version of data.table was built more than 4 weeks ago. Please update: data.table::update.dev.pkg()
-## **********
-```
-
-```
-## **********
-## This installation of data.table has not detected OpenMP support. It should still work but in single-threaded mode.
-## This is a Mac. Please read https://mac.r-project.org/openmp/. Please engage with Apple and ask them for support. Check r-datatable.com for updates, and our Mac instructions here: https://github.com/Rdatatable/data.table/wiki/Installation. After several years of many reports of installation problems on Mac, it's time to gingerly point out that there have been no similar problems on Windows or Linux.
-## **********
-```
-
-```r
 # Plotting with ggplot2 and labeling the groups with ggrepel:
 
 smart_mva.aDNA_WestEurasia.evec = data.table(sm.pca$pca.sample_coordinates)
@@ -248,15 +216,13 @@ ggplot() +
   scale_shape_manual(values=rep(21:25, 100)) +
   geom_label_repel(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected",.SD[1], Group], aes(-PC1mean, PC2mean, label=Group, col=Group), alpha=0.7, segment.color="NA") +
   theme_bw() + theme(legend.position = "none")
-```
 
-<img src="figure/lazaridis_plot-1.png" title="plot of chunk lazaridis_plot" alt="plot of chunk lazaridis_plot" style="display: block; margin: auto;" />
+```
 
 Voila! 
 Finally, let's move back to the old working directory:
 
-
-```r
+```{r}
 setwd(oldwd)
 ```
 
