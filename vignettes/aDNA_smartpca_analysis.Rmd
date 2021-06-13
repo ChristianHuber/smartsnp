@@ -205,6 +205,43 @@ https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
 
 
+```r
+# This needs the R libraries ggplot2, ggrepel, and data.table.
+library(ggplot2)
+library(ggrepel)
+library(data.table)
+
+# Plotting with ggplot2 and labeling the groups with ggrepel:
+
+smart_mva.aDNA_WestEurasia.evec = data.table(sm.pca$pca.sample_coordinates)
+smart_mva.aDNA_WestEurasia.evec[, c("PC1mean", "PC2mean") := .(mean(PC1), mean(PC2)), Group]
+smart_mva.aDNA_WestEurasia.evec[, Name := GR$V1]
+
+ggplot() + 
+  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "PCA"], aes(-PC1, PC2), col="grey", alpha=0.5) +
+  geom_point(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected" ], aes(-PC1, PC2, fill=Group, shape=Group), size=3) +
+  scale_shape_manual(values=rep(21:25, 100)) +
+  geom_label_repel(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected",.SD[1], Group], aes(-PC1mean, PC2mean, label=Group, col=Group), alpha=0.7, segment.color="NA") +
+  theme_bw() + theme(legend.position = "none")
+```
+
+<img src="figure/lazaridis_plot-1.png" title="plot of chunk lazaridis_plot" alt="plot of chunk lazaridis_plot" style="display: block; margin: auto;" />
+
+Voila! 
+Finally, let's move back to the old working directory:
+
+
+```r
+setwd(oldwd)
+```
+
+```
+## Error in setwd(oldwd): object 'oldwd' not found
+```
+
+
+
+
 
 
 
