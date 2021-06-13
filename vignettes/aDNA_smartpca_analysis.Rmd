@@ -235,9 +235,7 @@ Finally, let's move back to the old working directory:
 setwd(oldwd)
 ```
 
-```
-## Error in setwd(oldwd): object 'oldwd' not found
-```
+
 
 
 

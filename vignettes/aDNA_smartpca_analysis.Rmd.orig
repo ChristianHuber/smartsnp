@@ -224,7 +224,7 @@ ggplot() +
 Voila! 
 Finally, let's move back to the old working directory:
 
-```{r}
+```{r, eval=FALSE}
 setwd(oldwd)
 ```
 
