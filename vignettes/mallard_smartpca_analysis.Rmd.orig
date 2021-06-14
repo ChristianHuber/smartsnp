@@ -108,7 +108,7 @@ length(my_snps) # number of snps
 
 ## Run *smart_pca*
 
-Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR:
+Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR (missing values imputed with means, SNPs scaled to control genetic drift):
 
 ```{r, message=FALSE}
 pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
@@ -127,7 +127,7 @@ Assign statistical results to objects pcaR_eigen, pcaR_load and pcaR_coord:
 
 ```{r}
 pcaR_eigen <- pcaR$pca.eigenvalues # extract eigenvalues (PCA1 and PC2 axes explain 3.5% variation in SNP variation across individuals)
-pcaR_load <- pcaR$pca.snp_loadings # extract principal coefficients (hitg SNP loadings indicate loci with stronger variation across individuals)
+pcaR_load <- pcaR$pca.snp_loadings # extract principal coefficients (high SNP loadings indicate loci with stronger variation across individuals)
 pcaR_coord <- pcaR$pca.sample_coordinates # extract principal components (position of individuals in PCA space used to generate the ordination)
 ```
 
@@ -138,7 +138,7 @@ cols <- rainbow(length(table(my_groups)))
 plot(pcaR$pca.sample_coordinates[,c("PC1","PC2")], cex = 1.5, 
      bg = cols[as.factor(my_groups)], pch = 21, col = "black", main = "mallard genotype smartpca")
 legend("topleft", legend = levels(as.factor(my_groups)), cex = 1, pch = 21, 
-       pt.cex = 1.25, col = "black", pt.bg = cols, text.col = cols)
+       pt.cex = 1.0, col = "black", pt.bg = cols, text.col = cols)
 ```
 
 Greenland individuals cluster in one of the corners of the ordination, supporting a distinct SNP composition relative to the remaining flyways.
@@ -146,7 +146,7 @@ Greenland individuals cluster in one of the corners of the ordination, supportin
 
 ## Run *smart_permanova*
 
-Run PERMANOVA test (group location in PCA1 x PCA2 space) and assign results to object permanovaR.
+Run PERMANOVA test (group location in PCA1 x PCA2 space) and assign results to object permanovaR (missing values imputed with means, SNPs scaled to control genetic drift).
 Notice that pairwise tests increase computing time considerably as there are 45 pairwise comparisons to make for 10 flyways, each calculating a p value based on 10,000 permutations of the data.
 
 ```{r, message=FALSE}
@@ -187,7 +187,7 @@ The lowest p values (resulting from pairwise comparisons) consistently occur bet
 
 ## Run *smart_permdisp*
 
-Run PERMDISP test (group dispersion in PCA1 x PCA2 space) and assign results to object permdispR. Heteroscededasticity tests in combination with ANOVA tests tell whether the ANOVA F statistic is driven by mean and/or varinance differences among groups in a univariate context. Location and dispersion (multivariate context) are analogous with mean and variance in a univariate context. As the number per individuals per flyway differ a great deal among flyways, PERMDISP is run to control for sample-size bias (samplesize_bias = TRUE).
+Run PERMDISP test (group dispersion in PCA1 x PCA2 space) and assign results to object permdispR (missing values imputed with means, SNPs scaled to control genetic drift). Heteroscededasticity tests in combination with ANOVA tests tell whether the ANOVA F statistic is driven by mean and/or varinance differences among groups in a univariate context. Location and dispersion (multivariate context) are analogous with mean and variance in a univariate context. As the number per individuals per flyway differ a great deal among flyways, PERMDISP is run to control for sample-size bias (samplesize_bias = TRUE).
 
 ```{r, message=FALSE}
 pathToFile <- system.file("extdata", "mallard_genotype_Kraus2012", package = "smartsnp")
@@ -221,7 +221,7 @@ For the mallard dataset, the p value is 0.0073:
 str(permdispR$permdisp.pairwise_test)
 ```
 
-Most PERMDISP pairwise tests show relatively high p values (i.e., high probability of the observed differences in dispersion if the null hypothesis of no dispersion differences among groups is true),  indicating that PERMANOVA tests mainly captured differences in location. The lowest p values for the PERMDISP pairwise tests for Eurasian flyways occur for the Europe North Western (ENW) flyway versus the other flyways as seen in the ordination plot (i.e., ENW individuals are widely spread over both the PCA1 and PCA2 axes).
+Most PERMDISP pairwise tests show relatively high p values (i.e., high probability of the observed differences in dispersion if the null hypothesis of no dispersion differences among groups is true),  indicating that PERMANOVA tests mainly captured differences in location. The lowest p values for the PERMDISP pairwise tests among Eurasian flyways occur for the Europe North Western (ENW) flyway versus the other flyways as seen in the ordination plot (i.e., ENW individuals are widely spread over both the PCA1 and PCA2 axes).
 
 
 ## Run *smart_mva*

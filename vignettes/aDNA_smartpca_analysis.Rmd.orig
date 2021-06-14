@@ -28,7 +28,7 @@ Lazaridis et al. "Genomic insights into the origin of farming in the ancient Nea
 
 The data is available online but needs to be pre-processed. Particularly, the aDNA data needs to be merged with modern data. All steps can be completed in R, but some need certain command-line software installed - they won't work on a Windows machine. 
 
-If you are just interested in how to run *smart_pca* with ancient samples, feel free to go straight to the chapter "Running smartpca".
+If you are just interested in how to run *smart_pca* with ancient samples (all you need is an index vector *aDNA_inds* with the column numbers of the ancient samples), feel free to go straight to the section "Running smartpca" below.
 
 ## Install package *smartsnp*
 
@@ -171,9 +171,9 @@ sample.rem <- c("Mota", "Denisovan", "Chimp", "Mbuti.DG", "Altai",
                "Vi_merge", "Clovis", "Kennewick", "Chuvash", "Ust_Ishim", 
                "AG2", "MA1", "MezE", "hg19ref", "Kostenki14")
 
-# Simple 0/1 vectors that determines which samples to remove and which to use for PCA ordination or projection:
-SR <- which(GR$V3 %in% sample.rem)  # Samples to remove
-SP <- which(SA == "ancient")        # Samples to project
+# Simple index vectors that determines which samples to remove and which to use for PCA ordination or projection:
+SR <- which(GR$V3 %in% sample.rem)  # Column numbers of samples to remove
+SP <- which(SA == "ancient")        # Column numbers of samples to project (i.e. aDNA)
 ```
 
 Now we are finally ready to run smart_pca:
@@ -219,9 +219,13 @@ ggplot() +
   geom_label_repel(data = smart_mva.aDNA_WestEurasia.evec[Class == "Projected",.SD[1], Group], aes(-PC1mean, PC2mean, label=Group, col=Group), alpha=0.7, segment.color="NA") +
   theme_bw() + theme(legend.position = "none")
 
+
 ```
 
-Voila! 
+Voila! Note that we have plotted the negative of PC1 (i.e. -PC1) here. The only reason for this is to make the plot have the same orientation as the original plot in Lazaridis et al. (2016), Fig. 1B. Importantly, changing the sign of any axis of an PCA does not change its interpretation, and different software can give different signs. See the excellent explanation here:
+
+https://stats.stackexchange.com/questions/88880/does-the-sign-of-scores-or-of-loadings-in-pca-or-fa-have-a-meaning-may-i-revers
+
 Finally, let's move back to the old working directory:
 
 ```{r, eval=FALSE}

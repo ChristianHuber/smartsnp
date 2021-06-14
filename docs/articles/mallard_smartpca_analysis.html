@@ -180,7 +180,7 @@
 <h2 class="hasAnchor">
 <a href="#run-smart_pca" class="anchor"></a>Run <em>smart_pca</em>
 </h2>
-<p>Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR:</p>
+<p>Run PCA with truncated SVD (PCA 1 x PCA 2 axes) and assign results to object pcaR (missing values imputed with means, SNPs scaled to control genetic drift):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pathToFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"mallard_genotype_Kraus2012"</span>, package <span class="op">=</span> <span class="st">"smartsnp"</span><span class="op">)</span>
 <span class="va">pcaR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smart_pca.html">smart_pca</a></span><span class="op">(</span>snp_data <span class="op">=</span> <span class="va">pathToFile</span>, sample_group <span class="op">=</span> <span class="va">my_groups</span>, missing_impute <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
@@ -207,7 +207,7 @@
 <p>Assign statistical results to objects pcaR_eigen, pcaR_load and pcaR_coord:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pcaR_eigen</span> <span class="op">&lt;-</span> <span class="va">pcaR</span><span class="op">$</span><span class="va">pca.eigenvalues</span> <span class="co"># extract eigenvalues (PCA1 and PC2 axes explain 3.5% variation in SNP variation across individuals)</span>
-<span class="va">pcaR_load</span> <span class="op">&lt;-</span> <span class="va">pcaR</span><span class="op">$</span><span class="va">pca.snp_loadings</span> <span class="co"># extract principal coefficients (hitg SNP loadings indicate loci with stronger variation across individuals)</span>
+<span class="va">pcaR_load</span> <span class="op">&lt;-</span> <span class="va">pcaR</span><span class="op">$</span><span class="va">pca.snp_loadings</span> <span class="co"># extract principal coefficients (high SNP loadings indicate loci with stronger variation across individuals)</span>
 <span class="va">pcaR_coord</span> <span class="op">&lt;-</span> <span class="va">pcaR</span><span class="op">$</span><span class="va">pca.sample_coordinates</span> <span class="co"># extract principal components (position of individuals in PCA space used to generate the ordination)</span></code></pre></div>
 <p>Plot PCA:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -215,7 +215,7 @@
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pcaR</span><span class="op">$</span><span class="va">pca.sample_coordinates</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PC1"</span>,<span class="st">"PC2"</span><span class="op">)</span><span class="op">]</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, 
      bg <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">my_groups</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">21</span>, col <span class="op">=</span> <span class="st">"black"</span>, main <span class="op">=</span> <span class="st">"mallard genotype smartpca"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">my_groups</span><span class="op">)</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span>, pch <span class="op">=</span> <span class="fl">21</span>, 
-       pt.cex <span class="op">=</span> <span class="fl">1.25</span>, col <span class="op">=</span> <span class="st">"black"</span>, pt.bg <span class="op">=</span> <span class="va">cols</span>, text.col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></code></pre></div>
+       pt.cex <span class="op">=</span> <span class="fl">1.0</span>, col <span class="op">=</span> <span class="st">"black"</span>, pt.bg <span class="op">=</span> <span class="va">cols</span>, text.col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></code></pre></div>
 <p><img src="figure/pca_plot_mallard-1.png" title="plot of chunk pca_plot_mallard" alt="plot of chunk pca_plot_mallard" style="display: block; margin: auto;"></p>
 <p>Greenland individuals cluster in one of the corners of the ordination, supporting a distinct SNP composition relative to the remaining flyways.</p>
 </div>
@@ -223,7 +223,7 @@
 <h2 class="hasAnchor">
 <a href="#run-smart_permanova" class="anchor"></a>Run <em>smart_permanova</em>
 </h2>
-<p>Run PERMANOVA test (group location in PCA1 x PCA2 space) and assign results to object permanovaR. Notice that pairwise tests increase computing time considerably as there are 45 pairwise comparisons to make for 10 flyways, each calculating a p value based on 10,000 permutations of the data.</p>
+<p>Run PERMANOVA test (group location in PCA1 x PCA2 space) and assign results to object permanovaR (missing values imputed with means, SNPs scaled to control genetic drift). Notice that pairwise tests increase computing time considerably as there are 45 pairwise comparisons to make for 10 flyways, each calculating a p value based on 10,000 permutations of the data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pathToFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"mallard_genotype_Kraus2012"</span>, package <span class="op">=</span> <span class="st">"smartsnp"</span><span class="op">)</span>
 <span class="va">permanovaR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smart_permanova.html">smart_permanova</a></span><span class="op">(</span>snp_data <span class="op">=</span> <span class="va">pathToFile</span>, sample_group <span class="op">=</span> <span class="va">my_groups</span>, 
@@ -292,7 +292,7 @@
 <h2 class="hasAnchor">
 <a href="#run-smart_permdisp" class="anchor"></a>Run <em>smart_permdisp</em>
 </h2>
-<p>Run PERMDISP test (group dispersion in PCA1 x PCA2 space) and assign results to object permdispR. Heteroscededasticity tests in combination with ANOVA tests tell whether the ANOVA F statistic is driven by mean and/or varinance differences among groups in a univariate context. Location and dispersion (multivariate context) are analogous with mean and variance in a univariate context. As the number per individuals per flyway differ a great deal among flyways, PERMDISP is run to control for sample-size bias (samplesize_bias = TRUE).</p>
+<p>Run PERMDISP test (group dispersion in PCA1 x PCA2 space) and assign results to object permdispR (missing values imputed with means, SNPs scaled to control genetic drift). Heteroscededasticity tests in combination with ANOVA tests tell whether the ANOVA F statistic is driven by mean and/or varinance differences among groups in a univariate context. Location and dispersion (multivariate context) are analogous with mean and variance in a univariate context. As the number per individuals per flyway differ a great deal among flyways, PERMDISP is run to control for sample-size bias (samplesize_bias = TRUE).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pathToFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"mallard_genotype_Kraus2012"</span>, package <span class="op">=</span> <span class="st">"smartsnp"</span><span class="op">)</span>
 <span class="va">permdispR</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/smart_permdisp.html">smart_permdisp</a></span><span class="op">(</span>snp_data <span class="op">=</span> <span class="va">pathToFile</span>, sample_group <span class="op">=</span> <span class="va">my_groups</span>, 
@@ -348,7 +348,7 @@
 <span class="co">#&gt;  $ F.Model          : num  0.00367 5.20981 0.13897 20.46506 1.93196 ...</span>
 <span class="co">#&gt;  $ P.value          : num  0.9527 0.0293 0.7053 0.0001 0.1502 ...</span>
 <span class="co">#&gt;  $ P.value.corrected: num  1 1 1 0.0045 1 1 1 1 1 1 ...</span></code></pre></div>
-<p>Most PERMDISP pairwise tests show relatively high p values (i.e., high probability of the observed differences in dispersion if the null hypothesis of no dispersion differences among groups is true), indicating that PERMANOVA tests mainly captured differences in location. The lowest p values for the PERMDISP pairwise tests for Eurasian flyways occur for the Europe North Western (ENW) flyway versus the other flyways as seen in the ordination plot (i.e., ENW individuals are widely spread over both the PCA1 and PCA2 axes).</p>
+<p>Most PERMDISP pairwise tests show relatively high p values (i.e., high probability of the observed differences in dispersion if the null hypothesis of no dispersion differences among groups is true), indicating that PERMANOVA tests mainly captured differences in location. The lowest p values for the PERMDISP pairwise tests among Eurasian flyways occur for the Europe North Western (ENW) flyway versus the other flyways as seen in the ordination plot (i.e., ENW individuals are widely spread over both the PCA1 and PCA2 axes).</p>
 </div>
 <div id="run-smart_mva" class="section level2">
 <h2 class="hasAnchor">

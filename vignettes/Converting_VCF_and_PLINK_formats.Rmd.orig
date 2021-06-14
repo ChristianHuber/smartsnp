@@ -22,7 +22,7 @@ set.seed(1014)
 
 ```
 
-Both VCF (.vcf) and PLINK (.bed) formats are frequently used for storing genetic variation data. In this vignette we provide a quick and robust solution for how to transform these two formats into a general genotype matrix (i.e. where homozygous genotypes are coded as 0 or 2, and heterozygotes as 1) that can be used with the *smartsnp* package.
+Package *smartsnp* is not a data-conversion tool. Inspired by the command-line tool SMARTPCA, *smartsnp* handles SNP datasets in text format and in SMARTPCA formats (uncompressed = EIGENSTRAT or compressed binary = PACKENDANCESTRYMAP) and a general genotype matrix format. However, both VCF (.vcf) and PLINK (.bed) formats are frequently used for storing genetic variation data. In this vignette we provide a quick and robust solution for how to transform these two formats into a general genotype matrix (i.e. where homozygous genotypes are coded as 0 or 2, and heterozygotes as 1) that can be used with the *smartsnp* package.
 
 The general strategy is to use the *plink2* software for transforming VCF or PLINK/bed files into a general (transposed) genotype matrix. It is "transposed" because PLINK and VCF files typically have samples in rows, whereas the general input file for *smartsnp* has samples in columns. 
 
