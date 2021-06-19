@@ -94,9 +94,9 @@
     
 <p>Package <em>smartsnp</em> is not a data-conversion tool. Inspired by the command-line tool SMARTPCA, <em>smartsnp</em> handles SNP datasets in text format and in SMARTPCA formats (uncompressed = EIGENSTRAT or compressed binary = PACKENDANCESTRYMAP) and a general genotype matrix format. However, both VCF (.vcf) and PLINK (.bed) formats are frequently used for storing genetic variation data. In this vignette we provide a quick and robust solution for how to transform these two formats into a general genotype matrix (i.e. where homozygous genotypes are coded as 0 or 2, and heterozygotes as 1) that can be used with the <em>smartsnp</em> package.</p>
 <p>The general strategy is to use the <em>plink2</em> software for transforming VCF or PLINK/bed files into a general (transposed) genotype matrix. It is “transposed” because PLINK and VCF files typically have samples in rows, whereas the general input file for <em>smartsnp</em> has samples in columns.</p>
-<p>We make heavily use of the plink2 software, which is a comprehensive update to Shaun Purcell’s PLINK original command-line program. Binary downloads and an installation guide is available here: <a href="https://www.cog-genomics.org/plink2" class="uri">https://www.cog-genomics.org/plink2</a></p>
-<p>In the PLINK manual, the file format that we transform our data into is called “.traw (variant-major additive component file)”. See here for more information: <a href="https://www.cog-genomics.org/plink/1.9/formats#traw" class="uri">https://www.cog-genomics.org/plink/1.9/formats#traw</a></p>
-<p>Note that the <em>.traw</em> format can be directly used with <em>smartsnp</em>, no further data transformation is necessary.</p>
+<p>We make heavily use of the <em>plink2</em> software, which is a comprehensive update to Shaun Purcell’s PLINK original command-line program. Binary downloads and an installation guide is available here: <a href="https://www.cog-genomics.org/plink2" class="uri">https://www.cog-genomics.org/plink2</a></p>
+<p>In the <em>plink2</em> manual, the file format that we transform our data into is called “.traw (variant-major additive component file)”. See here for more information: <a href="https://www.cog-genomics.org/plink/1.9/formats#traw" class="uri">https://www.cog-genomics.org/plink/1.9/formats#traw</a></p>
+<p>Note that the <em>.traw</em> format can be directly used with the lastest development version of <em>smartsnp</em>, no further data transformation is necessary.</p>
 <div id="download-a-small-example-vcf" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-a-small-example-vcf" class="anchor"></a>Download a small example VCF</h2>
@@ -117,18 +117,18 @@
 <div id="vcf-to-plink--bed" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vcf-to-plink--bed" class="anchor"></a>VCF to PLINK (.bed)</h2>
-<p>As a first step, we show how to transform a VCF file into a PLINK/bed format. Note that the VCF is gzipped, but <em>plink</em> can directly use gzipped files.</p>
-<p>We will use the <em>system</em> function for calling plink. This is effectively the same as running the quoted command on the command line.</p>
+<p>As a first step, we show how to transform a VCF file into a PLINK/bed format. Note that the VCF is gzipped, but <em>plink2</em> can directly use gzipped files.</p>
+<p>We will use the <em>system</em> function for calling <em>plink2</em>. This is effectively the same as running the quoted command on the command line.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"plink --vcf region.vcf.gz --make-bed --out region"</span><span class="op">)</span></code></pre></div>
 <p>The –out parameter defines the name of the output file (without any suffix), you can set it to any arbitrary string. After running this command, you will see three files that make up the PLINK/bed format (region.bim, region.bed, region.fam). See the definition of the PLINK/bed (binary biallelic genotype table) file format for more information: <a href="https://www.cog-genomics.org/plink/1.9/formats#bed" class="uri">https://www.cog-genomics.org/plink/1.9/formats#bed</a></p>
-<p>The <em>plink</em> software offers a wide range of options for filtering and transforming the data that could be useful for your analysis. See the manual: <a href="https://www.cog-genomics.org/plink/1.9/" class="uri">https://www.cog-genomics.org/plink/1.9/</a></p>
-<p>If you don’t want to make use of any further PLINK functionality, then you can also directly transform the VCF file into the .traw format. See section “Directly transforming VCF to raw genotype (.traw)” below.</p>
+<p>The <em>plink2</em> software offers a wide range of options for filtering and transforming the data that could be useful for your analysis. See the manual: <a href="https://www.cog-genomics.org/plink/1.9/" class="uri">https://www.cog-genomics.org/plink/1.9/</a></p>
+<p>If you don’t want to make use of any further <em>plink2</em> functionality, then you can also directly transform the VCF file into the .traw format. See section “Directly transforming VCF to raw genotype (.traw)” below.</p>
 </div>
 <div id="plink-to-raw-genotype--traw" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plink-to-raw-genotype--traw" class="anchor"></a>PLINK to raw genotype (.traw)</h2>
-<p>Now we will use the <em>plink</em> software to transform the .bed file into raw genotypes. Again, note that we will need a “transformed” version since <em>smartsnp</em> assumes that samples are in columns, not rows.</p>
+<p>Now we will use the <em>plink2</em> software to transform the .bed file into raw genotypes. Again, note that we will need a “transformed” version since <em>smartsnp</em> assumes that samples are in columns, not rows.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"plink --bfile region --recode A-transpose --out region_genotypeMatrix"</span><span class="op">)</span></code></pre></div>
 <p>Again, the –out parameter defines the name of the output file, without the suffix. After running this command, you will see a “region_genotypeMatrix.traw” file. This file can be directly used with smartsnp.</p>
@@ -136,7 +136,7 @@
 <div id="vcf-to-raw-genotype--traw" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vcf-to-raw-genotype--traw" class="anchor"></a>VCF to raw genotype (.traw)</h2>
-<p>We could have skipped the intermediate step of transforming the VCF into a PLINK format. The <em>plink</em> software allows to directly transform the VCF into the .traw format.</p>
+<p>We could have skipped the intermediate step of transforming the VCF into a PLINK format. The <em>plink2</em> software allows to directly transform the VCF into the .traw format.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"plink --vcf region.vcf.gz --recode A-transpose --out region_genotypeMatrix"</span><span class="op">)</span></code></pre></div>
 </div>
