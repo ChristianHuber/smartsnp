@@ -69,7 +69,14 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/ChristianHuber/smartsnp/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -85,7 +92,7 @@
       <h1 data-toc-skip>Projecting ancient samples</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/ChristianHuber/smartsnp/blob/master/vignettes/aDNA_smartpca_analysis.Rmd"><code>vignettes/aDNA_smartpca_analysis.Rmd</code></a></small>
       <div class="hidden name"><code>aDNA_smartpca_analysis.Rmd</code></div>
 
     </div>
@@ -110,7 +117,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"smartsnp"</span><span class="op">)</span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">smartsnp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://christianhuber.github.io/smartsnp/">smartsnp</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="downloading-the-data" class="section level2">
 <h2 class="hasAnchor">
@@ -237,7 +244,7 @@
 
 <span class="co"># Plotting with ggplot2 and labeling the groups with ggrepel:</span>
 
-<span class="va">smart_mva.aDNA_WestEurasia.evec</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">sm.pca</span><span class="op">$</span><span class="va">pca.sample_coordinates</span><span class="op">)</span>
+<span class="va">smart_mva.aDNA_WestEurasia.evec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="va">sm.pca</span><span class="op">$</span><span class="va">pca.sample_coordinates</span><span class="op">)</span>
 <span class="va">smart_mva.aDNA_WestEurasia.evec</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PC1mean"</span>, <span class="st">"PC2mean"</span><span class="op">)</span> <span class="op">:=</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">PC1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">PC2</span><span class="op">)</span><span class="op">)</span>, <span class="va">Group</span><span class="op">]</span>
 <span class="va">smart_mva.aDNA_WestEurasia.evec</span><span class="op">[</span>, <span class="va">Name</span> <span class="op">:=</span> <span class="va">GR</span><span class="op">$</span><span class="va">V1</span><span class="op">]</span>
 

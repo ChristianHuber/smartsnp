@@ -2,7 +2,6 @@ Package: smartsnp
 Type: Package
 Title: Fast Multivariate Analyses of Big Genomic Data
 Version: 1.1.0
-Date: 2021-03-01
 Authors@R: c(
     person("Salvador", family = "Herrando-Perez", email = "salherra@gmail.com",
            role = c("aut"), comment = c(ORCID = "0000-0001-6052-6854")),
@@ -14,6 +13,8 @@ Maintainer: Christian Huber <christian.domitian.huber@gmail.com>
 Description: Fast computation of multivariate analyses of small (10s to 100s markers) to big (1000s to 100000s) genotype data. Runs Principal Component Analysis allowing for centering, z-score standardization and scaling for genetic drift, projection of ancient samples to modern genetic space and multivariate tests for differences in group location (Permutation-Based Multivariate Analysis of Variance) and dispersion (Permutation-Based Multivariate Analysis of Dispersion).
 Language: en-GB
 License: MIT + file LICENSE
+URL: https://christianhuber.github.io/smartsnp/
+BugReports: https://github.com/ChristianHuber/smartsnp/issues
 Depends: R (>= 3.6.0)
 VignetteBuilder: knitr
 Imports: 
@@ -26,6 +27,7 @@ Imports:
     vroom,
     Rcpp,
 Suggests:
+    knitr,
     rmarkdown
 RoxygenNote: 7.1.1
 Encoding: UTF-8

@@ -213,7 +213,7 @@ library(data.table)
 
 # Plotting with ggplot2 and labeling the groups with ggrepel:
 
-smart_mva.aDNA_WestEurasia.evec = data.table(sm.pca$pca.sample_coordinates)
+smart_mva.aDNA_WestEurasia.evec <- data.table(sm.pca$pca.sample_coordinates)
 smart_mva.aDNA_WestEurasia.evec[, c("PC1mean", "PC2mean") := .(mean(PC1), mean(PC2)), Group]
 smart_mva.aDNA_WestEurasia.evec[, Name := GR$V1]
 
