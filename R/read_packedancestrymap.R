@@ -19,24 +19,24 @@
 #' @export
 read_packedancestrymap = function (pref)
 {
-  pref = normalizePath(pref, mustWork = FALSE)
-  fl = paste0(pref, ".geno")
-  conn = file(fl, "rb")
-  hd = strsplit(readBin(conn, "character", n = 1), " +")[[1]]
+  pref <- normalizePath(pref, mustWork = FALSE)
+  fl <- paste0(pref, ".geno")
+  conn <- file(fl, "rb")
+  hd <- strsplit(readBin(conn, "character", n = 1), " +")[[1]]
   close(conn)
-  nindall = as.numeric(hd[2])
-  nsnpall = as.numeric(hd[3])
+  nindall <- as.numeric(hd[2])
+  nsnpall <- as.numeric(hd[3])
   message(basename(pref), ".geno has ", nindall,
              " samples and ", nsnpall, " SNPs.")
   message("Reading data for ", nindall, " samples and ",
              nsnpall, " SNPs")
   message("Expected size of genotype data: ",
              round((nsnpall * nindall * 8 + nsnpall * 112)/1e+06), " MB")
-  indvec = rep(1, nindall)
-  geno = cpp_read_packedancestrymap(fl, nsnpall, nindall, indvec,
+  indvec <- rep(1, nindall)
+  geno <- cpp_read_packedancestrymap(fl, nsnpall, nindall, indvec,
                                     first = 0, last = nsnpall, transpose = FALSE,
                                     verbose = FALSE)
-  outlist = list(geno = geno)
+  outlist <- list(geno = geno)
   outlist
 }
 ##### smartsnp v.1
