@@ -29,7 +29,7 @@ Population SEAP removed from dataset as its geographic background is unclear (Ro
 
 Populations GBAB, GBFE and GBNM (British Isles) removed from dataset as these individuals might have mixed with captive/feral mallards (Robert Kraus, pers. comm., 03/06/2021).
 
-Three datasets are available (none includes row names or column headings):
+Three datasets are available. They are part of the *smartsnp* package, you don't need to download or process the data from dryad:
 
 * Genotype data (mallard_genotype_Kraus2012.txt) = 364 SNPs (rows) x 695 individuals (columns), individuals comprise 55 populations and 10 flyways. Genotypes are 0, 1, 2 or (for missing values) 9
 * Group names (mallard_samples_Kraus2013.txt) = 695 rows x 3 columns, column 1 = flyway names, column 2 = population name, column 3 = indvidual names comprise 55 populations and 10 flyways
@@ -84,16 +84,14 @@ length(table(my_groups)) #number of flyways
 #> [1] 10
 table(my_groups) #number of individuals per flyway
 #> my_groups
-#>                        AsiaCentral                           AsiaEast 
-#>                                 51                                 12 
-#>                   AsiaSouthWestern EuropeBlackSeaEasternMediterranean 
-#>                                 15                                 21 
-#>                 EuropeNorthWestern         EuropeWesternMediterranean 
-#>                                147                                360 
-#>                          Greenland               NorthAmericaAtlantic 
-#>                                 29                                 16 
-#>                NorthAmericaCentral                NorthAmericaPacific 
-#>                                 22                                 22
+#>                        AsiaCentral                           AsiaEast                   AsiaSouthWestern 
+#>                                 51                                 12                                 15 
+#> EuropeBlackSeaEasternMediterranean                 EuropeNorthWestern         EuropeWesternMediterranean 
+#>                                 21                                147                                360 
+#>                          Greenland               NorthAmericaAtlantic                NorthAmericaCentral 
+#>                                 29                                 16                                 22 
+#>                NorthAmericaPacific 
+#>                                 22
 ```
 
 Number of populations (not needed for analysis hereafter):
@@ -105,14 +103,12 @@ length(table(my_pops)) #number of populations
 #> [1] 55
 table(my_pops) #number of individuals per population
 #> my_pops
-#>  ATHO  CACO  CAEK  CAJC  CALM  CARM  CASL  CNLI  CYLA  DEWU  EETA  FIOU  FOTO  FRAL  FRMV 
-#>    25     4     4     1     7    20     2     5     5    27    22    19    24    10    32 
-#>  GLIS  GLNU  GREV IR361 IR362 IR366  IR37 IR371 IR375 IR377   IR4 IR444 IR448 IR449 IR452 
-#>     9    20    16     1     1     1     1     1     1     1     1     1     1     1     1 
-#> IR454 IR513 IR514  ISHV  LTVE  NLFR  NOBE  NOSS  PKHA  PTDJ  RUIV  RUKH  RULE  RUNO  RUOM 
-#>     1     1     1     4    17    32    32    16     7    32    27     7    31     8    12 
-#>  RUTO  RUTV  RUVL  RUVO  RUYA  SEOB  SILJ  UADU  UALV  USMF 
-#>    32    19    29    31    25    20    19     3     3    22
+#>  ATHO  CACO  CAEK  CAJC  CALM  CARM  CASL  CNLI  CYLA  DEWU  EETA  FIOU  FOTO  FRAL  FRMV  GLIS  GLNU  GREV IR361 
+#>    25     4     4     1     7    20     2     5     5    27    22    19    24    10    32     9    20    16     1 
+#> IR362 IR366  IR37 IR371 IR375 IR377   IR4 IR444 IR448 IR449 IR452 IR454 IR513 IR514  ISHV  LTVE  NLFR  NOBE  NOSS 
+#>     1     1     1     1     1     1     1     1     1     1     1     1     1     1     4    17    32    32    16 
+#>  PKHA  PTDJ  RUIV  RUKH  RULE  RUNO  RUOM  RUTO  RUTV  RUVL  RUVO  RUYA  SEOB  SILJ  UADU  UALV  USMF 
+#>     7    32    27     7    31     8    12    32    19    29    31    25    20    19     3     3    22
 ```
 
 Code per individual (not needed for analysis hereafter):
@@ -210,9 +206,8 @@ permanovaR is a list with 5 elements:
 class(permanovaR)
 #> [1] "list"
 names(permanovaR)
-#> [1] "permanova.samples"             "permanova.global_test"        
-#> [3] "permanova.pairwise_test"       "permanova.pairwise_correction"
-#> [5] "permanova.permutation_number"  "permanova.permutation_seed"
+#> [1] "permanova.samples"             "permanova.global_test"         "permanova.pairwise_test"      
+#> [4] "permanova.pairwise_correction" "permanova.permutation_number"  "permanova.permutation_seed"
 str(permanovaR)
 #> List of 6
 #>  $ permanova.samples            :'data.frame':	695 obs. of  2 variables:
@@ -263,20 +258,13 @@ The lower the p value, the weaker the support for the null hypothesis.
 
 ```r
 head(permanovaR$permanova.pairwise_test)
-#>                                        GroupPair     F.Model          R2 P.value
-#> 1                           AsiaCentral-AsiaEast   1.3655903 0.021896534  0.2505
-#> 2                   AsiaCentral-AsiaSouthWestern   4.5468589 0.066332126  0.0414
-#> 3 AsiaCentral-EuropeBlackSeaEasternMediterranean   0.6718692 0.009506883  0.5117
-#> 4                 AsiaCentral-EuropeNorthWestern  34.2856122 0.148882997  0.0001
-#> 5         AsiaCentral-EuropeWesternMediterranean   4.7384432 0.011452751  0.0211
-#> 6                          AsiaCentral-Greenland 314.3271374 0.801186325  0.0001
-#>   P.value.corrected
-#> 1            1.0000
-#> 2            0.8694
-#> 3            1.0000
-#> 4            0.0045
-#> 5            0.5408
-#> 6            0.0045
+#>                                        GroupPair     F.Model          R2 P.value P.value.corrected
+#> 1                           AsiaCentral-AsiaEast   1.3655903 0.021896534  0.2505            1.0000
+#> 2                   AsiaCentral-AsiaSouthWestern   4.5468589 0.066332126  0.0414            0.8694
+#> 3 AsiaCentral-EuropeBlackSeaEasternMediterranean   0.6718692 0.009506883  0.5117            1.0000
+#> 4                 AsiaCentral-EuropeNorthWestern  34.2856122 0.148882997  0.0001            0.0045
+#> 5         AsiaCentral-EuropeWesternMediterranean   4.7384432 0.011452751  0.0211            0.5408
+#> 6                          AsiaCentral-Greenland 314.3271374 0.801186325  0.0001            0.0045
 ```
 
 The lowest p values (resulting from pairwise comparisons) consistently occur between the Greenland and the remaining flyways, supporting a unique SNP composition mostly in Greenland mallards.
@@ -299,9 +287,8 @@ permdispR is a list with 7 elements:
 class(permdispR)
 #> [1] "list"
 names(permdispR)
-#> [1] "permdisp.samples"             "permdisp_bias"               
-#> [3] "permdisp.group_location"      "permdisp.global_test"        
-#> [5] "permdisp.pairwise_test"       "permdisp.pairwise_correction"
+#> [1] "permdisp.samples"             "permdisp_bias"                "permdisp.group_location"     
+#> [4] "permdisp.global_test"         "permdisp.pairwise_test"       "permdisp.pairwise_correction"
 #> [7] "permdisp.permutation_number"  "permdisp.permutation_seed"
 str(permdispR)
 #> List of 8
@@ -497,10 +484,9 @@ Element 3 = PERMANOVA and PERMDISP results in a list:
 class(mvaR$test)
 #> [1] "list"
 names(mvaR$test)
-#>  [1] "test_samples"             "permanova.global_test"    "permanova.pairwise_test" 
-#>  [4] "permdisp.global_test"     "permdisp.pairwise_test"   "permdisp.bias"           
-#>  [7] "permdisp.group_location"  "test.pairwise_correction" "test.permutation_number" 
-#> [10] "test.permutation_seed"
+#>  [1] "test_samples"             "permanova.global_test"    "permanova.pairwise_test"  "permdisp.global_test"    
+#>  [5] "permdisp.pairwise_test"   "permdisp.bias"            "permdisp.group_location"  "test.pairwise_correction"
+#>  [9] "test.permutation_number"  "test.permutation_seed"
 str(mvaR$test)
 #> List of 10
 #>  $ test_samples            :'data.frame':	695 obs. of  3 variables:

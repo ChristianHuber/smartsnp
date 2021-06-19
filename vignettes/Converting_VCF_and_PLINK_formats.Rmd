@@ -18,13 +18,13 @@ Package *smartsnp* is not a data-conversion tool. Inspired by the command-line t
 
 The general strategy is to use the *plink2* software for transforming VCF or PLINK/bed files into a general (transposed) genotype matrix. It is "transposed" because PLINK and VCF files typically have samples in rows, whereas the general input file for *smartsnp* has samples in columns. 
 
-We make heavily use of the plink2 software, which is a comprehensive update to Shaun Purcell's PLINK original command-line program. Binary downloads and an installation guide is available here: 
+We make heavily use of the *plink2* software, which is a comprehensive update to Shaun Purcell's PLINK original command-line program. Binary downloads and an installation guide is available here: 
 https://www.cog-genomics.org/plink2
 
-In the PLINK manual, the file format that we transform our data into is called ".traw (variant-major additive component file)". See here for more information:
+In the *plink2* manual, the file format that we transform our data into is called ".traw (variant-major additive component file)". See here for more information:
 https://www.cog-genomics.org/plink/1.9/formats#traw
 
-Note that the *.traw* format can be directly used with *smartsnp*, no further data transformation is necessary.
+Note that the *.traw* format can be directly used with the lastest development version of *smartsnp*, no further data transformation is necessary.
 
 ## Download a small example VCF
 
@@ -53,9 +53,9 @@ file.copy(from = vcf_file, to = "./") # Copy the file to the cwd
 
 ## VCF to PLINK (.bed)
 
-As a first step, we show how to transform a VCF file into a PLINK/bed format. Note that the VCF is gzipped, but *plink* can directly use gzipped files.
+As a first step, we show how to transform a VCF file into a PLINK/bed format. Note that the VCF is gzipped, but *plink2* can directly use gzipped files.
 
-We will use the *system* function for calling plink. This is effectively the same as running the quoted command on the command line.
+We will use the *system* function for calling *plink2*. This is effectively the same as running the quoted command on the command line.
 
 
 ```r
@@ -65,14 +65,14 @@ system("plink --vcf region.vcf.gz --make-bed --out region")
 The --out parameter defines the name of the output file (without any suffix), you can set it to any arbitrary string. After running this command, you will see three files that make up the PLINK/bed format (region.bim, region.bed, region.fam). See the definition of the PLINK/bed (binary biallelic genotype table) file format for more information:
 https://www.cog-genomics.org/plink/1.9/formats#bed
 
-The *plink* software offers a wide range of options for filtering and transforming the data that could be useful for your analysis. See the manual:
+The *plink2* software offers a wide range of options for filtering and transforming the data that could be useful for your analysis. See the manual:
 https://www.cog-genomics.org/plink/1.9/
 
-If you don't want to make use of any further PLINK functionality, then you can also directly transform the VCF file into the .traw format. See section "Directly transforming VCF to raw genotype (.traw)" below.
+If you don't want to make use of any further *plink2* functionality, then you can also directly transform the VCF file into the .traw format. See section "Directly transforming VCF to raw genotype (.traw)" below.
 
 ## PLINK to raw genotype (.traw)
 
-Now we will use the *plink* software to transform the .bed file into raw genotypes. Again, note that we will need a "transformed" version since *smartsnp* assumes that samples are in columns, not rows.
+Now we will use the *plink2* software to transform the .bed file into raw genotypes. Again, note that we will need a "transformed" version since *smartsnp* assumes that samples are in columns, not rows.
 
 
 ```r
@@ -83,7 +83,7 @@ Again, the --out parameter defines the name of the output file, without the suff
 
 ## VCF to raw genotype (.traw)
 
-We could have skipped the intermediate step of transforming the VCF into a PLINK format. The *plink* software allows to directly transform the VCF into the .traw format. 
+We could have skipped the intermediate step of transforming the VCF into a PLINK format. The *plink2* software allows to directly transform the VCF into the .traw format. 
 
 
 ```r

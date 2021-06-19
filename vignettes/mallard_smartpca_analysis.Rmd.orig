@@ -34,7 +34,7 @@ Population SEAP removed from dataset as its geographic background is unclear (Ro
 
 Populations GBAB, GBFE and GBNM (British Isles) removed from dataset as these individuals might have mixed with captive/feral mallards (Robert Kraus, pers. comm., 03/06/2021).
 
-Three datasets are available (none includes row names or column headings):
+Three datasets are available. They are part of the *smartsnp* package, you don't need to download or process the data from dryad:
 
 * Genotype data (mallard_genotype_Kraus2012.txt) = 364 SNPs (rows) x 695 individuals (columns), individuals comprise 55 populations and 10 flyways. Genotypes are 0, 1, 2 or (for missing values) 9
 * Group names (mallard_samples_Kraus2013.txt) = 695 rows x 3 columns, column 1 = flyway names, column 2 = population name, column 3 = indvidual names comprise 55 populations and 10 flyways
