@@ -15,6 +15,7 @@ Description: Fast computation of multivariate analyses of small (10s to 100s mar
 Language: en-GB
 License: MIT + file LICENSE
 Depends: R (>= 3.6.0)
+VignetteBuilder: knitr
 Imports: 
     bootSVD,
     data.table,
@@ -23,7 +24,9 @@ Imports:
     RSpectra,
     vegan,
     vroom,
-    Rcpp
+    Rcpp,
+Suggests:
+    rmarkdown
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 LazyData: true
