@@ -101,7 +101,7 @@
 <p>Dataset = <a href="https://datadryad.org/stash/dataset/doi:10.5061/dryad.1bq39" class="uri">https://datadryad.org/stash/dataset/doi:10.5061/dryad.1bq39</a></p>
 <p>Population SEAP removed from dataset as its geographic background is unclear (Robert Kraus, pers. comm., 02/06/2021).</p>
 <p>Populations GBAB, GBFE and GBNM (British Isles) removed from dataset as these individuals might have mixed with captive/feral mallards (Robert Kraus, pers. comm., 03/06/2021).</p>
-<p>Three datasets are available (none includes row names or column headings):</p>
+<p>Three datasets are available. They are part of the <em>smartsnp</em> package, you don’t need to download or process the data from dryad:</p>
 <ul>
 <li>Genotype data (mallard_genotype_Kraus2012.txt) = 364 SNPs (rows) x 695 individuals (columns), individuals comprise 55 populations and 10 flyways. Genotypes are 0, 1, 2 or (for missing values) 9</li>
 <li>Group names (mallard_samples_Kraus2013.txt) = 695 rows x 3 columns, column 1 = flyway names, column 2 = population name, column 3 = indvidual names comprise 55 populations and 10 flyways</li>
@@ -141,16 +141,14 @@
 <span class="co">#&gt; [1] 10</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">my_groups</span><span class="op">)</span> <span class="co">#number of individuals per flyway</span>
 <span class="co">#&gt; my_groups</span>
-<span class="co">#&gt;                        AsiaCentral                           AsiaEast </span>
-<span class="co">#&gt;                                 51                                 12 </span>
-<span class="co">#&gt;                   AsiaSouthWestern EuropeBlackSeaEasternMediterranean </span>
-<span class="co">#&gt;                                 15                                 21 </span>
-<span class="co">#&gt;                 EuropeNorthWestern         EuropeWesternMediterranean </span>
-<span class="co">#&gt;                                147                                360 </span>
-<span class="co">#&gt;                          Greenland               NorthAmericaAtlantic </span>
-<span class="co">#&gt;                                 29                                 16 </span>
-<span class="co">#&gt;                NorthAmericaCentral                NorthAmericaPacific </span>
-<span class="co">#&gt;                                 22                                 22</span></code></pre></div>
+<span class="co">#&gt;                        AsiaCentral                           AsiaEast                   AsiaSouthWestern </span>
+<span class="co">#&gt;                                 51                                 12                                 15 </span>
+<span class="co">#&gt; EuropeBlackSeaEasternMediterranean                 EuropeNorthWestern         EuropeWesternMediterranean </span>
+<span class="co">#&gt;                                 21                                147                                360 </span>
+<span class="co">#&gt;                          Greenland               NorthAmericaAtlantic                NorthAmericaCentral </span>
+<span class="co">#&gt;                                 29                                 16                                 22 </span>
+<span class="co">#&gt;                NorthAmericaPacific </span>
+<span class="co">#&gt;                                 22</span></code></pre></div>
 <p>Number of populations (not needed for analysis hereafter):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_pops</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="va">pathToFile</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>
@@ -158,14 +156,12 @@
 <span class="co">#&gt; [1] 55</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">my_pops</span><span class="op">)</span> <span class="co">#number of individuals per population</span>
 <span class="co">#&gt; my_pops</span>
-<span class="co">#&gt;  ATHO  CACO  CAEK  CAJC  CALM  CARM  CASL  CNLI  CYLA  DEWU  EETA  FIOU  FOTO  FRAL  FRMV </span>
-<span class="co">#&gt;    25     4     4     1     7    20     2     5     5    27    22    19    24    10    32 </span>
-<span class="co">#&gt;  GLIS  GLNU  GREV IR361 IR362 IR366  IR37 IR371 IR375 IR377   IR4 IR444 IR448 IR449 IR452 </span>
-<span class="co">#&gt;     9    20    16     1     1     1     1     1     1     1     1     1     1     1     1 </span>
-<span class="co">#&gt; IR454 IR513 IR514  ISHV  LTVE  NLFR  NOBE  NOSS  PKHA  PTDJ  RUIV  RUKH  RULE  RUNO  RUOM </span>
-<span class="co">#&gt;     1     1     1     4    17    32    32    16     7    32    27     7    31     8    12 </span>
-<span class="co">#&gt;  RUTO  RUTV  RUVL  RUVO  RUYA  SEOB  SILJ  UADU  UALV  USMF </span>
-<span class="co">#&gt;    32    19    29    31    25    20    19     3     3    22</span></code></pre></div>
+<span class="co">#&gt;  ATHO  CACO  CAEK  CAJC  CALM  CARM  CASL  CNLI  CYLA  DEWU  EETA  FIOU  FOTO  FRAL  FRMV  GLIS  GLNU  GREV IR361 </span>
+<span class="co">#&gt;    25     4     4     1     7    20     2     5     5    27    22    19    24    10    32     9    20    16     1 </span>
+<span class="co">#&gt; IR362 IR366  IR37 IR371 IR375 IR377   IR4 IR444 IR448 IR449 IR452 IR454 IR513 IR514  ISHV  LTVE  NLFR  NOBE  NOSS </span>
+<span class="co">#&gt;     1     1     1     1     1     1     1     1     1     1     1     1     1     1     4    17    32    32    16 </span>
+<span class="co">#&gt;  PKHA  PTDJ  RUIV  RUKH  RULE  RUNO  RUOM  RUTO  RUTV  RUVL  RUVO  RUYA  SEOB  SILJ  UADU  UALV  USMF </span>
+<span class="co">#&gt;     7    32    27     7    31     8    12    32    19    29    31    25    20    19     3     3    22</span></code></pre></div>
 <p>Code per individual (not needed for analysis hereafter):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_indv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="va">pathToFile</span>, header <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></code></pre></div>
@@ -233,9 +229,8 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">permanovaR</span><span class="op">)</span>
 <span class="co">#&gt; [1] "list"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">permanovaR</span><span class="op">)</span>
-<span class="co">#&gt; [1] "permanova.samples"             "permanova.global_test"        </span>
-<span class="co">#&gt; [3] "permanova.pairwise_test"       "permanova.pairwise_correction"</span>
-<span class="co">#&gt; [5] "permanova.permutation_number"  "permanova.permutation_seed"</span>
+<span class="co">#&gt; [1] "permanova.samples"             "permanova.global_test"         "permanova.pairwise_test"      </span>
+<span class="co">#&gt; [4] "permanova.pairwise_correction" "permanova.permutation_number"  "permanova.permutation_seed"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">permanovaR</span><span class="op">)</span>
 <span class="co">#&gt; List of 6</span>
 <span class="co">#&gt;  $ permanova.samples            :'data.frame':   695 obs. of  2 variables:</span>
@@ -272,20 +267,13 @@
 <p>For the mallard dataset, the p value is 1e-04. As with other frequentist tests, p values should be interpreted as the probability of the observed differences if the null hypothesis of no differences between groups is true. The lower the p value, the weaker the support for the null hypothesis.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">permanovaR</span><span class="op">$</span><span class="va">permanova.pairwise_test</span><span class="op">)</span>
-<span class="co">#&gt;                                        GroupPair     F.Model          R2 P.value</span>
-<span class="co">#&gt; 1                           AsiaCentral-AsiaEast   1.3655903 0.021896534  0.2505</span>
-<span class="co">#&gt; 2                   AsiaCentral-AsiaSouthWestern   4.5468589 0.066332126  0.0414</span>
-<span class="co">#&gt; 3 AsiaCentral-EuropeBlackSeaEasternMediterranean   0.6718692 0.009506883  0.5117</span>
-<span class="co">#&gt; 4                 AsiaCentral-EuropeNorthWestern  34.2856122 0.148882997  0.0001</span>
-<span class="co">#&gt; 5         AsiaCentral-EuropeWesternMediterranean   4.7384432 0.011452751  0.0211</span>
-<span class="co">#&gt; 6                          AsiaCentral-Greenland 314.3271374 0.801186325  0.0001</span>
-<span class="co">#&gt;   P.value.corrected</span>
-<span class="co">#&gt; 1            1.0000</span>
-<span class="co">#&gt; 2            0.8694</span>
-<span class="co">#&gt; 3            1.0000</span>
-<span class="co">#&gt; 4            0.0045</span>
-<span class="co">#&gt; 5            0.5408</span>
-<span class="co">#&gt; 6            0.0045</span></code></pre></div>
+<span class="co">#&gt;                                        GroupPair     F.Model          R2 P.value P.value.corrected</span>
+<span class="co">#&gt; 1                           AsiaCentral-AsiaEast   1.3655903 0.021896534  0.2505            1.0000</span>
+<span class="co">#&gt; 2                   AsiaCentral-AsiaSouthWestern   4.5468589 0.066332126  0.0414            0.8694</span>
+<span class="co">#&gt; 3 AsiaCentral-EuropeBlackSeaEasternMediterranean   0.6718692 0.009506883  0.5117            1.0000</span>
+<span class="co">#&gt; 4                 AsiaCentral-EuropeNorthWestern  34.2856122 0.148882997  0.0001            0.0045</span>
+<span class="co">#&gt; 5         AsiaCentral-EuropeWesternMediterranean   4.7384432 0.011452751  0.0211            0.5408</span>
+<span class="co">#&gt; 6                          AsiaCentral-Greenland 314.3271374 0.801186325  0.0001            0.0045</span></code></pre></div>
 <p>The lowest p values (resulting from pairwise comparisons) consistently occur between the Greenland and the remaining flyways, supporting a unique SNP composition mostly in Greenland mallards.</p>
 </div>
 <div id="run-smart_permdisp" class="section level2">
@@ -302,9 +290,8 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">permdispR</span><span class="op">)</span>
 <span class="co">#&gt; [1] "list"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">permdispR</span><span class="op">)</span>
-<span class="co">#&gt; [1] "permdisp.samples"             "permdisp_bias"               </span>
-<span class="co">#&gt; [3] "permdisp.group_location"      "permdisp.global_test"        </span>
-<span class="co">#&gt; [5] "permdisp.pairwise_test"       "permdisp.pairwise_correction"</span>
+<span class="co">#&gt; [1] "permdisp.samples"             "permdisp_bias"                "permdisp.group_location"     </span>
+<span class="co">#&gt; [4] "permdisp.global_test"         "permdisp.pairwise_test"       "permdisp.pairwise_correction"</span>
 <span class="co">#&gt; [7] "permdisp.permutation_number"  "permdisp.permutation_seed"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">permdispR</span><span class="op">)</span>
 <span class="co">#&gt; List of 8</span>
@@ -465,10 +452,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">mvaR</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>
 <span class="co">#&gt; [1] "list"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">mvaR</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "test_samples"             "permanova.global_test"    "permanova.pairwise_test" </span>
-<span class="co">#&gt;  [4] "permdisp.global_test"     "permdisp.pairwise_test"   "permdisp.bias"           </span>
-<span class="co">#&gt;  [7] "permdisp.group_location"  "test.pairwise_correction" "test.permutation_number" </span>
-<span class="co">#&gt; [10] "test.permutation_seed"</span>
+<span class="co">#&gt;  [1] "test_samples"             "permanova.global_test"    "permanova.pairwise_test"  "permdisp.global_test"    </span>
+<span class="co">#&gt;  [5] "permdisp.pairwise_test"   "permdisp.bias"            "permdisp.group_location"  "test.pairwise_correction"</span>
+<span class="co">#&gt;  [9] "test.permutation_number"  "test.permutation_seed"</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mvaR</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>
 <span class="co">#&gt; List of 10</span>
 <span class="co">#&gt;  $ test_samples            :'data.frame':    695 obs. of  3 variables:</span>
