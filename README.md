@@ -24,14 +24,37 @@ functions.
 
 ## Installation
 
-You can install the released version of smartsnp from
+Install the released version of smartsnp from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("smartsnp")
 ```
 
-## Example
+Install the latest development version from GitHub:
+
+``` r
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+devtools::install_github("ChristianHuber/smartsnp")
+```
+
+## Vignettes
+
+The vignettes demonstrate the different steps of a typical smartsnp analysis.
+
+* [Example PCA, PERMANOVA and PERMDISP analysis](https://christianhuber.github.io/smartsnp/articles/mallard_smartpca_analysis.html)
+
+* [Projecting ancient samples](https://christianhuber.github.io/smartsnp/articles/aDNA_smartpca_analysis.html)
+
+* [Using VCF and PLINK formatted files with smartsnp](https://christianhuber.github.io/smartsnp/articles/Converting_VCF_and_PLINK_formats.html)
+
+All vignettes and function descriptions can be found at the *smartsnp* website:
+
+https://christianhuber.github.io/smartsnp
+
+## Quick example
 
 This is an example of how to run PCA, PERMANOVA and PERMDISP controlling
 for genetic drift for the package’s dataset *dataSNP* including 10000
