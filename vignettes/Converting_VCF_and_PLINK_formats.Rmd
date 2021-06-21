@@ -96,7 +96,14 @@ The VCF file just contained data from a single group (CEU). However, just to dem
 
 
 ```r
-# First load one of the PLINK files to get the number of samples
+# To use .traw files, we will need to load the latest development version of smartsnp.
+install.packages("devtools")
+devtools::install_github("ChristianHuber/smartsnp")
+```
+
+
+```r
+# Load the PLINK (.fam) file to get the number of samples
 numSamples = nrow(read.table("region.fam"))
 
 # There is just a single group in this data

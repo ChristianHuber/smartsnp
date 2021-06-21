@@ -93,8 +93,14 @@ system("plink --vcf region.vcf.gz --recode A-transpose --out region_genotypeMatr
 
 The VCF file just contained data from a single group (CEU). However, just to demonstrate that this file can be used with smartsnp we'll run a simple pca analysis. Importantly, you will have to set the *missing_value* parameter to "NA".
 
+```{r, eval=FALSE}
+# To use .traw files, we will need to load the latest development version of smartsnp.
+install.packages("devtools")
+devtools::install_github("ChristianHuber/smartsnp")
+```
+
 ```{r data_transformation_example_plot, message=FALSE, fig.height = 7, fig.width = 7, fig.align = "center"}
-# First load one of the PLINK files to get the number of samples
+# Load the PLINK (.fam) file to get the number of samples
 numSamples = nrow(read.table("region.fam"))
 
 # There is just a single group in this data
