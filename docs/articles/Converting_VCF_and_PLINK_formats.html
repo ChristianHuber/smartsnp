@@ -135,7 +135,7 @@
 <div id="plink-to-raw-genotype--traw" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plink-to-raw-genotype--traw" class="anchor"></a>PLINK to raw genotype (.traw)</h2>
-<p>Now we will use the <em>plink2</em> software to transform the .bed file into raw genotypes. Again, note that we will need a “transformed” version since <em>smartsnp</em> assumes that samples are in columns, not rows.</p>
+<p>Now we will use the <em>plink2</em> software to transform the .bed file into raw genotypes. Again, note that we will need a “transposed” version since <em>smartsnp</em> assumes that samples are in columns, not rows.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="st">"plink --bfile region --recode A-transpose --out region_genotypeMatrix"</span><span class="op">)</span></code></pre></div>
 <p>Again, the –out parameter defines the name of the output file, without the suffix. After running this command, you will see a “region_genotypeMatrix.traw” file. This file can be directly used with smartsnp.</p>

@@ -73,7 +73,7 @@ If you don't want to make use of any further *plink2* functionality, then you ca
 
 ## PLINK to raw genotype (.traw)
 
-Now we will use the *plink2* software to transform the .bed file into raw genotypes. Again, note that we will need a "transformed" version since *smartsnp* assumes that samples are in columns, not rows.
+Now we will use the *plink2* software to transform the .bed file into raw genotypes. Again, note that we will need a "transposed" version since *smartsnp* assumes that samples are in columns, not rows.
 
 ```{r}
 system("plink --bfile region --recode A-transpose --out region_genotypeMatrix")
