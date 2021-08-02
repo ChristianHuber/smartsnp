@@ -65,8 +65,8 @@
 #' Default \code{missing_value = 9} as in \code{EIGENSTRAT}.
 #' If no missing values present, no effect on computation.
 #' @param missing_impute String handling missing values.
-#' Default \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
-#' \code{missing_impute = "remove"} removes SNPs with at least one missing value.
+#' Default \code{missing_impute = "remove"} removes SNPs with at least one missing value.
+#' \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
 #' If no missing values present, no effect on computation.
 #' @param scaling String. Default \code{scaling = "drift"} scales SNPs to control for expected allele frequency dispersion caused by genetic drift (SMARTPCA).
 #' \code{scaling = "center"} for \code{centering} (covariance-based PCA).
