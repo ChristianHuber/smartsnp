@@ -159,7 +159,7 @@
 utils::globalVariables(c("proj_i", "S", "i")) # assign non-binding global variables
 smart_pca <- function(snp_data, packed_data = FALSE,
                       sample_group, sample_remove = FALSE, snp_remove = FALSE,
-                      missing_value = 9, missing_impute = "mean",
+                      missing_value = 9, missing_impute = "remove",
                       scaling = "drift",
                       program_svd = "RSpectra", pc_axes = 2,
                       sample_project = FALSE, pc_project = c(1:2)) {
