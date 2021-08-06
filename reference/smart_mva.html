@@ -340,25 +340,25 @@ In contrast, <code>smart_mva</code> accepts any number of autosomes with or with
 
 <span class='co'># Run PCA, PERMANOVA and PERMDISP</span>
 <span class='va'>mvaR</span> <span class='op'>&lt;-</span> <span class='fu'>smart_mva</span><span class='op'>(</span>snp_data <span class='op'>=</span> <span class='va'>pathToGenoFile</span>, sample_group <span class='op'>=</span> <span class='va'>my_groups</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Checking argument options selected...</span></div><div class='output co'>#&gt; <span class='message'>Argument options are correct...</span></div><div class='output co'>#&gt; <span class='message'>Loading data...</span></div><div class='output co'>#&gt; <span class='message'>Imported 10000 SNP by 100 sample genotype matrix</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Filtering data...</span></div><div class='output co'>#&gt; <span class='message'>No samples projected after PCA computation</span></div><div class='output co'>#&gt; <span class='message'>10000 SNPs included in PCA &amp; PERMANOVA &amp; PERMDISP computations</span></div><div class='output co'>#&gt; <span class='message'>1 SNPs omitted from PCA computation</span></div><div class='output co'>#&gt; <span class='message'>100 samples included in PCA &amp; PERMANOVA &amp; PERMDISP computations</span></div><div class='output co'>#&gt; <span class='message'>0 samples ommitted from PERMANOVA &amp; PERMDISP analyses</span></div><div class='output co'>#&gt; <span class='message'>Completed data filtering</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Scanning for invariant SNPs...</span></div><div class='output co'>#&gt; <span class='message'>Scan complete: no invariant SNPs found</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Checking for missing values...</span></div><div class='output co'>#&gt; <span class='message'>6341 SNPs contain missing values</span></div><div class='output co'>#&gt; <span class='message'>Removing SNPs with missing values...</span></div><div class='output co'>#&gt; <span class='message'>Removal completed: 6341 SNPs removed</span></div><div class='output co'>#&gt; <span class='message'>3659 SNPs remaining</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Scaling values by SNP...</span></div><div class='output co'>#&gt; <span class='message'>Centering and scaling by drift dispersion...</span></div><div class='output co'>#&gt; <span class='message'>Completed scaling using drift</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Computing singular value decomposition using RSpectra...</span></div><div class='output co'>#&gt; <span class='message'>Completed singular value decomposition</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Extracting eigenvalues and eigenvectors...</span></div><div class='output co'>#&gt; <span class='message'>Eigenvalues and eigenvectors extracted</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Completed PCA computation</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Performing PERMANOVA &amp; PERMDISP testing...</span></div><div class='output co'>#&gt; <span class='message'>Construct triangular matrix of sample by sample proximities in multidimensional space...</span></div><div class='output co'>#&gt; <span class='message'>Completed construction of triangular matrix of sample by sample proximities</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Computing variance partioning by PERMANOVA: global test...</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMANOVA: global test</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 5s</span></div><div class='output co'>#&gt; <span class='message'>Compute inter- and intra-group dispersion by PERMDISP: global test...</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMDISP: global test based on group spatial medians</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 6s</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMANOVA &amp; PERMDISP computation</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 6s</span></div><div class='output co'>#&gt; <span class='message'>Complete.</span></div><div class='input'><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.eigenvalues</span> <span class='co'># extract PCA eigenvalues</span>
-</div><div class='output co'>#&gt;                                     PC1        PC2
-#&gt; observed eigenvalues          134.60591 130.363814
-#&gt; variance explained              5.52274   5.348691
-#&gt; cumulative variance explained   5.52274  10.871431</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.snp_loadings</span><span class='op'>)</span> <span class='co'># extract principal coefficients (SNP loadings)</span>
-</div><div class='output co'>#&gt;           PC1          PC2
-#&gt; 1 0.014632657  0.002234983
-#&gt; 2 0.002904179 -0.019673686
-#&gt; 3 0.002861048 -0.006803151
-#&gt; 4 0.002885713 -0.019990931
-#&gt; 5 0.012322385 -0.024400495
-#&gt; 6 0.012031549 -0.015702856</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.sample_coordinates</span><span class='op'>)</span> <span class='co'># extract PCA principal components (sample position in PCA space)</span>
+</div><div class='output co'>#&gt; <span class='message'>Checking argument options selected...</span></div><div class='output co'>#&gt; <span class='message'>Argument options are correct...</span></div><div class='output co'>#&gt; <span class='message'>Loading data...</span></div><div class='output co'>#&gt; <span class='message'>Imported 10000 SNP by 100 sample genotype matrix</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Filtering data...</span></div><div class='output co'>#&gt; <span class='message'>No samples projected after PCA computation</span></div><div class='output co'>#&gt; <span class='message'>10000 SNPs included in PCA &amp; PERMANOVA &amp; PERMDISP computations</span></div><div class='output co'>#&gt; <span class='message'>1 SNPs omitted from PCA computation</span></div><div class='output co'>#&gt; <span class='message'>100 samples included in PCA &amp; PERMANOVA &amp; PERMDISP computations</span></div><div class='output co'>#&gt; <span class='message'>0 samples ommitted from PERMANOVA &amp; PERMDISP analyses</span></div><div class='output co'>#&gt; <span class='message'>Completed data filtering</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 0s</span></div><div class='output co'>#&gt; <span class='message'>Scanning for invariant SNPs...</span></div><div class='output co'>#&gt; <span class='message'>Scan complete: no invariant SNPs found</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Checking for missing values...</span></div><div class='output co'>#&gt; <span class='message'>6341 SNPs contain missing values</span></div><div class='output co'>#&gt; <span class='message'>Imputing SNPs with missing values...</span></div><div class='output co'>#&gt; <span class='message'>Imputation with means completed: 10058 missing values imputed</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Scaling values by SNP...</span></div><div class='output co'>#&gt; <span class='message'>Centering and scaling by drift dispersion...</span></div><div class='output co'>#&gt; <span class='message'>Completed scaling using drift</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 1s</span></div><div class='output co'>#&gt; <span class='message'>Computing singular value decomposition using RSpectra...</span></div><div class='output co'>#&gt; <span class='message'>Completed singular value decomposition</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 3s</span></div><div class='output co'>#&gt; <span class='message'>Extracting eigenvalues and eigenvectors...</span></div><div class='output co'>#&gt; <span class='message'>Eigenvalues and eigenvectors extracted</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 3s</span></div><div class='output co'>#&gt; <span class='message'>Completed PCA computation</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 3s</span></div><div class='output co'>#&gt; <span class='message'>Performing PERMANOVA &amp; PERMDISP testing...</span></div><div class='output co'>#&gt; <span class='message'>Construct triangular matrix of sample by sample proximities in multidimensional space...</span></div><div class='output co'>#&gt; <span class='message'>Completed construction of triangular matrix of sample by sample proximities</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 3s</span></div><div class='output co'>#&gt; <span class='message'>Computing variance partioning by PERMANOVA: global test...</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMANOVA: global test</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 7s</span></div><div class='output co'>#&gt; <span class='message'>Compute inter- and intra-group dispersion by PERMDISP: global test...</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMDISP: global test based on group spatial medians</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 8s</span></div><div class='output co'>#&gt; <span class='message'>Completed PERMANOVA &amp; PERMDISP computation</span></div><div class='output co'>#&gt; <span class='message'>Time elapsed: 0h 0m 8s</span></div><div class='output co'>#&gt; <span class='message'>Complete.</span></div><div class='input'><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.eigenvalues</span> <span class='co'># extract PCA eigenvalues</span>
+</div><div class='output co'>#&gt;                                      PC1        PC2
+#&gt; observed eigenvalues          321.195060 317.773982
+#&gt; variance explained              1.209482   1.196600
+#&gt; cumulative variance explained   1.209482   2.406083</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.snp_loadings</span><span class='op'>)</span> <span class='co'># extract principal coefficients (SNP loadings)</span>
+</div><div class='output co'>#&gt;             PC1          PC2
+#&gt; 1  0.0046337236 -0.002775738
+#&gt; 2  0.0018116572  0.011950491
+#&gt; 3  0.0096288656 -0.011907379
+#&gt; 4  0.0055371026  0.001682321
+#&gt; 5 -0.0046772139  0.002187803
+#&gt; 6  0.0004521752  0.002215284</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.sample_coordinates</span><span class='op'>)</span> <span class='co'># extract PCA principal components (sample position in PCA space)</span>
 </div><div class='output co'>#&gt;   Group Class        PC1        PC2
-#&gt; 1     A   PCA -5.6083241  28.846160
-#&gt; 2     A   PCA  2.7466559  12.358856
-#&gt; 3     A   PCA  9.6070241   5.432775
-#&gt; 4     A   PCA -3.2195495 -20.385151
-#&gt; 5     A   PCA 10.4613976  -4.467048
-#&gt; 6     A   PCA  0.1751147   1.512829</div><div class='input'>
+#&gt; 1     A   PCA   4.768216  13.413303
+#&gt; 2     A   PCA -16.661893  -9.789570
+#&gt; 3     A   PCA -25.643492   5.994816
+#&gt; 4     A   PCA  -2.453762 -25.043319
+#&gt; 5     A   PCA  19.760752   7.214635
+#&gt; 6     A   PCA -28.587658   2.656167</div><div class='input'>
 <span class='co'># plot PCA</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mvaR</span><span class='op'>$</span><span class='va'>pca</span><span class='op'>$</span><span class='va'>pca.sample_coordinates</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"PC1"</span>,<span class='st'>"PC2"</span><span class='op'>)</span><span class='op'>]</span>, cex <span class='op'>=</span> <span class='fl'>2</span>,
      pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='va'>cols</span><span class='op'>[</span><span class='va'>my_groups</span><span class='op'>]</span>, main <span class='op'>=</span> <span class='st'>"genotype smartpca"</span><span class='op'>)</span>
@@ -368,117 +368,117 @@ In contrast, <code>smart_mva</code> accepts any number of autosomes with or with
 <span class='co'># Extract PERMANOVA table</span>
 <span class='va'>mvaR</span><span class='op'>$</span><span class='va'>test</span><span class='op'>$</span><span class='va'>permanova.global_test</span>
 </div><div class='output co'>#&gt;           Df SumsOfSqs MeanSqs F.Model      R2 Pr(&gt;F)
-#&gt; group      1      9566  9565.5 0.97455 0.00985 0.8638
-#&gt; Residuals 98    961899  9815.3         0.99015       
-#&gt; Total     99    971465                 1.00000       </div><div class='input'>
+#&gt; group      1     26183   26183  0.9858 0.00996 0.8463
+#&gt; Residuals 98   2602901   26560         0.99004       
+#&gt; Total     99   2629084                 1.00000       </div><div class='input'>
 <span class='co'># Extract PERMDISP table</span>
 <span class='va'>mvaR</span><span class='op'>$</span><span class='va'>test</span><span class='op'>$</span><span class='va'>permdisp.global_test</span> <span class='co'># extract PERMDISP table</span>
-</div><div class='output co'>#&gt;           Df      Sum Sq    Mean Sq         F Pr(&gt;F)
-#&gt; Groups     1  0.08898963 0.08898963 0.2384764  0.632
-#&gt; Residuals 98 36.56957950 0.37315897        NA     NA</div><div class='input'>
+</div><div class='output co'>#&gt;           Df    Sum Sq   Mean Sq        F Pr(&gt;F)
+#&gt; Groups     1  1.214908 1.2149079 3.387661 0.0705
+#&gt; Residuals 98 35.145482 0.3586274       NA     NA</div><div class='input'>
 <span class='co'># Extract sample summary and dispersion of individual samples used in PERMDISP</span>
 <span class='va'>mvaR</span><span class='op'>$</span><span class='va'>test</span><span class='op'>$</span><span class='va'>test_samples</span>
 </div><div class='output co'>#&gt;     Group              Class Sample_dispersion
-#&gt; 1       A PERMANOVA/PERMDISP          99.06982
-#&gt; 2       A PERMANOVA/PERMDISP          98.07152
-#&gt; 3       A PERMANOVA/PERMDISP          97.56805
-#&gt; 4       A PERMANOVA/PERMDISP          97.53961
-#&gt; 5       A PERMANOVA/PERMDISP          97.65112
-#&gt; 6       A PERMANOVA/PERMDISP          98.04074
-#&gt; 7       A PERMANOVA/PERMDISP          96.97508
-#&gt; 8       A PERMANOVA/PERMDISP          98.20302
-#&gt; 9       A PERMANOVA/PERMDISP          96.99192
-#&gt; 10      A PERMANOVA/PERMDISP          97.69355
-#&gt; 11      A PERMANOVA/PERMDISP          97.34715
-#&gt; 12      A PERMANOVA/PERMDISP          97.60689
-#&gt; 13      A PERMANOVA/PERMDISP          97.19645
-#&gt; 14      A PERMANOVA/PERMDISP          99.72179
-#&gt; 15      A PERMANOVA/PERMDISP          98.84925
-#&gt; 16      A PERMANOVA/PERMDISP          98.27866
-#&gt; 17      A PERMANOVA/PERMDISP          97.64136
-#&gt; 18      A PERMANOVA/PERMDISP          97.63111
-#&gt; 19      A PERMANOVA/PERMDISP          97.91891
-#&gt; 20      A PERMANOVA/PERMDISP          98.26789
-#&gt; 21      A PERMANOVA/PERMDISP          97.62515
-#&gt; 22      A PERMANOVA/PERMDISP          98.93091
-#&gt; 23      A PERMANOVA/PERMDISP          98.49385
-#&gt; 24      A PERMANOVA/PERMDISP          98.15861
-#&gt; 25      A PERMANOVA/PERMDISP          98.14178
-#&gt; 26      A PERMANOVA/PERMDISP          97.79579
-#&gt; 27      A PERMANOVA/PERMDISP          97.77684
-#&gt; 28      A PERMANOVA/PERMDISP          97.83072
-#&gt; 29      A PERMANOVA/PERMDISP          97.74309
-#&gt; 30      A PERMANOVA/PERMDISP          97.78741
-#&gt; 31      A PERMANOVA/PERMDISP          97.89908
-#&gt; 32      A PERMANOVA/PERMDISP          97.82319
-#&gt; 33      A PERMANOVA/PERMDISP          97.66493
-#&gt; 34      A PERMANOVA/PERMDISP          97.74795
-#&gt; 35      A PERMANOVA/PERMDISP          98.15860
-#&gt; 36      A PERMANOVA/PERMDISP          98.45489
-#&gt; 37      A PERMANOVA/PERMDISP          98.31902
-#&gt; 38      A PERMANOVA/PERMDISP          98.30398
-#&gt; 39      A PERMANOVA/PERMDISP          97.54662
-#&gt; 40      A PERMANOVA/PERMDISP          98.36064
-#&gt; 41      A PERMANOVA/PERMDISP          98.93940
-#&gt; 42      A PERMANOVA/PERMDISP          97.98992
-#&gt; 43      A PERMANOVA/PERMDISP          98.60514
-#&gt; 44      A PERMANOVA/PERMDISP          98.85386
-#&gt; 45      A PERMANOVA/PERMDISP          98.84489
-#&gt; 46      A PERMANOVA/PERMDISP          98.89751
-#&gt; 47      A PERMANOVA/PERMDISP          97.89180
-#&gt; 48      A PERMANOVA/PERMDISP          96.87593
-#&gt; 49      A PERMANOVA/PERMDISP          98.35572
-#&gt; 50      A PERMANOVA/PERMDISP          98.15848
-#&gt; 51      B PERMANOVA/PERMDISP          98.42441
-#&gt; 52      B PERMANOVA/PERMDISP          97.71214
-#&gt; 53      B PERMANOVA/PERMDISP          98.00291
-#&gt; 54      B PERMANOVA/PERMDISP          98.60442
-#&gt; 55      B PERMANOVA/PERMDISP          98.21699
-#&gt; 56      B PERMANOVA/PERMDISP          99.28411
-#&gt; 57      B PERMANOVA/PERMDISP          97.82855
-#&gt; 58      B PERMANOVA/PERMDISP          98.49436
-#&gt; 59      B PERMANOVA/PERMDISP          97.20865
-#&gt; 60      B PERMANOVA/PERMDISP          97.61116
-#&gt; 61      B PERMANOVA/PERMDISP          97.92663
-#&gt; 62      B PERMANOVA/PERMDISP          97.87699
-#&gt; 63      B PERMANOVA/PERMDISP          97.92483
-#&gt; 64      B PERMANOVA/PERMDISP          98.36292
-#&gt; 65      B PERMANOVA/PERMDISP          96.21018
-#&gt; 66      B PERMANOVA/PERMDISP          98.38027
-#&gt; 67      B PERMANOVA/PERMDISP          98.20329
-#&gt; 68      B PERMANOVA/PERMDISP          98.12165
-#&gt; 69      B PERMANOVA/PERMDISP          99.19894
-#&gt; 70      B PERMANOVA/PERMDISP          98.63747
-#&gt; 71      B PERMANOVA/PERMDISP          97.64517
-#&gt; 72      B PERMANOVA/PERMDISP          97.91185
-#&gt; 73      B PERMANOVA/PERMDISP          99.27582
-#&gt; 74      B PERMANOVA/PERMDISP          98.43248
-#&gt; 75      B PERMANOVA/PERMDISP          98.02648
-#&gt; 76      B PERMANOVA/PERMDISP          99.25886
-#&gt; 77      B PERMANOVA/PERMDISP          97.09718
-#&gt; 78      B PERMANOVA/PERMDISP          98.06887
-#&gt; 79      B PERMANOVA/PERMDISP          98.49520
-#&gt; 80      B PERMANOVA/PERMDISP          97.47288
-#&gt; 81      B PERMANOVA/PERMDISP          97.49630
-#&gt; 82      B PERMANOVA/PERMDISP          98.27348
-#&gt; 83      B PERMANOVA/PERMDISP          97.96032
-#&gt; 84      B PERMANOVA/PERMDISP          98.49028
-#&gt; 85      B PERMANOVA/PERMDISP          98.70179
-#&gt; 86      B PERMANOVA/PERMDISP          98.14538
-#&gt; 87      B PERMANOVA/PERMDISP          98.58617
-#&gt; 88      B PERMANOVA/PERMDISP          97.52787
-#&gt; 89      B PERMANOVA/PERMDISP          99.14293
-#&gt; 90      B PERMANOVA/PERMDISP          98.42515
-#&gt; 91      B PERMANOVA/PERMDISP          98.81325
-#&gt; 92      B PERMANOVA/PERMDISP          97.12325
-#&gt; 93      B PERMANOVA/PERMDISP          97.71288
-#&gt; 94      B PERMANOVA/PERMDISP          98.17654
-#&gt; 95      B PERMANOVA/PERMDISP          97.63892
-#&gt; 96      B PERMANOVA/PERMDISP          98.93706
-#&gt; 97      B PERMANOVA/PERMDISP          97.75009
-#&gt; 98      B PERMANOVA/PERMDISP          97.91970
-#&gt; 99      B PERMANOVA/PERMDISP          97.32921
-#&gt; 100     B PERMANOVA/PERMDISP          97.15649</div><div class='input'>
+#&gt; 1       A PERMANOVA/PERMDISP          161.4757
+#&gt; 2       A PERMANOVA/PERMDISP          160.9709
+#&gt; 3       A PERMANOVA/PERMDISP          161.2118
+#&gt; 4       A PERMANOVA/PERMDISP          160.3491
+#&gt; 5       A PERMANOVA/PERMDISP          160.4445
+#&gt; 6       A PERMANOVA/PERMDISP          162.2998
+#&gt; 7       A PERMANOVA/PERMDISP          160.9662
+#&gt; 8       A PERMANOVA/PERMDISP          160.9234
+#&gt; 9       A PERMANOVA/PERMDISP          161.4040
+#&gt; 10      A PERMANOVA/PERMDISP          161.1902
+#&gt; 11      A PERMANOVA/PERMDISP          160.2838
+#&gt; 12      A PERMANOVA/PERMDISP          161.0910
+#&gt; 13      A PERMANOVA/PERMDISP          160.0616
+#&gt; 14      A PERMANOVA/PERMDISP          161.9953
+#&gt; 15      A PERMANOVA/PERMDISP          161.5489
+#&gt; 16      A PERMANOVA/PERMDISP          160.8466
+#&gt; 17      A PERMANOVA/PERMDISP          162.0203
+#&gt; 18      A PERMANOVA/PERMDISP          161.0723
+#&gt; 19      A PERMANOVA/PERMDISP          160.9892
+#&gt; 20      A PERMANOVA/PERMDISP          161.2393
+#&gt; 21      A PERMANOVA/PERMDISP          160.8561
+#&gt; 22      A PERMANOVA/PERMDISP          160.8314
+#&gt; 23      A PERMANOVA/PERMDISP          162.2363
+#&gt; 24      A PERMANOVA/PERMDISP          160.9487
+#&gt; 25      A PERMANOVA/PERMDISP          161.7043
+#&gt; 26      A PERMANOVA/PERMDISP          160.0128
+#&gt; 27      A PERMANOVA/PERMDISP          161.8192
+#&gt; 28      A PERMANOVA/PERMDISP          160.7234
+#&gt; 29      A PERMANOVA/PERMDISP          160.9490
+#&gt; 30      A PERMANOVA/PERMDISP          160.7225
+#&gt; 31      A PERMANOVA/PERMDISP          161.0558
+#&gt; 32      A PERMANOVA/PERMDISP          160.7245
+#&gt; 33      A PERMANOVA/PERMDISP          161.1502
+#&gt; 34      A PERMANOVA/PERMDISP          159.9254
+#&gt; 35      A PERMANOVA/PERMDISP          161.1662
+#&gt; 36      A PERMANOVA/PERMDISP          161.3988
+#&gt; 37      A PERMANOVA/PERMDISP          161.6969
+#&gt; 38      A PERMANOVA/PERMDISP          160.5360
+#&gt; 39      A PERMANOVA/PERMDISP          161.5771
+#&gt; 40      A PERMANOVA/PERMDISP          161.1907
+#&gt; 41      A PERMANOVA/PERMDISP          161.8498
+#&gt; 42      A PERMANOVA/PERMDISP          161.7793
+#&gt; 43      A PERMANOVA/PERMDISP          161.9005
+#&gt; 44      A PERMANOVA/PERMDISP          161.7850
+#&gt; 45      A PERMANOVA/PERMDISP          161.7027
+#&gt; 46      A PERMANOVA/PERMDISP          161.9930
+#&gt; 47      A PERMANOVA/PERMDISP          162.2773
+#&gt; 48      A PERMANOVA/PERMDISP          160.8876
+#&gt; 49      A PERMANOVA/PERMDISP          161.3201
+#&gt; 50      A PERMANOVA/PERMDISP          162.0835
+#&gt; 51      B PERMANOVA/PERMDISP          161.9058
+#&gt; 52      B PERMANOVA/PERMDISP          161.5106
+#&gt; 53      B PERMANOVA/PERMDISP          160.9970
+#&gt; 54      B PERMANOVA/PERMDISP          160.9550
+#&gt; 55      B PERMANOVA/PERMDISP          160.9942
+#&gt; 56      B PERMANOVA/PERMDISP          162.4287
+#&gt; 57      B PERMANOVA/PERMDISP          161.0528
+#&gt; 58      B PERMANOVA/PERMDISP          161.0653
+#&gt; 59      B PERMANOVA/PERMDISP          160.5475
+#&gt; 60      B PERMANOVA/PERMDISP          161.4787
+#&gt; 61      B PERMANOVA/PERMDISP          161.8445
+#&gt; 62      B PERMANOVA/PERMDISP          161.1317
+#&gt; 63      B PERMANOVA/PERMDISP          161.3229
+#&gt; 64      B PERMANOVA/PERMDISP          162.3351
+#&gt; 65      B PERMANOVA/PERMDISP          160.9433
+#&gt; 66      B PERMANOVA/PERMDISP          161.8845
+#&gt; 67      B PERMANOVA/PERMDISP          160.6879
+#&gt; 68      B PERMANOVA/PERMDISP          160.8744
+#&gt; 69      B PERMANOVA/PERMDISP          163.0843
+#&gt; 70      B PERMANOVA/PERMDISP          160.7723
+#&gt; 71      B PERMANOVA/PERMDISP          160.9731
+#&gt; 72      B PERMANOVA/PERMDISP          161.2441
+#&gt; 73      B PERMANOVA/PERMDISP          162.3827
+#&gt; 74      B PERMANOVA/PERMDISP          161.2757
+#&gt; 75      B PERMANOVA/PERMDISP          161.6916
+#&gt; 76      B PERMANOVA/PERMDISP          161.3637
+#&gt; 77      B PERMANOVA/PERMDISP          160.7243
+#&gt; 78      B PERMANOVA/PERMDISP          162.8925
+#&gt; 79      B PERMANOVA/PERMDISP          160.8015
+#&gt; 80      B PERMANOVA/PERMDISP          161.7590
+#&gt; 81      B PERMANOVA/PERMDISP          161.8004
+#&gt; 82      B PERMANOVA/PERMDISP          161.1778
+#&gt; 83      B PERMANOVA/PERMDISP          161.3634
+#&gt; 84      B PERMANOVA/PERMDISP          161.4223
+#&gt; 85      B PERMANOVA/PERMDISP          162.5199
+#&gt; 86      B PERMANOVA/PERMDISP          161.3039
+#&gt; 87      B PERMANOVA/PERMDISP          161.4728
+#&gt; 88      B PERMANOVA/PERMDISP          160.7768
+#&gt; 89      B PERMANOVA/PERMDISP          161.7114
+#&gt; 90      B PERMANOVA/PERMDISP          162.3565
+#&gt; 91      B PERMANOVA/PERMDISP          161.3105
+#&gt; 92      B PERMANOVA/PERMDISP          161.0042
+#&gt; 93      B PERMANOVA/PERMDISP          161.4582
+#&gt; 94      B PERMANOVA/PERMDISP          161.9629
+#&gt; 95      B PERMANOVA/PERMDISP          161.2433
+#&gt; 96      B PERMANOVA/PERMDISP          161.8619
+#&gt; 97      B PERMANOVA/PERMDISP          160.9686
+#&gt; 98      B PERMANOVA/PERMDISP          161.7675
+#&gt; 99      B PERMANOVA/PERMDISP          161.2074
+#&gt; 100     B PERMANOVA/PERMDISP          160.5961</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
