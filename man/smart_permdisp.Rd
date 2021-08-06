@@ -26,7 +26,8 @@ See details.}
 Default \code{missing_value = 9} as in \code{EIGENSTRAT}.
 If no missing values present, no effect on computation.}
 
-\item{missing_impute}{String handling missing values. Default \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
+\item{missing_impute}{String handling missing values.
+Default \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
 \code{missing_impute = "remove"} removes SNPs with at least one missing value.
 If no missing values present, no effect on computation.}
 
