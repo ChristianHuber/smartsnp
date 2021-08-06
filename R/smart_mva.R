@@ -65,8 +65,8 @@
 #' Default \code{missing_value = 9} as in \code{EIGENSTRAT}.
 #' If no missing values present, no effect on computation.
 #' @param missing_impute String handling missing values.
-#' Default \code{missing_impute = "remove"} removes SNPs with at least one missing value.
-#' \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
+#' Default \code{missing_impute = "mean"} replaces missing values of each SNP by mean of non-missing values across samples.
+#' \code{missing_impute = "remove"} removes SNPs with at least one missing value.
 #' If no missing values present, no effect on computation.
 #' @param scaling String. Default \code{scaling = "drift"} scales SNPs to control for expected allele frequency dispersion caused by genetic drift (SMARTPCA).
 #' \code{scaling = "center"} for \code{centering} (covariance-based PCA).
@@ -172,7 +172,7 @@ utils::globalVariables(c("proj_i", "S", "i")) # assign non-binding global variab
 smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
                       sample_remove = FALSE, snp_remove = FALSE,
                       pca = TRUE, permanova = TRUE, permdisp = TRUE,
-                      missing_value = 9, missing_impute = "remove",
+                      missing_value = 9, missing_impute = "mean",
                       scaling = "drift",
                       program_svd = "RSpectra",
                       sample_project = FALSE, pc_project = c(1:2), # specific to smart_pca
