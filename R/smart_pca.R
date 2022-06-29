@@ -328,8 +328,7 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   }
 
   message(paste(snpN.full, "SNPs included in PCA", "computation"))
-  message(paste(length(snp_remove), "SNPs omitted from PCA computation"))
-
+  if (length(snp_remove) != 1 | !is.logical(snp_remove)) message(paste(length(snp_remove), "SNPs omitted from PCA computation"))
 
   # Print number of samples used in, and projected onto, PCA
   message(paste(length(sample_PCA), "samples included in PCA computation"))
