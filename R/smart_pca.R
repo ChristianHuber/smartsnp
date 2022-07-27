@@ -307,7 +307,8 @@ smart_pca <- function(snp_data, packed_data = FALSE,
 
   # Print error if users enter number of sample labels (sample_group) larger or smaller than number of samples in dataset (snp_dat)
   if (length(sample_group) != ncol(snp_dat)) {
-    stop("length(sample_group) should be equal to number of samples in dataset: computation aborted")
+    n_str <- paste0("n dataset = ",ncol(snp_dat),", but length(sample_group) is ",length(sample_group),"!")
+    stop(n_str," length(sample_group) should be equal to number of samples in dataset: computation aborted")
   }
 
   # Remove original dataset from memory
