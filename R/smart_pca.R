@@ -375,7 +375,7 @@ smart_pca <- function(snp_data, packed_data = FALSE,
     genoMean <- genoMean[keepSNPs] # compute SNP means
     genoVar <- genoVar[keepSNPs] # compute SNP variances
     if (!isFALSE(sample_project)) {
-      snp_dat2 <- snp_dat2[keepSNPs, ] # remove invariant SNPs from ancient samples
+      snp_dat2 <- snp_dat2[keepSNPs, , drop = FALSE] # remove invariant SNPs from ancient samples
     }
   }
   rm(keepSNPs) # remove vector with indices for variant SNPs
