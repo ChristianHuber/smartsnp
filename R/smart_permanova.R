@@ -23,7 +23,7 @@
 #' Univariate ANOVA captures differences in mean and variance referred to as location and dispersion in PERMANOVA's multivariate context (Anderson & Walsh 2013, Warton, Wright and Wang 2012).
 #' To attribute group differences to location (position of sample groups) and/or dispersion (spread of sample groups), PERMANOVA must be combined with PERMDISP as implemented through \code{smart_permdisp}.\cr
 #'
-#' Function \code{smart_permanova} uses \code{\link[vegan]{adonis}} to fit formula \code{snp_eucli ~ sample_group}, where \code{snp_eucli} is the sample-by-sample triangular matrix in Principal Coordinate Analysis (Gower 1966) space.
+#' Function \code{smart_permanova} uses \code{\link[vegan]{adonis2}} to fit formula \code{snp_eucli ~ sample_group}, where \code{snp_eucli} is the sample-by-sample triangular matrix in Principal Coordinate Analysis (Gower 1966) space.
 #' Current version restricted to one-way designs (one categorical predictor) though PERMANOVA can handle >1 crossed and/or nested factors (Anderson 2001) and continuous predictors (McArdle & Anderson 2001).
 #' If >2 sample groups tested, \code{pairwise = TRUE} allows pairwise testing and correction for multiple testing by \code{holm (Holm)} [default], \code{hochberg (Hochberg)}, \code{hommel (Hommel)}, \code{bonferroni (Bonferroni)}, \code{BY (Benjamini-Yekuieli)}, \code{BH (Benjamini-Hochberg)} or \code{fdr (False Discovery Rate)}.\cr
 #'
@@ -125,9 +125,9 @@
 #' #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 #' snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
 #' #run PERMANOVA
-#' permanova <- vegan::adonis(formula = snp_eucli ~ my_groups, permutations = 9999)
-#' #extract meanSqs (groups versus residuals)
-#' meanSqs <- as.matrix(t(permanova$aov.tab$MeanSqs[1:2]))
+#' permanova <- vegan::adonis2(formula = snp_eucli ~ my_groups, permutations = 9999)
+#' #calculate meanSqs (groups versus residuals)
+#' meanSqs <- as.matrix(t(with(permanova, SumOfSqs/Df)[1:2]))
 #' colnames(meanSqs) <- c("Groups", "Residuals")
 #' #two horizontal plots
 #' oldpar <- par(mfrow = c(2,1), oma = c(0,5,0.1,0.1), lwd = 2)
@@ -152,7 +152,7 @@
 #' Patterson, N., A. L. Price and D. Reich (2006) Population structure and eigenanalysis. PLoS Genetics, 2, e190.\cr
 #' Warton, D. I., S. T. Wright and Y. Wang (2012) Distance-based multivariate analyses confound location and dispersion effects. Methods in Ecology and Evolution, 3, 89-101.
 #'
-#' @seealso \code{\link[vegan]{adonis}} (package \bold{vegan}),
+#' @seealso \code{\link[vegan]{adonis2}} (package \bold{vegan}),
 #' \code{\link[Rfast]{Dist}} (package \bold{Rfast}),
 #' \code{\link[data.table]{fread}} (package \bold{data.table}),
 #' \code{\link[vegan]{vegdist}} (package \bold{vegan}),
@@ -486,8 +486,8 @@ smart_permanova <- function(snp_data, packed_data = FALSE,
   set.seed(permutation_seed)
 
   # Compute PERMANOVA (global test)
-  pmanova <- vegan::adonis(formula = snp_eucli ~ group, permutations = permutation_n) # run test
-  globalTable.anova <- pmanova$aov.tab[c(1:6)] # extract ANOVA table
+  pmanova <- vegan::adonis2(formula = snp_eucli ~ group, permutations = permutation_n) # run test
+  globalTable.anova <- pmanova[c(1:5)] # extract ANOVA table
 
   message("Completed PERMANOVA: global test")
   message(paste0("Time elapsed: ", get.time(startT)))
@@ -504,13 +504,13 @@ smart_permanova <- function(snp_data, packed_data = FALSE,
         message(paste0("Computing pairs ", paste(comb.fact[, i], collapse = " & "), "..."))
         GN <- group %in% comb.fact[, i]
         if(program_distance == "vegan"){
-          model.temp <- vegan::adonis(as.matrix(snp_eucli, ncol = sampN)[GN, GN] ~ group[GN], permutations = permutation_n)
+          model.temp <- vegan::adonis2(as.matrix(snp_eucli, ncol = sampN)[GN, GN] ~ group[GN], permutations = permutation_n)
         } else {
-          model.temp <- vegan::adonis(snp_eucli[GN, GN] ~ group[GN], permutations = permutation_n)
+          model.temp <- vegan::adonis2(snp_eucli[GN, GN] ~ group[GN], permutations = permutation_n)
         }
-        F.Model <- c(F.Model, model.temp$aov.tab$F.Model[1])
-        R2 <- c(R2, model.temp$aov.tab$R2[1])
-        pv.anova <- c(pv.anova, model.temp$aov.tab[[6]][1])
+        F.Model <- c(F.Model, model.temp$F[1])
+        R2 <- c(R2, model.temp$R2[1])
+        pv.anova <- c(pv.anova, model.temp[[5]][1])
       }
       pv.corr.anova <- stats::p.adjust(pv.anova, method = corr.method) # compute FDR-corrected p values
       data.frame(GroupPair = paste(comb.fact[1, ], comb.fact[2, ], sep= "-"), F.Model = F.Model, R2 = R2, P.value = pv.anova, P.value.corrected = pv.corr.anova)

@@ -694,8 +694,8 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
       message(paste0("Computing variance partioning by PERMANOVA: global test..."))
 
       # Compute PERMANOVA (global test)
-      pmanova <- vegan::adonis(formula = snp_eucli ~ group, permutations = permutation_n) # run test
-      globalTable.anova <- pmanova$aov.tab[c(1:6)] # extract ANOVA table
+      pmanova <- vegan::adonis2(formula = snp_eucli ~ group, permutations = permutation_n) # run test
+      globalTable.anova <- pmanova[c(1:5)] # extract ANOVA table
 
       message("Completed PERMANOVA: global test")
       message(paste0("Time elapsed: ", get.time(startT)))
@@ -761,10 +761,10 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
               test.mat <- snp_eucli[GN, GN]
             }
             if(permanova == TRUE){
-              model.temp1 <- vegan::adonis(test.mat ~ group[GN], permutations = permutation_n)
-              F.Model.anova <- c(F.Model.anova, model.temp1$aov.tab$F.Model[1])
-              pv.anova <- c(pv.anova, model.temp1$aov.tab[[6]][1])
-              R2 <- c(R2, model.temp1$aov.tab$R2[1])
+              model.temp1 <- vegan::adonis2(test.mat ~ group[GN], permutations = permutation_n)
+              F.Model.anova <- c(F.Model.anova, model.temp1$F.Model[1])
+              pv.anova <- c(pv.anova, model.temp1[[5]][1])
+              R2 <- c(R2, model.temp1$R2[1])
             }
             if(permdisp == TRUE){
               dispCent_pair <- vegan::betadisper(stats::as.dist(test.mat), group[GN], type = dispersion_type, bias.adjust = samplesize_bias)
