@@ -762,7 +762,7 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
             }
             if(permanova == TRUE){
               model.temp1 <- vegan::adonis2(test.mat ~ group[GN], permutations = permutation_n)
-              F.Model.anova <- c(F.Model.anova, model.temp1$F.Model[1])
+              F.Model.anova <- c(F.Model.anova, model.temp1$F[1])
               pv.anova <- c(pv.anova, model.temp1[[5]][1])
               R2 <- c(R2, model.temp1$R2[1])
             }
