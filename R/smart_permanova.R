@@ -125,7 +125,7 @@
 #' #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 #' snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
 #' #run PERMANOVA
-#' permanova <- vegan::adonis2(formula = snp_eucli ~ my_groups, permutations = 9999)
+#' permanova <- vegan::adonis2(formula = snp_eucli ~ my_groups, permutations = 9999, by = "terms")
 #' #calculate meanSqs (groups versus residuals)
 #' meanSqs <- as.matrix(t(with(permanova, SumOfSqs/Df)[1:2]))
 #' colnames(meanSqs) <- c("Groups", "Residuals")
@@ -504,9 +504,9 @@ smart_permanova <- function(snp_data, packed_data = FALSE,
         message(paste0("Computing pairs ", paste(comb.fact[, i], collapse = " & "), "..."))
         GN <- group %in% comb.fact[, i]
         if(program_distance == "vegan"){
-          model.temp <- vegan::adonis2(as.matrix(snp_eucli, ncol = sampN)[GN, GN] ~ group[GN], permutations = permutation_n)
+          model.temp <- vegan::adonis2(as.matrix(snp_eucli, ncol = sampN)[GN, GN] ~ group[GN], permutations = permutation_n, by = "terms")
         } else {
-          model.temp <- vegan::adonis2(snp_eucli[GN, GN] ~ group[GN], permutations = permutation_n)
+          model.temp <- vegan::adonis2(snp_eucli[GN, GN] ~ group[GN], permutations = permutation_n, by = "terms")
         }
         F.Model <- c(F.Model, model.temp$F[1])
         R2 <- c(R2, model.temp$R2[1])
