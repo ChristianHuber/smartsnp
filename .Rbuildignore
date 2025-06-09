@@ -7,3 +7,7 @@
 ^\.github$
 ^doc$
 ^Meta$
+^README\.Rmd$
+^cran-comments\.md$
+^data-raw$
+^vignettes/figure$

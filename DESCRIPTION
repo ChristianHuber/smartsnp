@@ -1,7 +1,7 @@
 Package: smartsnp
 Type: Package
 Title: Fast Multivariate Analyses of Big Genomic Data
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
     person("Salvador", family = "Herrando-Perez", email = "salherra@gmail.com",
            role = c("aut"), comment = c(ORCID = "0000-0001-6052-6854")),
@@ -27,6 +27,7 @@ Imports:
     vroom,
     Rcpp,
 Suggests:
+    markdown,
     knitr,
     rmarkdown
 RoxygenNote: 7.1.1

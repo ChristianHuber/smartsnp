@@ -142,7 +142,7 @@
 #' mvaR <- smart_mva(snp_data = pathToGenoFile, sample_group = my_groups)
 #' mvaR$pca$pca.eigenvalues # extract PCA eigenvalues
 #' head(mvaR$pca$pca.snp_loadings) # extract principal coefficients (SNP loadings)
-#' head(mvaR$pca$pca.sample_coordinates) # extract PCA principal components (sample position in PCA space)
+#' head(mvaR$pca$pca.sample_coordinates) # extract PCA PCs (sample position in PCA space)
 #'
 #' # plot PCA
 #' plot(mvaR$pca$pca.sample_coordinates[,c("PC1","PC2")], cex = 2,
