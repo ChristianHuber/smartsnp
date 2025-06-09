@@ -162,7 +162,7 @@ Patterson, N., A. L. Price and D. Reich (2006) Population structure and eigenana
 Warton, D. I., S. T. Wright and Y. Wang (2012) Distance-based multivariate analyses confound location and dispersion effects. Methods in Ecology and Evolution, 3, 89-101.
 }
 \seealso{
-\code{\link[vegan]{adonis}} (package \bold{vegan}),
+\code{\link[vegan]{adonis2}} (package \bold{vegan}),
 \code{\link[Rfast]{Dist}} (package \bold{Rfast}),
 \code{\link[data.table]{fread}} (package \bold{data.table}),
 \code{\link[vegan]{vegdist}} (package \bold{vegan}),
