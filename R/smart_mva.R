@@ -654,6 +654,7 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
 
     # Create group variable
     group <- factor(sample_group[sample_test])
+    group_df <- data.frame(group = group)
 
     # Set seed of random generator
     set.seed(permutation_seed)
@@ -694,7 +695,10 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
       message(paste0("Computing variance partioning by PERMANOVA: global test..."))
 
       # Compute PERMANOVA (global test)
-      pmanova <- vegan::adonis2(formula = snp_eucli ~ group, permutations = permutation_n, by = "terms") # run test
+      pmanova <- vegan::adonis2(formula = snp_eucli ~ group,
+                                data = group_df,
+                                permutations = permutation_n,
+                                by = "terms")  # run test
       globalTable.anova <- pmanova[c(1:5)] # extract ANOVA table
 
       message("Completed PERMANOVA: global test")
@@ -761,7 +765,7 @@ smart_mva <- function(snp_data, packed_data = FALSE, sample_group,
               test.mat <- snp_eucli[GN, GN]
             }
             if(permanova == TRUE){
-              model.temp1 <- vegan::adonis2(test.mat ~ group[GN], permutations = permutation_n, by = "terms")
+              model.temp1 <- vegan::adonis2(test.mat ~ group[GN], data = group_df, permutations = permutation_n, by = "terms")
               F.Model.anova <- c(F.Model.anova, model.temp1$F[1])
               pv.anova <- c(pv.anova, model.temp1[[5]][1])
               R2 <- c(R2, model.temp1$R2[1])

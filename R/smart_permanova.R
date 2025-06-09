@@ -124,8 +124,11 @@
 #' pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #' #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 #' snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
-#' #run PERMANOVA
-#' permanova <- vegan::adonis2(formula = snp_eucli ~ my_groups, permutations = 9999, by = "terms")
+#' # Prepare grouping variable for PERMANOVA
+#' group_df <- data.frame(group = my_groups)
+#' # Run PERMANOVA
+#' permanova <- vegan::adonis2(formula = snp_eucli ~ group, data = group_df,
+#'                            permutations = 9999, by = "terms")
 #' #calculate meanSqs (groups versus residuals)
 #' meanSqs <- as.matrix(t(with(permanova, SumOfSqs/Df)[1:2]))
 #' colnames(meanSqs) <- c("Groups", "Residuals")
@@ -481,44 +484,68 @@ smart_permanova <- function(snp_data, packed_data = FALSE,
 
   # Create group variable
   group <- factor(as.matrix(sample_group[sample_PCA]))
-
+  group_df <- data.frame(group = group)
+  
   # Set seed of random generator
   set.seed(permutation_seed)
-
-  # Compute PERMANOVA (global test)
-  pmanova <- vegan::adonis2(formula = snp_eucli ~ group, permutations = permutation_n) # run test
-  globalTable.anova <- pmanova[c(1:5)] # extract ANOVA table
+  
+  # Compute PERMANOVA (explicitly set "by = 'terms'" to preserve old behavior)
+  pmanova <- vegan::adonis2(formula = snp_eucli ~ group,
+                            data = group_df,
+                            permutations = permutation_n,
+                            by = "terms")  # run test
+  
+  # Extract ANOVA table
+  globalTable.anova <- pmanova[c(1:5)]
 
   message("Completed PERMANOVA: global test")
   message(paste0("Time elapsed: ", get.time(startT)))
 
   # Compute PERMANOVA (pairwise tests) / if data contains two groups, pairwise test should mirror global test / Modified after https://rdrr.io/github/GuillemSalazar/EcolUtils/man/adonis.pair.html
   if (pairwise == TRUE & length(levels(group)) > 2) {
-    message("Computing variance partioning by PERMANOVA: pairwise tests with/without", pairwise_method, "correction...")
+    message("Computing variance partitioning by PERMANOVA: pairwise tests with/without ", pairwise_method, " correction...")
+    
     test.pair <- function(snp_eucli, group, nper = permutation_n, corr.method = pairwise_method) {
       comb.fact <- utils::combn(levels(group), 2)
       F.Model <- NULL
       R2 <- NULL
       pv.anova <- NULL
-      for (i in 1:ncol(comb.fact)) { # iterate over group pair-wise comparisons
-        message(paste0("Computing pairs ", paste(comb.fact[, i], collapse = " & "), "..."))
+      
+      for (i in 1:ncol(comb.fact)) {
+        message(paste0("Computing pair: ", paste(comb.fact[, i], collapse = " & "), "..."))
         GN <- group %in% comb.fact[, i]
-        if(program_distance == "vegan"){
-          model.temp <- vegan::adonis2(as.matrix(snp_eucli, ncol = sampN)[GN, GN] ~ group[GN], permutations = permutation_n, by = "terms")
+        group_sub <- factor(group[GN])  # drop unused levels
+        group_df <- data.frame(group = group_sub)
+        
+        if (program_distance == "vegan") {
+          dist_sub <- as.matrix(snp_eucli, ncol = sampN)[GN, GN]
         } else {
-          model.temp <- vegan::adonis2(snp_eucli[GN, GN] ~ group[GN], permutations = permutation_n, by = "terms")
+          dist_sub <- snp_eucli[GN, GN]
         }
+        
+        model.temp <- vegan::adonis2(dist_sub ~ group, data = group_df,
+                                     permutations = permutation_n, by = "terms")
+        
         F.Model <- c(F.Model, model.temp$F[1])
         R2 <- c(R2, model.temp$R2[1])
         pv.anova <- c(pv.anova, model.temp[[5]][1])
       }
-      pv.corr.anova <- stats::p.adjust(pv.anova, method = corr.method) # compute FDR-corrected p values
-      data.frame(GroupPair = paste(comb.fact[1, ], comb.fact[2, ], sep= "-"), F.Model = F.Model, R2 = R2, P.value = pv.anova, P.value.corrected = pv.corr.anova)
+      
+      pv.corr.anova <- stats::p.adjust(pv.anova, method = corr.method)  # FDR correction
+      data.frame(
+        GroupPair = paste(comb.fact[1, ], comb.fact[2, ], sep = "-"),
+        F.Model = F.Model,
+        R2 = R2,
+        P.value = pv.anova,
+        P.value.corrected = pv.corr.anova
+      )
     }
-    pairwiseTable <- test.pair(snp_eucli, group, nper = permutation_n) # run pairwise tests and tabulate ANOVA table
+    
+    pairwiseTable <- test.pair(snp_eucli, group, nper = permutation_n)
     message("Completed PERMANOVA: pairwise tests")
     message(paste0("Time elapsed: ", get.time(startT)))
   }
+  
   if (pairwise == TRUE & length(levels(group)) == 2) {
     message(paste0("Pairwise tests not computed because number of groups is 2"))
   }

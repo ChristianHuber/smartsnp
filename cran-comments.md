@@ -1,46 +1,26 @@
+## Resubmission
+
+This is an update to the smartsnp package (version 1.2.0).
+
+Changes since the previous CRAN version:
+
+* Replaced all uses of the deprecated `vegan::adonis()` with `vegan::adonis2()`.
+* Explicitly set `by = "terms"` in `adonis2()` to preserve prior behavior.
+* Updated example and test code to ensure compatibility with `vegan` ≥ 2.6.6.
+* Fixed a bug in PCA projections involving single-individual input.
+* Cleaned up documentation and Rd files to comply with CRAN policies.
+
 ## Test environments
-* local OS X installation, R 4.0.2
-* fedora linux (devel)
-* win-builder (devel and release)
+
+* Local macOS, R 4.4.0
+* Win-builder (R-devel and R-release)
+* Fedora Linux (devel)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs or NOTEs. 
 
-## Additional CRAN comments (Mar 3, 2021)
-Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all issues pointed out. Find below G. Seyer's remarks and my answers to each of them:
+I have checked the package using `R CMD check --as-cran` and the current version of R-devel on win-builder (https://win-builder.r-project.org).
 
-Please reduce the length of the title to less than 65 characters.
+There were no ERRORs or WARNINGs.
 
-* We changed the title to "Fast Multivariate Analyses of Big Genomic Data"
-
-If there are references describing the methods in your package, please
-add these in the description field of your DESCRIPTION file in the form
-authors (year) <doi:...>
-authors (year) <arXiv:...>
-authors (year, ISBN:...)
-or if those are not available: <https:...>
-with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for
-auto-linking.
-(If you want to add a title as well please put it in quotes: "Title")
-
-* There are no published references yet.
-
-You write information messages to the console that cannot be easily
-suppressed.
-It is more R like to generate objects that can be used to extract the
-information a user is interested in, and then print() that object.
-Instead of print()/cat() rather use message()/warning()  or
-if(verbose)cat(..) (or maybe stop()) if you really have to write text to
-the console.
-(except for print, summary, interactive functions)
-
-* I have replaced *cat()* and *print()* calls in all functions with *message()*. I have also turned off any messages to Rcout for the Rcpp function *cpp_read_packedancestrymap()*.
-
-Please always make sure to reset to user's options(), working directory
-or par() after you changed it in examples and vignettes and demos.
-e.g.:
-oldpar <- par(mfrow = c(1,2))
-...
-par(oldpar)
-
-* Fixed.
+One NOTE:
+* "unable to verify current time" — this appears to be related to local system configuration and does not affect package functionality.

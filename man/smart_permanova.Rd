@@ -135,8 +135,11 @@ permanovaR$permanova.global_test
 pcaR1 <- smart_pca(snp_data = pathToGenoFile, sample_group = my_groups)
 #compute Euclidean inter-sample distances in PCA space (triangular matrix)
 snp_eucli <- vegan::vegdist(pcaR1$pca.sample_coordinates[,c("PC1","PC2")], method = "euclidean")
-#run PERMANOVA
-permanova <- vegan::adonis2(formula = snp_eucli ~ my_groups, permutations = 9999, by = "terms")
+# Prepare grouping variable for PERMANOVA
+group_df <- data.frame(group = my_groups)
+# Run PERMANOVA
+permanova <- vegan::adonis2(formula = snp_eucli ~ group, data = group_df,
+                           permutations = 9999, by = "terms")
 #calculate meanSqs (groups versus residuals)
 meanSqs <- as.matrix(t(with(permanova, SumOfSqs/Df)[1:2]))
 colnames(meanSqs) <- c("Groups", "Residuals")
