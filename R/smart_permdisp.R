@@ -95,18 +95,14 @@
 #'
 #' @return Returns a list containing the following elements:
 #' \itemize{
-#' \item{permdisp.samples}{Dataframe showing sample summary.
-#' Column \emph{Group} assigns samples to tested groups.
-#' Column \emph{Class} specifies if samples were used in, or removed from, testing (PERMDISP).
-#' Column \emph{Sample_dispersion} shows dispersion of individual samples relative to spatial \code{"median"} or \code{"centroid"}.}
-#' \item{permdisp.bias}{String indicating if PERMDISP dispersions corrected for number of samples per group.}
-#' \item{permdisp.group_location}{Dataframe showing coordinates of spatial \code{"median"} or \code{"centroid"} per group.}
-#' \item{permdisp.global_test}{List showing table with degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic and \emph{p} value.}
-#' \item{permdisp.pairwise_test}{List showing table with \emph{F} statistic, \emph{p} value and corrected \emph{p} value per pair of groups.
-#' Obtained only if \code{pairwise = TRUE}.}
-#' \item{permdisp.pairwise_correction}{String indicating type of correction for multiple testing.}
-#' \item{permdisp.permutation_number}{Number of permutations applied to obtain the distribution of \emph{F} statistic.}
-#' \item{permdisp.permutation_seed}{Number fixing random generator of permutations for reproducibility of results.}
+#'   \item \code{permdisp.samples}: Dataframe showing sample summary. Column \emph{Group} assigns samples to tested groups. Column \emph{Class} specifies if samples were used in, or removed from, testing (PERMDISP). Column \emph{Sample_dispersion} shows dispersion of individual samples relative to the spatial \code{"median"} or \code{"centroid"}.
+#'   \item \code{permdisp.bias}: String indicating if PERMDISP dispersions were corrected for the number of samples per group.
+#'   \item \code{permdisp.group_location}: Dataframe showing coordinates of spatial \code{"median"} or \code{"centroid"} per group.
+#'   \item \code{permdisp.global_test}: List showing table with degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, and \emph{p} value.
+#'   \item \code{permdisp.pairwise_test}: List showing table with \emph{F} statistic, \emph{p} value, and corrected \emph{p} value per pair of groups. Obtained only if \code{pairwise = TRUE}.
+#'   \item \code{permdisp.pairwise_correction}: String indicating type of correction for multiple testing.
+#'   \item \code{permdisp.permutation_number}: Number of permutations applied to obtain the distribution of the \emph{F} statistic.
+#'   \item \code{permdisp.permutation_seed}: Number fixing the random generator of permutations for reproducibility of results.
 #' }
 #'
 #' @examples

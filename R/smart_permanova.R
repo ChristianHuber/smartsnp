@@ -92,15 +92,12 @@
 #'
 #' @return Returns a list containing the following elements:
 #' \itemize{
-#'   \item{permanova.samples}{Dataframe showing sample summary.
-#'   Column \emph{Group} assigns samples to tested groups.
-#'   Column \emph{Class} specifies if samples were used in, or removed from, testing.}
-#'   \item{permanova.global_test}{List showing table with degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, variance explained (\emph{R2}) and \emph{p} value.}
-#'   \item{permanova.pairwise_test}{List showing table \emph{F} statistic, variance explained (\emph{R2}), \emph{p} value and corrected \emph{p} value per pair of groups.
-#'   Obtained only if \code{pairwise = TRUE}.}
-#'   \item{permanova.pairwise_correction}{String indicating type of correction for multiple testing.}
-#'   \item{permanova.permutation_number}{Number of permutations applied to obtain the distribution of \emph{p value}.}
-#'   \item{permanova.permutation_seed}{Number fixing random generator of permutations for reproducibility of results.}
+#'   \item \code{permanova.samples}: Dataframe showing sample summary. Column \emph{Group} assigns samples to tested groups. Column \emph{Class} specifies if samples were used in, or removed from, testing.
+#'   \item \code{permanova.global_test}: List showing table with degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, variance explained (\emph{R2}) and \emph{p} value.
+#'   \item \code{permanova.pairwise_test}: List showing table with \emph{F} statistic, variance explained (\emph{R2}), \emph{p} value and corrected \emph{p} value per pair of groups. Obtained only if \code{pairwise = TRUE}.
+#'   \item \code{permanova.pairwise_correction}: String indicating type of correction for multiple testing.
+#'   \item \code{permanova.permutation_number}: Number of permutations applied to obtain the distribution of the \emph{p} value.
+#'   \item \code{permanova.permutation_seed}: Number fixing the random generator of permutations for reproducibility of results.
 #' }
 #'
 #' @examples

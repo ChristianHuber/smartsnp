@@ -59,12 +59,9 @@ No effect on computation, if no ancient samples present.}
 \value{
 Returns a list containing the following elements:
 \itemize{
-  \item {\code{pca.snp_loadings}} {Dataframe of principal coefficients of SNPs. One set of coefficients per PCA axis computed.}\cr
-  \item {\code{pca.eigenvalues}} {Dataframe of eigenvalues, variance and cumulative variance explained. One eigenvalue per PCA axis computed.}\cr
-  \item {\code{pca_sample_coordinates}} {Dataframe showing PCA sample summary.
-  Column \emph{Group} assigns samples to groups.
-  Column \emph{Class} specifies if samples "Removed" from PCA or "Projected" onto PCA space.
-  Sequence of additional columns shows principal components (coordinates) of samples in PCA space (1 column per PCA computed named PC1, PC2, ...).}
+  \item \code{pca.snp_loadings}: Dataframe of principal coefficients of SNPs. One set of coefficients per PCA axis computed.
+  \item \code{pca.eigenvalues}: Dataframe of eigenvalues, variance and cumulative variance explained. One eigenvalue per PCA axis computed.
+  \item \code{pca_sample_coordinates}: Dataframe showing PCA sample summary. Column \emph{Group} assigns samples to groups. Column \emph{Class} specifies if samples were "Removed" from PCA or "Projected" onto PCA space. Additional columns show principal components (coordinates) of samples in PCA space (1 column per PCA computed, named PC1, PC2, ...).
 }
 }
 \description{

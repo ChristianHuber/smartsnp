@@ -12,7 +12,7 @@ read_packedancestrymap(pref)
 \value{
 Returns a list containing a single element:
 \itemize{
-  \item {\code{geno}} {Genotype data as R matrix.}\cr
+  \item \code{geno}: Genotype data as R matrix.
 }
 }
 \description{

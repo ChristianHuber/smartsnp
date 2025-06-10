@@ -40,7 +40,7 @@
 #' If >22 chromosomes are provided and the internal parameter \code{numchrom} is not set to the target number chromosomes of interest, SMARTPCA automatically subsets chromosomes 1 to 22.
 #' In contrast, \code{smart_mva} accepts any number of autosomes with or without the sex chromosomes from an \code{EIGENSTRAT} file.\cr
 #'
-#' @param snp_data snp_data}{File name read from working directory.
+#' @param snp_data File name read from working directory.
 #' SNP = rows, samples = columns without row names or column headings.
 #' SNP values must be count data (no decimals allowed).
 #' File extension detected automatically whether text or \code{EIGENSTRAT}.
@@ -109,26 +109,19 @@
 #'
 #' @return Returns a list containing the following elements:
 #' \itemize{
-#' \item{pca.snp_loadings}{Dataframe of principal coefficients of SNPs.
-#' One set of coefficients per PCA axis computed.}
-#' \item{pca.eigenvalues}{Dataframe of eigenvalues, variance and cumulative variance explained.
-#' One eigenvalue per PCA axis computed.}
-#' \item{pca_sample_coordinates}{Dataframe showing PCA sample summary. Column \emph{Group} assigns samples to groups. Column \emph{Class} specifies if samples "Removed" from PCA or "Projected" onto PCA space.
-#' Sequence of additional columns shows principal components (coordinates) of samples in PCA space (1 column per PCA computed named PC1, PC2, ...).}
-#' \item{test_samples}{Dataframe showing test sample summary.
-#' Column \emph{Group} assigns samples to tested groups.
-#' Column \emph{Class} specifies if samples were used in, or removed from, testing (PERMANOVA and/or PERMDISP).
-#' Column \emph{Sample_dispersion} shows dispersion of individual samples relative to spatial \code{"median"} or \code{"centroid"} used in PERMDISP.}
-#' \item{permanova.global_test}{List showing PERMANOVA table with degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, variance explained (\emph{R2}) and \emph{p} value.}
-#' \item{permanova.pairwise_test}{List showing PERMANOVA table with \emph{F} statistic, variance explained (\emph{R2}), \emph{p} value and corrected \emph{p} value per pair of groups.}
-#' \item{permdisp.global_test}{List showing PERMDISP table with degrees of freedoms, sum of squares, mean sum of squares, \emph{F} statistic and \emph{p} value.}
-#' \item{permdisp.pairwise_test}{List showing PERMDISP table with \emph{F} statistic, \emph{p} value and corrected \emph{p} value per pair of groups.
-#' Obtained only if \code{pairwise = TRUE}.}
-#' \item{permdisp.bias}{String indicating if PERMDISP dispersion corrected for number of samples per group.}
-#' \item{permdisp.group_location}{Dataframe showing coordinates of spatial \code{"median"} or \code{"centroid"} per group in PERMDISP.}
-#' \item{test.pairwise_correction}{String indicating type of correction for multiple testing in PERMANOVA and/or PERMDISP.}
-#' \item{test.permutation_number}{Number of permutations applied to obtain the distribution of \emph{F} statistic of PERMANOVA and/or PERMDISP.}
-#' \item{test.permutation_seed}{Number fixing random generator of permutations of PERMANOVA and/or PERMDISP for reproducibility of results.}
+#'   \item \code{pca.snp_loadings}: Dataframe of principal coefficients of SNPs. One set of coefficients per PCA axis computed.
+#'   \item \code{pca.eigenvalues}: Dataframe of eigenvalues, variance and cumulative variance explained. One eigenvalue per PCA axis computed.
+#'   \item \code{pca_sample_coordinates}: Dataframe showing PCA sample summary. Column \emph{Group} assigns samples to groups. Column \emph{Class} specifies if samples were "Removed" from PCA or "Projected" onto PCA space. Additional columns show principal components (coordinates) of samples in PCA space (e.g., PC1, PC2, ...).
+#'   \item \code{test_samples}: Dataframe showing test sample summary. Column \emph{Group} assigns samples to tested groups. Column \emph{Class} specifies if samples were used in or removed from testing (PERMANOVA and/or PERMDISP). Column \code{Sample_dispersion} shows sample dispersion relative to spatial \code{"median"} or \code{"centroid"} used in PERMDISP.
+#'   \item \code{permanova.global_test}: List with PERMANOVA results including degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, variance explained (\emph{R2}), and \emph{p}-value.
+#'   \item \code{permanova.pairwise_test}: List with PERMANOVA results including \emph{F} statistic, variance explained (\emph{R2}), \emph{p}-value and corrected \emph{p}-value per group pair.
+#'   \item \code{permdisp.global_test}: List with PERMDISP results including degrees of freedom, sum of squares, mean sum of squares, \emph{F} statistic, and \emph{p}-value.
+#'   \item \code{permdisp.pairwise_test}: List with PERMDISP results including \emph{F} statistic, \emph{p}-value, and corrected \emph{p}-value per group pair. Only returned if \code{pairwise = TRUE}.
+#'   \item \code{permdisp.bias}: Character string indicating whether PERMDISP dispersion was corrected for unequal group sizes.
+#'   \item \code{permdisp.group_location}: Dataframe showing coordinates of group \code{"medians"} or \code{"centroids"} in PERMDISP.
+#'   \item \code{test.pairwise_correction}: Character string describing the multiple testing correction used in PERMANOVA and/or PERMDISP.
+#'   \item \code{test.permutation_number}: Number of permutations used to calculate \emph{F}-statistics.
+#'   \item \code{test.permutation_seed}: Seed used for reproducible permutation results in PERMANOVA and/or PERMDISP.
 #' }
 #'
 #' @examples

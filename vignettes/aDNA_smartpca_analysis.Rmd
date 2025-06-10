@@ -200,9 +200,9 @@ For more info on these packages, see:
 
 https://ggplot2.tidyverse.org/
 
-https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html
+https://CRAN.R-project.org/package=ggrepel
 
-https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
+https://CRAN.R-project.org/package=data.table
 
 
 ```r
@@ -227,9 +227,7 @@ ggplot() +
 
 <img src="figure/lazaridis_plot-1.png" title="plot of chunk lazaridis_plot" alt="plot of chunk lazaridis_plot" style="display: block; margin: auto;" />
 
-Voila! Note that we have plotted the negative of PC1 (i.e. -PC1) here. The only reason for this is to make the plot have the same orientation as the original plot in Lazaridis et al. (2016), Fig. 1B. Importantly, changing the sign of any axis of an PCA does not change its interpretation, and different software can give different signs. See the excellent explanation here:
-
-https://stats.stackexchange.com/questions/88880/does-the-sign-of-scores-or-of-loadings-in-pca-or-fa-have-a-meaning-may-i-revers
+Voila! Note that we have plotted the negative of PC1 (i.e. -PC1) here. The only reason for this is to make the plot have the same orientation as the original plot in Lazaridis et al. (2016), Fig. 1B. Importantly, changing the sign of any axis of an PCA does not change its interpretation, and different software can give different signs. 
 
 Finally, let's move back to the old working directory:
 

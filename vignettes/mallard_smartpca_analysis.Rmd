@@ -21,9 +21,7 @@ This Vignette provides an example analysis of genetic data using the smartsnp pa
 
 Multivariate analysis of mallard genotypes using the dataset published by Kraus et al. 2013.
 
-Paper = https://onlinelibrary.wiley.com/doi/10.1111/mec.12098 
-
-Dataset = https://datadryad.org/stash/dataset/doi:10.5061/dryad.1bq39
+Dataset = https://datadryad.org/dataset/doi:10.5061/dryad.1bq39
 
 Population SEAP removed from dataset as its geographic background is unclear (Robert Kraus, pers. comm., 02/06/2021).
 

@@ -13,7 +13,7 @@
 #' @param pref The prefix of the file name that contains the genotype data (i.e., without the \code{*.geno}).
 #' @return Returns a list containing a single element:
 #' \itemize{
-#'   \item {\code{geno}} {Genotype data as R matrix.}\cr
+#'   \item \code{geno}: Genotype data as R matrix.
 #' }
 #'
 #' @export
