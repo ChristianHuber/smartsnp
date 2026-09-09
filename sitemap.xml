@@ -1,0 +1,19 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/Converting_VCF_and_PLINK_formats.html</loc></url>
+<url><loc>/articles/aDNA_smartpca_analysis.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/mallard_smartpca_analysis.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/read_packedancestrymap.html</loc></url>
+<url><loc>/reference/smart_mva.html</loc></url>
+<url><loc>/reference/smart_pca.html</loc></url>
+<url><loc>/reference/smart_permanova.html</loc></url>
+<url><loc>/reference/smart_permdisp.html</loc></url>
+</urlset>
+
