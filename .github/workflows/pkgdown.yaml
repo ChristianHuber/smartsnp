@@ -22,12 +22,11 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install dependencies
-        run: |
-          install.packages("remotes", repos = "https://cloud.r-project.org")
-          remotes::install_deps(dependencies = TRUE)
-          install.packages("pkgdown", repos = "https://cloud.r-project.org")
-        shell: Rscript {0}
+      - name: Install R and system dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::pkgdown, local::.
+          needs: website
 
       - name: Build and deploy pkgdown site
         run: |
