@@ -315,9 +315,9 @@ smart_pca <- function(snp_data, packed_data = FALSE,
   if (!isFALSE(snp_remove)) {
     snp.keep <- setdiff(1:snpN.full, snp_remove)
     snpN.full <- length(snp.keep) # update SNP count
-    snp_dat1 <- snp_dat1[snp.keep, ] # subset SNPs by row number across modern samples
+    snp_dat1 <- snp_dat1[snp.keep, , drop = FALSE] # subset SNPs by row number across modern samples
     if (!isFALSE(sample_project)) {
-      snp_dat2 <- snp_dat2[snp.keep, ] # subset SNPs by row number across modern samples
+      snp_dat2 <- snp_dat2[snp.keep, , drop = FALSE] # subset SNPs by row number across modern samples
     }
   }
 
@@ -368,7 +368,7 @@ smart_pca <- function(snp_data, packed_data = FALSE,
 
   # Remove invariant SNPs
   if (length(keepSNPs > 0)) {
-    snp_dat1 <- snp_dat1[keepSNPs, ] # remove invariant SNPs from modern samples
+    snp_dat1 <- snp_dat1[keepSNPs, , drop = FALSE] # remove invariant SNPs from modern samples
     genoMean <- genoMean[keepSNPs] # compute SNP means
     genoVar <- genoVar[keepSNPs] # compute SNP variances
     if (!isFALSE(sample_project)) {
@@ -415,9 +415,9 @@ smart_pca <- function(snp_data, packed_data = FALSE,
     # Removal of SNPs with missing data
     if (missing_impute == "remove") {
       message("Removing SNPs with missing values...")
-      snp_dat1 <- snp_dat1[-snpMissI, ] #SNP
+      snp_dat1 <- snp_dat1[-snpMissI, , drop = FALSE] #SNP
       if (!isFALSE(sample_project)) {
-        snp_dat2 <- snp_dat2[-snpMissI, ] # ensure snp_dat1 and snp_dat2 have same SNPs in projection
+        snp_dat2 <- snp_dat2[-snpMissI, , drop = FALSE] # ensure snp_dat1 and snp_dat2 have same SNPs in projection
       }
       genoMean <- genoMean[-snpMissI] # update genotype means
       genoVar <- genoVar[-snpMissI] # update genotype variance
