@@ -19,7 +19,7 @@ Includes control for genetic drift for bi-allelic genetic markers such as single
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smartsnp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -72,6 +72,13 @@ Calculates a range of inter-sample distances, similarities and dissimilarities.
 Includes control for genetic drift for bi-allelic genetic markers such as single nucleotide polymorphisms (SNP) following Patterson, Price and Reich (2006) that can be combined with SMART Principal Component Analysis (PCA). Optimized to run fast matrix building and permutations for big datasets in ecological, evolutionary and genomic research.</p>
     </div>
 
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">smart_permanova</span><span class="op">(</span><span class="va">snp_data</span>, packed_data <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">sample_group</span>, sample_remove <span class="op">=</span></span>
+<span>  <span class="cn">FALSE</span>, snp_remove <span class="op">=</span> <span class="cn">FALSE</span>, missing_value <span class="op">=</span> <span class="fl">9</span>, missing_impute <span class="op">=</span> <span class="st">"mean"</span>,</span>
+<span>  scaling <span class="op">=</span> <span class="st">"drift"</span>, sample_distance <span class="op">=</span> <span class="st">"euclidean"</span>, program_distance <span class="op">=</span></span>
+<span>  <span class="st">"Rfast"</span>, target_space <span class="op">=</span> <span class="st">"multidimensional"</span>, pc_axes <span class="op">=</span> <span class="fl">2</span>, pairwise <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pairwise_method <span class="op">=</span> <span class="st">"holm"</span>, permutation_n <span class="op">=</span> <span class="fl">9999</span>, permutation_seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -195,7 +202,7 @@ If &gt;2 sample groups tested, <code>pairwise = TRUE</code> allows pairwise test
 Euclidean distance required for SMARTPCA scaling.<br></p>
 <p><code>sample_remove</code> should include both samples removed from PCA and ancient samples projected onto PCA space (if any).<br></p>
 <p>Data read from working directory with SNPs as rows and samples as columns.
-Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>; or (2) duet of <code>EIGENSTRAT</code> files (see <a href="https://reich.hms.harvard.edu/software" class="external-link">https://reich.hms.harvard.edu/software</a>) using <code><a href="https://vroom.tidyverse.org/reference/vroom_fwf.html" class="external-link">vroom_fwf</a></code>, including a genotype file of SNPs by samples (<code>*.geno</code>), and a sample file (<code>*.ind</code>) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
+Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>; or (2) duet of <code>EIGENSTRAT</code> files (see <a href="https://github.com/DReichLab/EIG" class="external-link">https://github.com/DReichLab/EIG</a>) using <code><a href="https://vroom.tidyverse.org/reference/vroom_fwf.html" class="external-link">vroom_fwf</a></code>, including a genotype file of SNPs by samples (<code>*.geno</code>), and a sample file (<code>*.ind</code>) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
 For <code>EIGENSTRAT</code>, vector <code>sample_group</code> assigns samples to groups retrievable from column 3 of file <code>*.ind</code>.
 SNPs with zero variance removed prior to SVD to optimize computation time and avoid undefined values if <code>scaling = "sd"</code> or <code>"drift"</code>.<br></p>
 <p>Users can select subsets of samples or SNPs by introducing a vector including column numbers for samples (<code>sample_remove</code>) and/or row numbers for SNPs (<code>snp_remove</code>) to be removed from computations.

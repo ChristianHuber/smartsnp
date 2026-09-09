@@ -21,7 +21,7 @@ Optimized to run fast computation for big datasets."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">smartsnp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -76,6 +76,16 @@ The latter follows the SMARTPCA implementation of Patterson, Price and Reich (20
 Optimized to run fast computation for big datasets.</p>
     </div>
 
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">smart_mva</span><span class="op">(</span><span class="va">snp_data</span>, packed_data <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">sample_group</span>, sample_remove <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  snp_remove <span class="op">=</span> <span class="cn">FALSE</span>, pca <span class="op">=</span> <span class="cn">TRUE</span>, permanova <span class="op">=</span> <span class="cn">TRUE</span>, permdisp <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  missing_value <span class="op">=</span> <span class="fl">9</span>, missing_impute <span class="op">=</span> <span class="st">"mean"</span>, scaling <span class="op">=</span> <span class="st">"drift"</span>, program_svd <span class="op">=</span></span>
+<span>  <span class="st">"RSpectra"</span>, sample_project <span class="op">=</span> <span class="cn">FALSE</span>, pc_project <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, sample_distance <span class="op">=</span></span>
+<span>  <span class="st">"euclidean"</span>, program_distance <span class="op">=</span> <span class="st">"Rfast"</span>, target_space <span class="op">=</span> <span class="st">"multidimensional"</span>,</span>
+<span>  pc_axes <span class="op">=</span> <span class="fl">2</span>, pairwise <span class="op">=</span> <span class="cn">FALSE</span>, pairwise_method <span class="op">=</span> <span class="st">"holm"</span>, permutation_n <span class="op">=</span></span>
+<span>  <span class="fl">9999</span>, permutation_seed <span class="op">=</span> <span class="fl">1</span>, dispersion_type <span class="op">=</span> <span class="st">"median"</span>, samplesize_bias <span class="op">=</span></span>
+<span>  <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -241,7 +251,7 @@ Default <code>pairwise = FALSE</code> for no weighting.</p></dd>
 <p>Users can compute any combination of the three analyses by assigning <code>TRUE</code> or <code>FALSE</code> to <code>pca</code> and/or <code>permanova</code> and/or <code>permdisp</code>.<br></p>
 <p>PERMANOVA and PERMDISP exclude samples (columns) specified in either <code>sample_remove</code> or <code>sample_project</code>.
 Projected samples are not used for testing as their PCA coordinates are derived from, and therefore depend on, the coordinates of non-projected samples.<br></p>
-<p>Data read from working directory with SNPs as rows and samples as columns. Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>; or (2) duet of <code>EIGENSTRAT</code> files (see <a href="https://reich.hms.harvard.edu/software" class="external-link">https://reich.hms.harvard.edu/software</a>) using <code><a href="https://vroom.tidyverse.org/reference/vroom_fwf.html" class="external-link">vroom_fwf</a></code>, including a genotype file of SNPs by samples (<code>*.geno</code>), and a sample file (<code>*.ind</code>) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
+<p>Data read from working directory with SNPs as rows and samples as columns. Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></code>; or (2) duet of <code>EIGENSTRAT</code> files (see <a href="https://github.com/DReichLab/EIG" class="external-link">https://github.com/DReichLab/EIG</a>) using <code><a href="https://vroom.tidyverse.org/reference/vroom_fwf.html" class="external-link">vroom_fwf</a></code>, including a genotype file of SNPs by samples (<code>*.geno</code>), and a sample file (<code>*.ind</code>) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
 For <code>EIGENSTRAT</code>, vector <code>sample_group</code> assigns samples to groups retrievable from column 3 of file <code>*.ind</code>.
 SNPs with zero variance removed prior to SVD to optimize computation time and avoid undefined values if <code>scaling = "sd"</code> or <code>"drift"</code>.<br></p>
 <p>Users can select subsets of samples or SNPs by introducing a vector including column numbers for samples (<code>sample_remove</code>) and/or row numbers for SNPs (<code>snp_remove</code>) to be removed from computations.
