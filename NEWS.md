@@ -1,3 +1,9 @@
+# smartsnp 1.2.1
+
+* Preserve matrix dimensions when filtering SNPs in all four analysis functions, fixing failures when projecting a single sample (PR #13; thanks to @killidude).
+* Restore function usage signatures in the help pages to address CRAN check notes.
+* Update the EIGENSOFT documentation link.
+
 # smartsnp 1.2.0
 
 * Fixed issue that now allows just one individual to be projected into PCA space.

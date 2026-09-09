@@ -1,26 +1,29 @@
-## Resubmission
+## Update
 
-This is an update to the smartsnp package (version 1.2.0).
+This is smartsnp 1.2.1, an update to CRAN version 1.2.0.
 
-Changes since the previous CRAN version:
+* Preserve matrix dimensions when filtering SNPs in the four analysis functions,
+  fixing errors when projecting a single sample (PR #13).
+* Add regression coverage for single-sample projections with SNP filtering.
+* Restore usage signatures in four Rd files to address the current CRAN notes.
+* Replace the broken EIGENSOFT URL with its official GitHub repository.
 
-* Replaced all uses of the deprecated `vegan::adonis()` with `vegan::adonis2()`.
-* Explicitly set `by = "terms"` in `adonis2()` to preserve prior behavior.
-* Updated example and test code to ensure compatibility with `vegan` ≥ 2.6.6.
-* Fixed a bug in PCA projections involving single-individual input.
-* Cleaned up documentation and Rd files to comply with CRAN policies.
+## Local validation
 
-## Test environments
+Ubuntu 24.04, R 4.5.3 (conda-forge), R CMD check --as-cran:
+0 ERRORs, 0 WARNINGs, 2 NOTEs.
 
-* Local macOS, R 4.4.0
-* Win-builder (R-devel and R-release)
-* Fedora Linux (devel)
+* unable to verify current time (environment/network restriction).
+* non-portable compilation flag -march=nocona (conda toolchain default).
 
-## R CMD check results
+Examples, regression tests, vignettes, and PDF/HTML manuals passed.
+Remote incoming checks were disabled for this final local run following network
+failures in the preceding full run. The preceding run identified a broken
+EIGENSOFT URL, which has been corrected. PDF checks used R_RD4PDF=times,hyper
+because the local TeX installation lacks the inconsolata font.
 
-I have checked the package using `R CMD check --as-cran` and the current version of R-devel on win-builder (https://win-builder.r-project.org).
+## Pending before submission
 
-There were no ERRORs or WARNINGs.
-
-One NOTE:
-* "unable to verify current time" — this appears to be related to local system configuration and does not affect package functionality.
+Run the prepared GitHub Actions matrix on current R-release (Linux) and R-devel
+(Windows), with incoming checks enabled. Build the submitted archive with the
+current R release. Record those results here before submitting to CRAN.

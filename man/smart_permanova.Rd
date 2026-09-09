@@ -3,6 +3,13 @@
 \name{smart_permanova}
 \alias{smart_permanova}
 \title{Smart Permutational Multivariate Analysis of Variance}
+\usage{
+smart_permanova(snp_data, packed_data = FALSE, sample_group, sample_remove =
+  FALSE, snp_remove = FALSE, missing_value = 9, missing_impute = "mean",
+  scaling = "drift", sample_distance = "euclidean", program_distance =
+  "Rfast", target_space = "multidimensional", pc_axes = 2, pairwise = FALSE,
+  pairwise_method = "holm", permutation_n = 9999, permutation_seed = 1)
+}
 \arguments{
 \item{snp_data}{File name read from working directory.
 SNP = rows, samples = columns without row names or column headings.
@@ -101,7 +108,7 @@ Euclidean distance required for SMARTPCA scaling.\cr
 \code{sample_remove} should include both samples removed from PCA and ancient samples projected onto PCA space (if any).\cr
 
 Data read from working directory with SNPs as rows and samples as columns.
-Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://reich.hms.harvard.edu/software}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
+Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://github.com/DReichLab/EIG}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
 For \code{EIGENSTRAT}, vector \code{sample_group} assigns samples to groups retrievable from column 3 of file \code{*.ind}.
 SNPs with zero variance removed prior to SVD to optimize computation time and avoid undefined values if \code{scaling = "sd"} or \code{"drift"}.\cr
 

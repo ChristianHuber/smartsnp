@@ -3,6 +3,16 @@
 \name{smart_mva}
 \alias{smart_mva}
 \title{Smart Multivariate Analyses (wrapper of PCA, PERMANOVA and PERMDISP)}
+\usage{
+smart_mva(snp_data, packed_data = FALSE, sample_group, sample_remove = FALSE,
+  snp_remove = FALSE, pca = TRUE, permanova = TRUE, permdisp = TRUE,
+  missing_value = 9, missing_impute = "mean", scaling = "drift", program_svd =
+  "RSpectra", sample_project = FALSE, pc_project = c(1:2), sample_distance =
+  "euclidean", program_distance = "Rfast", target_space = "multidimensional",
+  pc_axes = 2, pairwise = FALSE, pairwise_method = "holm", permutation_n =
+  9999, permutation_seed = 1, dispersion_type = "median", samplesize_bias =
+  FALSE)
+}
 \arguments{
 \item{snp_data}{File name read from working directory.
 SNP = rows, samples = columns without row names or column headings.
@@ -127,7 +137,7 @@ Users can compute any combination of the three analyses by assigning \code{TRUE}
 PERMANOVA and PERMDISP exclude samples (columns) specified in either \code{sample_remove} or \code{sample_project}.
 Projected samples are not used for testing as their PCA coordinates are derived from, and therefore depend on, the coordinates of non-projected samples.\cr
 
-Data read from working directory with SNPs as rows and samples as columns. Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://reich.hms.harvard.edu/software}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
+Data read from working directory with SNPs as rows and samples as columns. Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://github.com/DReichLab/EIG}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
 For \code{EIGENSTRAT}, vector \code{sample_group} assigns samples to groups retrievable from column 3 of file \code{*.ind}.
 SNPs with zero variance removed prior to SVD to optimize computation time and avoid undefined values if \code{scaling = "sd"} or \code{"drift"}.\cr
 

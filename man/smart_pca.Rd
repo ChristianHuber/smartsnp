@@ -3,6 +3,12 @@
 \name{smart_pca}
 \alias{smart_pca}
 \title{Smart Principal Component Analysis}
+\usage{
+smart_pca(snp_data, packed_data = FALSE, sample_group, sample_remove = FALSE,
+  snp_remove = FALSE, missing_value = 9, missing_impute = "mean", scaling =
+  "drift", program_svd = "RSpectra", pc_axes = 2, sample_project = FALSE,
+  pc_project = c(1:2))
+}
 \arguments{
 \item{snp_data}{File name read from working directory.
 SNP = rows, samples = columns without row names or column headings.
@@ -77,7 +83,7 @@ Principal coefficients are direction cosines between original and PCA axes (Lege
 
 SNPs can be scaled in four different ways prior to SVD: (1) no scaling; (2) covariance: SNPs \code{centered} such that \emph{M(i,j)} = \emph{C(i,j)} minus \emph{mean(j)}) where \emph{C(i,j)} is the number of variant alleles for SNP \emph{j} and sample \emph{i}, and \emph{M(i,j)} is the \code{centered} value of each data point; (3) correlation (z-scores): SNPs \code{centered} then divided by standard deviation \emph{sd(j)}, (4) SMARTPCA: SNPs \code{centered} then divided by \emph{sqrt(p(j)(1-p(j)))}, where \emph{p(j)} equals \emph{mean(j)} divided by \emph{2}, quantifies the underlying allele frequency (autosomal chromosomes) and conceptualizes that SNP frequency changes at rate proportional to \emph{sqrt(p(j)(1-p(j)))} per generation due to genetic drift (Patterson, Price and Reich 2006).
 SMARTPCA standardization results in all SNPs that comply with Hardy-Weinberg equilibrium having identical variance.
-SMARTPCA (Patterson, Price and Reich 2006) and \code{EIGENSTRAT} (Price, Patterson, Plenge, Weinblatt, Shadick and Reich 2006) are the computing suites of software \code{EIGENSOFT} (\url{https://reich.hms.harvard.edu/software}).\cr
+SMARTPCA (Patterson, Price and Reich 2006) and \code{EIGENSTRAT} (Price, Patterson, Plenge, Weinblatt, Shadick and Reich 2006) are the computing suites of software \code{EIGENSOFT} (\url{https://github.com/DReichLab/EIG}).\cr
 
 \code{\link[RSpectra]{svds}} runs single value decomposition much faster than \code{\link[bootSVD]{fastSVD}}. With \code{\link[RSpectra]{svds}}, \code{pc_axes} indicates number of eigenvalues and eigenvectors computed starting from PCA axis 1. \code{\link[bootSVD]{fastSVD}} computes all eigenvalues and eigenvectors. Eigenvalues calculated from singular values divided by number of samples minus 1. If number of samples equals number of SNPS, \code{\link[bootSVD]{fastSVD}} prints message alert that no computing efficiency is achieved for square matrices.\cr
 
@@ -87,7 +93,7 @@ Number of projected coordinates per ancient sample given by \code{length(pc_anci
 With \code{\link[RSpectra]{svds}}, \code{pc_axes} must be larger or equal to \code{length(pc_ancient)}.\cr
 
 Data read from working directory with SNPs as rows and samples as columns.
-Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://reich.hms.harvard.edu/software}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
+Two alternative formats: (1) text file of SNPs by samples (file extension and column separators recognized automatically) read using \code{\link[data.table]{fread}}; or (2) duet of \code{EIGENSTRAT} files (see \url{https://github.com/DReichLab/EIG}) using \code{\link[vroom]{vroom_fwf}}, including a genotype file of SNPs by samples (\code{*.geno}), and a sample file (\code{*.ind}) containing three vectors assigning individual samples to unique user-predefined groups (populations), sexes (or other user-defined descriptor) and alphanumeric identifiers.
 For \code{EIGENSTRAT}, vector \code{sample_group} assigns samples to groups retrievable from column of file \code{*.ind}. SNPs with zero variance removed prior to SVD to optimize computation time and avoid undefined values if \code{scaling = "sd"} or \code{"drift"}.\cr
 
 Users can select subsets of samples or SNPs by introducing a vector including column numbers for samples (\code{sample_remove}) and/or row numbers for SNPs (\code{snp_remove}) to be removed from computations.
